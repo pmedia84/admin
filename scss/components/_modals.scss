@@ -1,0 +1,62 @@
+ //Form response for displaying server messages
+
+ .modal{//modal outer with background, covers whole screen
+    display: grid;
+    place-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease-out;
+ }
+ //Defines the body of the modal, centered on screen with a close icon to dismiss
+.modal-body{
+    border: 1px solid $primary;
+    border-radius: $border-radius;
+
+}
+.modal-close{//header section with close button set to the right
+    background-color: rgb(219, 219, 219);
+    padding: $spacer-2 1rem $spacer-2 1rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid $primary;
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+}
+
+.modal-button-section{//footer with a confirm button
+    padding: $spacer-2 1rem $spacer-2 1rem;
+    border-top: 1px solid $primary;
+    background-color: #fff;
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+}
+
+//active classes to display modal when triggered
+.modal-active{
+    opacity: 1;
+    transition: opacity 400ms ease-out;
+    pointer-events: all;
+}
+ //specific container for php responses
+ .form-response{//container for php response to be inserted into
+
+    background-color: #fff;
+    padding: 2rem 1rem 1rem 1rem;
+ }
+ //stop body scrolling when modal open by applying this class
+ .body-modal-open{
+    overflow: hidden;
+    padding-right: calc(100vw - 100%);
+    nav{
+        padding-right: 33px
+    };
+ }

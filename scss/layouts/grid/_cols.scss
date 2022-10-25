@@ -1,0 +1,7 @@
+//Standard column gives equal widths
+.col-50{
+    @media(min-width:$md){
+        width: 50%;
+    }
+    
+}

@@ -1,0 +1,63 @@
+//Form Grid, cols provide 2 columns 50% on larger screens
+.form-row{
+    gap: 0.5rem;
+    flex-direction: column;
+}
+
+@media(min-width: $md){
+    .form-col{
+        width: 50%;
+       
+        
+    }
+}
+
+select{
+    width: 100%;
+}
+//////
+
+//Quote request form
+.quote-request{
+    background-color: $secondary;
+    width: 100%;
+    h2, h3{
+     color: $primary;
+    } 
+    label{
+     color: #fff;
+    }
+     padding: 1rem;
+     border-radius: $border-radius;
+     flex-grow: 0.5;
+     .form-floating > label,input,textarea{
+         color: #212529;
+     }
+     select option{
+         font-family: $font-family-sans-serif;
+     }
+     textarea{
+         height: 120px !important;
+     }
+     @media(min-width: $md){
+         .form-col{
+             width: 100%;
+         }
+     }
+     .google-policy{
+        color: white;
+     }
+ }
+
+//Recaptcha settings
+.recaptcha-token{
+    display: none;
+}
+
+//container for privacy message, this is displayed as we have hidden the recaptcha logo
+.google-policy{
+    margin-block: $spacer-2;
+    p{
+        margin-bottom: 0;
+    }
+}
