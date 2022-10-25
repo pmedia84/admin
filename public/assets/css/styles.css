@@ -80,7 +80,10 @@ select {
 /*/Screen Breakpoints*/
 /*Padding and margin settings*/
 /*standard padding for the site*/
-/*Spacers*/ 
+/*Spacers*/
+body{
+    background-color: rgb(11, 12, 12);
+} 
 .nav-bar {
     /*padding: 0.5rem;*/
    position: absolute;
