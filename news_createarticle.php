@@ -44,7 +44,7 @@ $business->close();
 <script>
     tinymce.init({
         selector: 'textarea#news_article_body',
-        height: 600,
+        height: 500,
 
         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen         autocorrect',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | ',
@@ -116,7 +116,7 @@ $business->close();
 
                         <form class="form-card" id="create_news_article" action="scripts/news_createarticle.php" method="post" enctype="multipart/form-data">
                             <div class="form-input-wrapper">
-                                <label for="news_article_title">Title</label>
+                                <label for="news_articles_title">Title</label>
                                 <!-- input -->
                                 <input class="text-input input" type="text" name="news_articles_title" id="news_articles_title" placeholder="Article Title" required="" maxlength="45">
                             </div>
@@ -128,9 +128,9 @@ $business->close();
                             </div>
                             <div class="form-input-wrapper my-2">
                                 <label for="news_article_body">Article Body</label>
-                                <!-- <textarea id="news_article_body" name="news_article_body">
+                                <textarea id="news_article_body" name="news_article_body" required="">
                                   
-                                </textarea> -->
+                                </textarea> 
                             </div>
 
                             <div class="form-input-wrapper my-2">
