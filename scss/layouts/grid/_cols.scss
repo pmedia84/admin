@@ -5,3 +5,8 @@
     }
     
 }
+
+.grid-col{ //standard grid column to hold items together
+    width: 100%;
+grid-column: 2/3;
+}

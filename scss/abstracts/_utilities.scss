@@ -12,15 +12,18 @@
 }
 
 .mb-3{
-    margin-bottom: 1.5rem;
+    margin-bottom: $spacer-3;
 }
 
 .mb-4{
     margin-bottom: $spacer-4;
 }
 
+.my-2{
+    margin-block: $spacer-2;
+}
 .my-3{
-    margin-block: 1.5rem;
+    margin-block: $spacer-3;
     
 }
 .my-4{
@@ -80,7 +83,7 @@
 
 //Font color muted. Slightly grey color
 .text-color-muted{
-    color: $gray-600;
+    color: $grey-600;
 }
 
 
@@ -105,3 +108,10 @@
 .place-start{
     place-self: flex-start;
 }
+
+//text utility classes
+
+.wrap-words{
+    word-wrap: anywhere;
+}
+

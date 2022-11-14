@@ -19,15 +19,16 @@
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/3318fdaaaf.js" crossorigin="anonymous" defer></script>
     <!-- Google Recaptcha -->
-    <script src="https://www.google.com/recaptcha/api.js?render=6LevFFEiAAAAAPcel_AlRmOSMRgDSXCN5vT0lbmC" async="false"></script>
+    <!-- <script src="https://www.google.com/recaptcha/api.js?render=6LevFFEiAAAAAPcel_AlRmOSMRgDSXCN5vT0lbmC" async="false"></script> -->
     <!-- Theme Color for safari and mobile browsers -->
     <meta name="theme-color" content="black" />
-    <!-- OG Meta Tags -->
-    <meta property="og:title" content="Bolton's Window Cleaning">
-    <meta property="og:description" content="Window and gutter cleaning services for Cambridgeshire and Norfolk">
-    <meta property="og:image" content="./assets/img/og-data/og-img.png">
-    <meta property="og:url" content="">
-    <meta property="og:type" content="Website">
-    <!-- /OG Meta Tags -->
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+    <!-- Tiny MCE -->
+    <script src="https://cdn.tiny.cloud/1/7h48z80zyia9jc41kx9pqhh00e1e2f4pw9kdcmhisk0cm35w/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    
+
 
     <!-- Everything above this is for the head element. And is displayed on every web page -->

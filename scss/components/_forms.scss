@@ -12,9 +12,7 @@
     }
 }
 
-select{
-    width: 100%;
-}
+
 //////
 
 //Quote request form
@@ -49,7 +47,7 @@ select{
      }
  }
 
-//Recaptcha settings
+//Recaptcha  settings
 .recaptcha-token{
     display: none;
 }
@@ -60,4 +58,141 @@ select{
     p{
         margin-bottom: 0;
     }
+}
+
+///Form wrapper to wrap login and password reset  forms in etc
+.login-wrapper{
+    border-radius: $border-radius;
+    background-color: white;
+    padding: $spacer-4;
+    width: 95%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+///form input wrapper, holds labels and inputs together
+
+.form-input-wrapper{
+    display: flex;
+    flex-direction: column;
+}
+/////////////////////Form Input settings///////////////////////////
+
+input{
+    outline: none;
+}
+input[type=text], input[type=password], textarea, select, input[type=file]{
+    appearance: none;
+    border: 1px solid $primary;
+    border-radius: 5px;
+    padding: $spacer-1;
+    transition: box-shadow 300ms ease-out;
+    margin-block: $spacer-1;
+    &:focus{
+        box-shadow: 0 0 2px 3px $primary-500;
+        transition: box-shadow 300ms ease-out;
+    }
+    
+}
+
+textarea{
+    width: 100%;
+    min-height: 250px;
+    margin-bottom: 1rem;
+    padding:.375rem .75rem;
+    resize: auto;
+    border-radius: 5px;
+    @media (min-width:768px) {
+      min-height: 0;
+      margin-bottom: 1rem;
+      height: 100%;
+    }
+  }
+  select{
+    display: block;
+    width: min-content;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    font-size: 1rem;
+    background-color: #fff;
+    appearance: none;
+    border: 1px solid $primary;
+    border-radius: 0.25rem;
+    background-image: url("../img/icons/down.svg");
+    background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 16px 12px;
+    &:focus{
+      outline: none;
+      box-shadow: 0 0 2pt 1pt $primary;
+        transition: box-shadow 250ms ease;
+    }
+  }
+//button wrapper, displays buttons and spaces them out
+.button-section{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: .5rem;
+    button{
+        width: 100%;
+    }
+    @media(min-width:$md){
+        flex-direction: row;
+        button{
+            width: auto;
+        }
+    }
+    a{
+        text-decoration: none;
+    }
+}
+/////////////////////////////////////////
+/// 
+/// Form responses //////////////
+.form-response{ //standard settings for success 
+    background-color: $primary-800;
+    padding: 2rem;
+    border-radius: 5px;
+}
+
+//Response colours
+
+.error{//modifier class for error messages
+    background-color: $error-response;
+}
+
+/////////////////Form Hint text.  Smaller font size, provides a helpful hint/////////////////////////
+.form-hint-small{
+    font-size: 0.8rem;
+    color: $grey-600;
+}
+
+///////////////Form controls //////////
+.form-controls{
+    padding: 1rem;
+
+    border: 1px solid $primary-500;
+    border-radius: 2.5px;
+
+}
+
+.form-controls-btn{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img{
+        height: 1.25rem;
+        margin-inline-start: 1rem;
+    }
+}
+
+//Form modal setting when on a big screen
+@media(min-width:$md){
+    .modal-body .form-card{
+        width: 50ch;
+    }
+}
+
+//Set the height of button sections to stop layout shifts when hidden
+.btn-wrapper{
+    height: 38.667px;
 }

@@ -1,162 +1,48 @@
-
-.nav-bar {
-    //padding: 0.5rem;
-   position: absolute;
-   top: 0;
-   left: 0;
-   bottom: 0;
-   right: 0;
-   background-color: rgba(91, 91, 91, 0.541);
-   padding: 1rem;
-}
-
-.nav-container {
-    border-radius: 10px;
-    padding: 0.5rem;
-    height: calc(100% - 1rem);
-    background-color: $primary;
-}
-
-
-
-/////////Nav menu links
-.nav-links {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background-color: green;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    li{
-        margin-bottom: 0.5rem;
-
-    }
-}
-
-//Settings to bring nav menu links in on small screens
-.nav-links-menu-active{
-transform: translateX(0);
-opacity: 1;
-transition: opacity 400ms ease-out, transform 400ms ease-out;
-}
-
-////Nav Button Settings
-
-
-.nav-btn {
-    height: 100%;
-    padding-block: 1.5rem;
-    cursor: pointer;
-    display:flex;
-    flex-direction: column;
-    gap: $spacer-2;
-    will-change: transform;
-    transform: rotate(0deg);
-    transition: transform 300ms ease-out;
-    @media (min-width:$lg) {
-        display: none;
-    }
+.nav-bar{//outer container
+    display: none;
+    background-color: $primary-600;
+    padding: 1rem;
+    position: absolute;
+    left: 0;
+    right: 0;
 
 }
 
-
-
-$line-height: 3.5px;
-$line-width: 50px;
-
-
-.line1, .line2,.line3{
-    display: inline-block;
-    height: $line-height;
-    width: $line-width;
-    background-color: $white;
-    border-radius: $border-radius;
-    margin-block: 0;
-}
-.line1{
-    transform: rotate(0deg) translateY(0);
-    transition: transform 300ms ease-out, background-color 400ms ease-in-out;
-}
-
-.line2{
-    opacity: 1;
-    transition: opacity 300ms ease-out, background-color 400ms ease-in-out;
-  }
-  .line3{
-    transform: rotate(-0) translateX(0);
-    transition: transform 300ms ease-out, background-color 400ms ease-in-out;
-  }
-//settings once clicked
-.btn-active {
-        will-change: transform;
-        transform: rotate(-45deg);
-        transition: transform 400ms ease-out;
-        .line1{
-            transform: rotate(0deg) translateY(12px);
-            transition: transform 400ms ease-out;
-        }
-      .line2{
-        opacity: 0;
-        transition: opacity 300ms ease-out;
-      }
-      .line3{
-        transform: rotate(-90deg) translateX(10px);
-      }
-
-}
-.nav-links-active li{
-    opacity: 1;
-    transition: opacity 700ms ease-out;
-    transition-delay: 300ms;
-}
-////////////////////
-
-
-// Change to scrolled styles when user scrolls down the screen
-.logo-text {//settings when not scrolled
-    fill: white;
-    transition: fill 400ms ease-in-out;
-}
-
-.logo-swipe {
-    stroke: white;
-    fill: none;
-    transition: fill 400ms ease-in-out, stroke 400ms ease-in-out;
-}
-//settings when scrolled
-.nav-scrolled {
-    background-color: $secondary;
-     .line1, .line2,.line3 {
-        background-color: $primary;
-        transition: transform 300ms ease-out, background-color 400ms ease-out, opacity 200ms ease-out;
-    }
-
-    .nav-links a {
-        color: $primary;
-        transition: color 400ms ease-in-out;
-        &:hover{
-            color: var(--bs-link-hover-color)
-        }
-
-    }
-
-    .contact-header a, span{
-        color: $primary;
-    transition: color 400ms ease-in-out;
-    }
-
-    .logo-text {
-        fill: $primary;
-        transition: fill 400ms ease-in-out;
-    }
-
-    .logo-swipe {
-        stroke: $primary;
-        fill: none;
-        transition: fill 400ms ease-in-out, stroke 400ms ease-in-out;
-    }
-
+.nav-links{//nav bar links
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0;
+        padding: 0;
     
+    li{
+        list-style-type: none;
+    }
+    .nav-link{
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem;
+        margin-block: .5rem;
+        background-color: $primary-800;
+        border-radius: 5px;
+        text-decoration: none;
+        color: $primary;
+        img{
+            height: 25px
+        }
+    }
+}
+@media (min-width:$md){//settings for bigger screens
+    .nav-bar{
+       display: block;
+       position: relative;
+       top: 0;
+       border-radius: $border-radius;
+       .close{
+        display: none;
+       }
+    }
+    
+
 }

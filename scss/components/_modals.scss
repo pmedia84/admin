@@ -18,10 +18,14 @@
 .modal-body{
     border: 1px solid $primary;
     border-radius: $border-radius;
+    background-color: #fff;
+    padding: $spacer-3;
 
 }
+
+
 .modal-close{//header section with close button set to the right
-    background-color: rgb(219, 219, 219);
+    background-color: rgb(240, 240, 240);
     padding: $spacer-2 1rem $spacer-2 1rem;
     display: flex;
     justify-content: flex-end;
@@ -46,12 +50,7 @@
     transition: opacity 400ms ease-out;
     pointer-events: all;
 }
- //specific container for php responses
- .form-response{//container for php response to be inserted into
 
-    background-color: #fff;
-    padding: 2rem 1rem 1rem 1rem;
- }
  //stop body scrolling when modal open by applying this class
  .body-modal-open{
     overflow: hidden;
