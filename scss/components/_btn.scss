@@ -1,7 +1,7 @@
-.btn-primary{//primary button
+.btn-primary, ::file-selector-button{//primary button
     outline: none;
     appearance: none;
-    display: block;
+    //display: block;
     background-color: $primary-500;
     color: #fff;
     border: 1.5px solid $primary-500;

@@ -121,7 +121,7 @@ $business->close();
                                 <input class="text-input input" type="text" name="news_articles_title" id="news_articles_title" placeholder="Article Title" required="" maxlength="45">
                             </div>
                             <div class="form-input-wrapper my-2">
-                                <label for="business_email">Header Image</label>
+                                <label for="news_articles_img">Header Image</label>
                                 <p class="form-hint-small">This can be in a JPG, JPEG or PNG format. And no larger than 1MB.</p>
                                 <!-- input -->
                                 <input type="file" name="news_articles_img" id="news_articles_img" accept="image/*">

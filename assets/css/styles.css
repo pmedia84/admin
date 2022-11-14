@@ -419,11 +419,11 @@ grid-column: 2/3;
 
 } 
 
-.btn-primary{/*primary button*/
+.btn-primary, ::file-selector-button{/*primary button*/
     outline: none;
     -webkit-appearance: none;
             appearance: none;
-    display: block;
+    /*display: block;*/
     background-color: hsl(163, 28%, 50%);
     color: #fff;
     border: 1.5px solid hsl(163, 28%, 50%);
@@ -436,7 +436,7 @@ grid-column: 2/3;
     
 } 
 
-.btn-primary:focus{
+.btn-primary:focus,::file-selector-button:focus{
         box-shadow: 0 0 2px 3px hsl(163, 28%, 80%);
         transition: box-shadow 300ms ease-out;
     } 
