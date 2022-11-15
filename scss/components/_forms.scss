@@ -74,6 +74,12 @@
 .form-input-wrapper{
     display: flex;
     flex-direction: column;
+    img{
+        height: 250px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 2.5px;
+    }
 }
 /////////////////////Form Input settings///////////////////////////
 
@@ -131,14 +137,18 @@ textarea{
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    gap: .5rem;
-    button{
+    button,a{
         width: 100%;
+        max-width: 390px;
     }
+    gap: .5rem;
+
     @media(min-width:$md){
         flex-direction: row;
-        button{
-            width: auto;
+        width: 80%;
+        max-width: 600px;
+        button, a{
+            width: fit-content;
         }
     }
     a{

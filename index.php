@@ -15,6 +15,9 @@ $user->store_result();
 $user->bind_result($user_id, $user_type);
 $user->fetch();
 $user->close();
+//find news articles
+$news_query = ('SELECT * FROM news_articles WHERE news_articles_status="Published" ORDER BY news_articles_date LIMIT 3 ');
+$news = $db->query($news_query);
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -110,25 +113,36 @@ $user->close();
         </section>
 
         <div class="main-cards">
-            <h2>Recent Articles</h2>
-            <div class="std-card">
-                <img src="assets/img/dermal.jpg" alt="">
-                <h3>Aesthetics Special Offer</h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, porro?</p>
-                <a href="">View</a>
+        <h2>Recent Articles</h2>
+        <?php foreach ($news as $article):
+                    $news_article_body= html_entity_decode($article['news_articles_body']);
+                    $news_articles_date = strtotime($article['news_articles_date']);
+                   
+                    if($article['news_articles_status'] == "Published"){
+                        $news_articles_status = "<p class='news-item-status published'>Published <i class='fa-solid fa-check'></i></p>";
+                    }
+                    if($article['news_articles_status'] == "Draft"){
+                        $news_articles_status = "<p class='news-item-status draft'>Draft <i class='fa-solid fa-flag'></i></p>";
+                    }
+                    ?>
+            <div class="news-card news-card-dashboard">
+                        <?php if($article['news_articles_img']==null):?>
+                                <img src="./assets/img/news/news-item.jpg" alt="">
+                            <?php else:?>
+                                <img src="./assets/img/news/<?=$article['news_articles_img'];?>" alt="">
+                        <?php endif;?>
+                <p class="news-create-date my-2"><?=date('d-M-y',$news_articles_date);?></p>
+                <h3><?=$article['news_articles_title'];?></h3>
+                <div class="news-card-body">
+                    <p><?=$news_article_body;?></p>
+                </div>
+                <div class="news-card-actions"><a href="news_article.php?action=view&news_articles_id=<?=$article['news_articles_id'];?>"><i class="fa-solid fa-eye"></i> View Article</a></div>
             </div>
-            <div class="std-card">
-                <img src="assets/img/dermal.jpg" alt="">
-                <h3>Aesthetics Special Offer</h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, porro?</p>
-                <a href="">View</a>
-            </div>
-            <div class="std-card">
-                <img src="assets/img/dermal.jpg" alt="">
-                <h3>Aesthetics Special Offer</h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, porro?</p>
-                <a href="">View</a>
-            </div>
+
+        <?php endforeach;?>            
+            
+
+
         </div>
 
 

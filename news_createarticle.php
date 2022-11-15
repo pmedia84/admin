@@ -143,13 +143,12 @@ $business->close();
                                 </select>
                             </div>
                             <div class="button-section my-3">
-                                <button class="btn-primary form-controls-btn" type="submit">Save Article <img src="./assets/img/icons/floppy-disk.svg" alt=""></button>
-                                <button class="btn-primary form-controls-btn btn-secondary d-none" id="form-reset" type="submit">Try Again <img src="./assets/img/icons/floppy-disk.svg" alt=""></button>
+                                <button class="btn-primary form-controls-btn" type="submit">Save Article<i class="fa-solid fa-floppy-disk"></i></button>
 
                             </div>
 
                             <div id="response" class="d-none">
-                                <p>Article Saved <img src="./assets/img/icons/check.svg" alt=""></p>
+                                <p>Article Saved </p>
                             </div>
                         </form>
                     </div>

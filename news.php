@@ -17,7 +17,7 @@ $user->bind_result($user_id, $user_type, $business_id);
 $user->fetch();
 $user->close();
 //find news articles
-$news_query = ('SELECT * FROM news_articles ');
+$news_query = ('SELECT * FROM news_articles ORDER BY news_articles_status ');
 $news = $db->query($news_query);
 //find business details.
 $business = $db->prepare('SELECT * FROM business WHERE business_id =' . $business_id);
@@ -88,23 +88,44 @@ $business->close();
             </div>
             <div class="main-cards">
 
-                <h1>Create News Article</h1>
-                <a class="btn-primary" id="add_social" href="news_createarticle.php">Create An Article </a>
+                <h1>News Articles</h1>
+                <a class="btn-primary" id="add_social" href="news_createarticle.php">Create An Article <i class="fa-solid fa-plus"></i></a>
                 <?php if($user_type == "Admin"):?>
                    
                    <div class="news-grid">
-                   <?php foreach ($news as $social):?>
+                   <?php foreach ($news as $article):
+                    $news_article_body= html_entity_decode($article['news_articles_body']);
+                    $news_articles_date = strtotime($article['news_articles_date']);
+                   
+                    if($article['news_articles_status'] == "Published"){
+                        $news_articles_status = "<p class='news-item-status published'>Published <i class='fa-solid fa-check'></i></p>";
+                    }
+                    if($article['news_articles_status'] == "Draft"){
+                        $news_articles_status = "<p class='news-item-status draft'>Draft <i class='fa-solid fa-flag'></i></p>";
+                    }
+                    ?>
                     <div class="news-card">
                         <div class="news-card-header">
-                            <h2><?=$social['news_articles_title'];?></h2>
+                            <h2><?=$article['news_articles_title'];?></h2>
+                            <span class="news-create-status">
+                                    <?=$news_articles_status;?>
+                                </span>
                         </div>
-                        <img src="./assets/img/news/news-item.jpg" alt="">
+                        <?php if($article['news_articles_img']==null):?>
+                            <img src="./assets/img/news/news-item.jpg" alt="">
+                            <?php else:?>
+                        <img src="./assets/img/news/<?=$article['news_articles_img'];?>" alt="">
+                        <?php endif;?>
+                        <p class="news-create-date my-2"><?=date('d-m-y',$news_articles_date);?></p>
                        <div class="news-card-body my-2">
-                        <p><?=$social['news_articles_body'];?></p>
+                        <p><?=$news_article_body;?></p>
                        </div>
 
 
-                        <a class="my-2" href="edit_socialmedia.php">View Article</a>
+                        <div class="news-card-actions">
+                            <a class="my-2" href="news_article.php?action=view&news_articles_id=<?=$article['news_articles_id'];?>"><i class="fa-solid fa-eye"></i> View Article</a>
+                            <a class="my-2" href="news_article.php?action=edit&news_articles_id=<?=$article['news_articles_id'];?>"><i class="fa-solid fa-pen-to-square"></i> Edit Article </a>
+                        </div>
                     </div>
                     <?php endforeach; ?>
 

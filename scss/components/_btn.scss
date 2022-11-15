@@ -1,7 +1,6 @@
-.btn-primary, ::file-selector-button{//primary button
+.btn-primary {//primary button
     outline: none;
     appearance: none;
-    //display: block;
     background-color: $primary-500;
     color: #fff;
     border: 1.5px solid $primary-500;
@@ -14,10 +13,21 @@
         box-shadow: 0 0 2px 3px $primary-800;
         transition: box-shadow 300ms ease-out;
     }
-
+svg{
+    margin-inline: 0.5rem;
+}
     
 }
-
+::file-selector-button{
+    outline: none;
+    appearance: none;
+    background-color: $primary-500;
+    color: #fff;
+    border: 1.5px solid $primary-500;
+    border-radius: 5px;
+    padding: .375rem .75rem;
+    transition: box-shadow 300ms ease-out;
+}
 .btn-secondary{
     background-color: white;
     color: $primary;
@@ -25,6 +35,15 @@
 a.btn-primary{
     
     text-decoration: none;
+}
+
+.btn-delete{
+    background-color: $error-response;
+    border-color: $error-response;
+    &:focus{
+        box-shadow: 0 0 2px 3px $error-response;
+        transition: box-shadow 300ms ease-out;
+    }
 }
 
 .close{//wrapper for close button

@@ -55,7 +55,9 @@ width: 100%;
 .main-cards{
     grid-row: 2/4;
     grid-column: 3/4;
-   
+   a{
+    width: fit-content;
+   }
 }
     .header-actions-navbtn {
         display: none;

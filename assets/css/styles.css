@@ -1,10 +1,20 @@
+/*Colours*/
+
+/*form colours*/
+/* Border Radius*/
+
+/*/Screen Breakpoints*/
+
+/*Padding and margin settings*/
+/*standard padding for the site*/
+
+/*Spacers*/
 /* Box sizing rules */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
-
 /* Remove default margin */
 body,
 h1,
@@ -18,38 +28,32 @@ dl,
 dd {
   margin: 0;
 }
-
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
 ul[role='list'],
 ol[role='list'] {
   list-style: none;
 }
-
 /* Set core root defaults */
 html:focus-within {
   scroll-behavior: smooth;
 }
-
 /* Set core body defaults */
 body {
   min-height: 100vh;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
 }
-
 /* A elements that don't have a class get default styles */
 a:not([class]) {
   -webkit-text-decoration-skip: ink;
           text-decoration-skip-ink: auto;
 }
-
 /* Make images easier to work with */
 img,
 picture {
   max-width: 100%;
   display: block;
 }
-
 /* Inherit fonts for inputs and buttons */
 input,
 button,
@@ -57,7 +61,6 @@ textarea,
 select {
   font: inherit;
 }
-
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {
@@ -73,15 +76,7 @@ select {
     scroll-behavior: auto !important;
   }
 }
-
 /*Copied from Andy Bell reset https://piccalil.li/blog/a-modern-css-reset/ ///////*/
-/*Colours*/
-/*form colours*/
-/* Border Radius*/
-/*/Screen Breakpoints*/
-/*Padding and margin settings*/
-/*standard padding for the site*/
-/*Spacers*/
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap');
 body{
     font-family: 'Ubuntu', sans-serif;
@@ -90,6 +85,9 @@ body{
     font-weight: 300;
     font-size: 1.25rem;
     color: gray;
+}
+.text-alert{
+    color: hsl(0, 95%, 67%);
 }
 body{
     background-image: 
@@ -240,8 +238,10 @@ width: 100%;
 .main-cards{
     grid-row: 2/4;
     grid-column: 3/4;
-   
 }
+   .main-cards a{
+    width: fit-content;
+   }
     .header-actions-navbtn {
         display: none;
     }
@@ -419,11 +419,10 @@ grid-column: 2/3;
 
 } 
 
-.btn-primary, ::file-selector-button{/*primary button*/
+.btn-primary {/*primary button*/
     outline: none;
     -webkit-appearance: none;
             appearance: none;
-    /*display: block;*/
     background-color: hsl(163, 28%, 50%);
     color: #fff;
     border: 1.5px solid hsl(163, 28%, 50%);
@@ -432,14 +431,29 @@ grid-column: 2/3;
     transition: box-shadow 300ms ease-out;
     width: fit-content;
    cursor: pointer;
-
     
 } 
 
-.btn-primary:focus,::file-selector-button:focus{
+.btn-primary:focus{
         box-shadow: 0 0 2px 3px hsl(163, 28%, 80%);
         transition: box-shadow 300ms ease-out;
     } 
+
+.btn-primary svg{
+    margin-inline: 0.5rem;
+} 
+
+::file-selector-button{
+    outline: none;
+    -webkit-appearance: none;
+            appearance: none;
+    background-color: hsl(163, 28%, 50%);
+    color: #fff;
+    border: 1.5px solid hsl(163, 28%, 50%);
+    border-radius: 5px;
+    padding: .375rem .75rem;
+    transition: box-shadow 300ms ease-out;
+} 
 
 .btn-secondary{
     background-color: white;
@@ -450,6 +464,16 @@ a.btn-primary{
     
     text-decoration: none;
 } 
+
+.btn-delete{
+    background-color: hsl(0, 95%, 67%);
+    border-color: hsl(0, 95%, 67%);
+} 
+
+.btn-delete:focus{
+        box-shadow: 0 0 2px 3px hsl(0, 95%, 67%);
+        transition: box-shadow 300ms ease-out;
+    } 
 
 .close{/*wrapper for close button*/
     display: flex;
@@ -566,6 +590,13 @@ a.btn-primary{
     flex-direction: column;
 } 
 
+.form-input-wrapper img{
+        height: 250px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 2.5px;
+    } 
+
 /*///////////////////Form Input settings///////////////////////////*/ 
 
 input{
@@ -634,20 +665,26 @@ select:focus{
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    gap: .5rem;
 } 
 
-.button-section button{
+.button-section button,.button-section a{
         width: 100%;
+        max-width: 390px;
     } 
+
+.button-section {
+    gap: .5rem;
+} 
 
 @media(min-width:768px){ 
 
 .button-section{
-        flex-direction: row
+        flex-direction: row;
+        width: 80%;
+        max-width: 600px
 }
-        .button-section button{
-            width: auto;
+        .button-section button, .button-section a{
+            width: fit-content;
         }
     } 
 
@@ -670,7 +707,7 @@ select:focus{
 /*Response colours*/ 
 
 .error{/*modifier class for error messages*/
-    background-color: hsl(0, 100%, 80%);
+    background-color: hsl(0, 95%, 67%);
 } 
 
 /*///////////////Form Hint text.  Smaller font size, provides a helpful hint/////////////////////////*/ 
@@ -793,6 +830,18 @@ select:focus{
         object-fit: cover;
     } 
 
+/*smaller card for dashboard*/ 
+
+.news-card-dashboard img{
+        height: 150px;
+        width: 100%;
+        object-fit: cover;
+    } 
+
+.news-card-dashboard .news-card-body{
+        max-height: 10ch;
+    } 
+
 .news-card-header{
     margin-block: 0.5rem;
 } 
@@ -802,11 +851,52 @@ select:focus{
     overflow: hidden;
 } 
 
-/*News create card*/ 
+.news-card-actions{
+    background-color: hsl(163, 28%, 95%);
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin-block: 1.5rem;
+    display: flex;
+    flex-direction: column;
+} 
+
+.news-item-status{
+    font-size: 1.5rem;
+    font-weight: 100;
+    
+} 
+
+.published{
+    color: hsl(163, 28%, 50%);
+} 
+
+.draft{
+    color: hsl(0, 95%, 67%);
+} 
+
+/*News create edit and view card*/ 
 
 .news-create{
     background-color: #fff;
     padding: 1.5rem;
+    border-radius: 5px;
+} 
+
+.news-create img{
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+    } 
+
+.news-create-date{
+    color: gray;
+} 
+
+.news-create-actions{
+    background-color: hsl(163, 28%, 95%);
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin-block: 1.5rem;
 } 
 
 /*Form response for displaying server messages*/ 
