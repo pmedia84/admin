@@ -149,15 +149,7 @@ $business->close();
     <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
-    <script>
-        $(".nav-btn").click(function() {
-            $(".nav-bar").fadeToggle(500);
-        });
 
-        $(".btn-close").click(function() {
-            $(".nav-bar").fadeOut(500);
-        })
-    </script>
 </body>
 
 </html>

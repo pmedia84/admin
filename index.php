@@ -95,7 +95,7 @@ $news = $db->query($news_query);
                     <img src="assets/img/icons/image.svg" alt="">
                 </div>
                 <h2>Photo Gallery</h2>
-                <a href="">Manage</a>
+                <a href="gallery.php">Manage</a>
             </div>
             <?php if($user_type =="Admin"):?>
             <div class="dashboard-card">
@@ -136,7 +136,7 @@ $news = $db->query($news_query);
                 <div class="news-card-body">
                     <p><?=$news_article_body;?></p>
                 </div>
-                <div class="news-card-actions"><a href="news_article.php?action=view&news_articles_id=<?=$article['news_articles_id'];?>"><i class="fa-solid fa-eye"></i> View Article</a></div>
+                <div class="card-actions"><a href="news_article.php?action=view&news_articles_id=<?=$article['news_articles_id'];?>"><i class="fa-solid fa-eye"></i> View Article</a></div>
             </div>
 
         <?php endforeach;?>            

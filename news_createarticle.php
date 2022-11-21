@@ -40,6 +40,8 @@ $business->close();
 <!-- Page Title -->
 <title>Mi-Admin | Create News Article</title>
 <!-- /Page Title -->
+    <!-- Tiny MCE -->
+    <script src="https://cdn.tiny.cloud/1/7h48z80zyia9jc41kx9pqhh00e1e2f4pw9kdcmhisk0cm35w/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <script>
     tinymce.init({
@@ -198,15 +200,11 @@ $business->close();
                 url: "scripts/news_createarticle-script.php",
                 data: formData,
                 contentType : false,
-					processData : false,
+				processData : false,
                 success: function(data, responseText) {
                     $("#response").html(data);
                     $("#response").slideDown(400);
                     $("#create_news_article *").prop("disabled", true);
-                    
-                        
-                 
-                    
                 }
             });
 

@@ -20,7 +20,8 @@
     border-radius: $border-radius;
     background-color: #fff;
     padding: $spacer-3;
-
+    width: 75%;
+    max-width: 580px;
 }
 
 
@@ -39,9 +40,11 @@
 .modal-button-section{//footer with a confirm button
     padding: $spacer-2 1rem $spacer-2 1rem;
     border-top: 1px solid $primary;
-    background-color: #fff;
+    background-color: rgb(240, 240, 240);
     border-bottom-left-radius: inherit;
     border-bottom-right-radius: inherit;
+
+    width: 100%;
 }
 
 //active classes to display modal when triggered
