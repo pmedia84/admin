@@ -1,3 +1,2 @@
-# parrotmedia-starter-template
-Template repo for all website projects. Set up with post css features and basic file structure
-Initialise with npm install --save-dev
+# Parrot media Admin CMS for client websites
+All file changes are reflected in the repo, for client customisation this is all done viw the database files and settings.
