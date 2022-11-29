@@ -123,3 +123,12 @@
     border-radius: 5px;
     margin-block: $spacer-3;
 }
+
+/////Reviews
+.star-color{//review stars unrated
+    color: rgba(207, 207, 207, 0.514);
+    font-size: 1rem;
+}
+.star-color-rated{//review stars rated
+    color: #f9b805;
+}
