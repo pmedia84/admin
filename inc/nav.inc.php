@@ -17,6 +17,9 @@
             <?php if($user_type =="Admin"):?>
             <li ><a class="nav-link" href="reviews.php">Reviews <i class="fa-solid fa-comment-dots"></i></a></li>
             <?php endif;?>
+            <?php if($user_type =="Dev"):?>
+            <li ><a class="nav-link" href="users.php"> <i class="fa-solid fa-users"></i></a></li>
+            <?php endif;?>
             <!-- <li ><a class="nav-link" href="support.php">Support <img src="assets/img/icons/headset.svg" alt=""></a></li> -->
         </ul>
     </div>

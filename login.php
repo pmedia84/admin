@@ -1,7 +1,15 @@
 <?php
 
-session_start();
 
+include("connect.php");
+//look for a business setup in the db, if not then direct to the setup page
+//find news articles
+$business_query = ('SELECT business_id FROM business');
+$business = $db->query($business_query);
+if($business -> num_rows ==0){
+    header('Location: setup.php');
+}
+session_start();
 ?>
 <?php include("./inc/header.inc.php"); ?>
 <!-- Meta Tags For Each Page -->
