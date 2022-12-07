@@ -1094,17 +1094,6 @@ input[type="checkbox"]:focus {
     pointer-events: all;
 } 
 
-/*stop body scrolling when modal open by applying this class*/ 
-
-.body-modal-open{
-    overflow: hidden;
-    padding-right: calc(100vw - 100%);
- } 
-
-.body-modal-open nav{
-        padding-right: 33px
-    }; 
-
 .cookie-overlay {/*container*/
   display: none;
     position: fixed;

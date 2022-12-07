@@ -1,4 +1,11 @@
 <?php
+include("connect.php");
+//look for a business setup in the db, if not then direct to the setup page
+$business_query = ('SELECT business_id FROM business');
+$business = $db->query($business_query);
+if($business -> num_rows ==0){
+    header('Location: setup.php?action=setup_business');
+}
 session_start();
 if (!$_SESSION['loggedin'] == true) {
     // Redirect to the login page:
@@ -18,6 +25,19 @@ $user->close();
 //find news articles
 $news_query = ('SELECT * FROM news_articles WHERE news_articles_status="Published" ORDER BY news_articles_date LIMIT 3 ');
 $news = $db->query($news_query);
+$num_articles = $news -> num_rows;
+//find the amount of articles listed
+$article_num = ('SELECT news_articles_id FROM news_articles  ');
+$article_num = $db->query($article_num);
+$article_amt = $article_num -> num_rows;
+//find the amount of images listed
+$image_num = ('SELECT image_id FROM images  ');
+$image_num = $db->query($image_num);
+$image_amt = $image_num -> num_rows;
+//find the amount of users listed
+$user_num = ('SELECT user_id FROM users');
+$user_num = $db->query($user_num);
+$user_amt = $user_num -> num_rows;
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -83,7 +103,7 @@ $news = $db->query($news_query);
             </div>
             <div class="dashboard-card">
                 <div class="dashboard-card-header">
-                    <span>50</span>
+                    <span><?=$article_amt;?></span>
                     <img src="assets/img/icons/newspaper.svg" alt="">
                 </div>
                 <h2>News Articles</h2>
@@ -91,7 +111,7 @@ $news = $db->query($news_query);
             </div>
             <div class="dashboard-card">
                 <div class="dashboard-card-header">
-                    <span>10</span>
+                    <span><?=$image_amt;?></span>
                     <img src="assets/img/icons/image.svg" alt="">
                 </div>
                 <h2>Photo Gallery</h2>
@@ -100,7 +120,7 @@ $news = $db->query($news_query);
             <?php if($user_type =="Admin"):?>
             <div class="dashboard-card">
                 <div class="dashboard-card-header">
-                    <span>2</span>
+                    <span><?=$user_amt;?></span>
                     <img src="assets/img/icons/users.svg" alt="">
                 </div>
                 <h2>Users</h2>
@@ -113,7 +133,7 @@ $news = $db->query($news_query);
         </section>
 
         <div class="main-cards">
-        <h2>Recent Articles</h2>
+        <h2>Published Articles</h2>
         <?php foreach ($news as $article):
                     $news_article_body= html_entity_decode($article['news_articles_body']);
                     $news_articles_date = strtotime($article['news_articles_date']);
@@ -148,9 +168,7 @@ $news = $db->query($news_query);
 
     </main>
     <!-- /Main Body Of Page -->
-    <!-- Quote request form script -->
 
-    <!-- /Quote request form script -->
     <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->

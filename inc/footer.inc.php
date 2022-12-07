@@ -8,7 +8,6 @@
     $(".nav-links a").each(function(){
         if(this.href === pathname){
             $(this).addClass("link-active");
-            console.log(pathname);
         }else(
             $(this).removeClass("link-active")
         )

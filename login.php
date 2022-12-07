@@ -3,13 +3,22 @@
 
 include("connect.php");
 //look for a business setup in the db, if not then direct to the setup page
-//find news articles
 $business_query = ('SELECT business_id FROM business');
 $business = $db->query($business_query);
 if($business -> num_rows ==0){
-    header('Location: setup.php');
+    header('Location: setup.php?action=setup_business');
+    exit();
+}
+
+//check if there are users for the business
+$users_query = ('SELECT user_id, business_id FROM users');
+$users = $db->query($users_query);
+if($users -> num_rows ==0){
+    header('Location: setup.php?action=check_users');
+    exit();
 }
 session_start();
+
 ?>
 <?php include("./inc/header.inc.php"); ?>
 <!-- Meta Tags For Each Page -->
@@ -38,7 +47,7 @@ session_start();
 </div>
 </div>
         <div class="login-wrapper">
-            <h1>Please Login</h1>
+            <h1>Login</h1>
             <form class="form-card" id="login" action="scripts/auth.php" method="post">
                 <div class="form-input-wrapper">
                     <label for="user_email">eMail Address:</label>
@@ -68,28 +77,29 @@ session_start();
 
     </main>
     <!-- /Main Body Of Page -->
-    <!-- Quote request form script -->
 
-    <!-- /Quote request form script -->
     <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
     <script>
         $("#login").submit(function(event) {
             event.preventDefault();
-            const data = new FormData(event.target); //declare form data
-            const values = Object.fromEntries(data.entries()); //select data
-            console.log(values);
+            var formData = new FormData($("#login").get(0));
+            var user_email = $("#user_email").val();
             $.ajax({ //start ajax post
                 type: "POST",
                 url: "scripts/auth.php",
-                data: values,
-                encode: true,
+                data: formData,
+                contentType: false,
+                processData: false,
                 success: function(data, responseText) {
                     $("#response").html(data);
                     $("#response").slideDown(400);
                     if (data === 'correct') {
                         window.location.replace('index.php');
+                    }
+                    if (data === 'TEMP') {
+                        window.location.replace('resetpw.php?action=temp&user_email='+user_email);
                     }
 
                 }

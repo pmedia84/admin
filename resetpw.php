@@ -1,10 +1,12 @@
 <?php
 
 session_start();
-
+if (isset($_GET['user_email'])) {
+    $user_email = $_GET['user_email'];
+}
 ?>
-<?php include("./inc/header.inc.php"); 
-include("./connect.php");?>
+<?php include("./inc/header.inc.php");
+include("./connect.php"); ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
 <meta name="title" content="Manage your website content">
@@ -24,34 +26,54 @@ include("./connect.php");?>
 
 
     <main class="login-main">
-    <div class="header">
 
-<div class="header-actions login-header">
-    <img src="assets/img/logo.png" alt="">
-</div>
-</div>
+        <div class="header">
+
+            <div class="header-actions login-header">
+                <img src="assets/img/logo.png" alt="">
+            </div>
+        </div>
         <div class="login-wrapper">
-            
-           <?php 
-            if(empty($_GET['user_id'])):
-           ?>
-           <h1>Reset Password</h1>
-            <p class="font-emphasis mb-3">Need to reset your password? Enter your email address below and we will email you a password reset link.</p>
-            <form class="form-card" id="requestpwreset" action="scripts/resetpw-script.php" method="post">
-                <div class="form-input-wrapper">
-                    <label for="user_email">eMail Address:</label>
-                    <!-- input -->
-                    <input  type="text" name="user_email" id="user_email" placeholder="Enter Email Address" autocomplete="email" required="" maxlength="45">
-                </div>
-                <div class="button-section my-3">
-                    <button class="btn-primary" type="submit">Request Link</button>
-                </div>
-                <div id="response" class="d-none">
-                </div>
-            </form>
-            
-            <?php else:
-                
+            <?php if (isset($_GET['action'])) :
+                //scripts for changing temporary passwords for new users
+                //find username and email address to display on screen.
+                $user = $db->prepare('SELECT user_id, user_email, user_name, user_pw_status FROM users WHERE user_email = ?');
+                $user->bind_param('s', $user_email);
+                $user->execute();
+                $user->bind_result($user_id, $email, $name, $user_pw_status);
+                $user->fetch();
+                $user->close(); 
+                if($user_pw_status == "SET"){//check the user password status is temp and visitor has not arrived here from an old url. If the password has already been set then redirect to the index page.
+                    header('location: index.php');
+                    exit();
+                }
+                ?>
+                <?php if ($_GET['action'] == "temp") : ?>
+
+                    <h1>First Login</h1>
+                    <p class="font-emphasis mb-3">As this is your first login, you need to set a password that you will remember.</p>
+                    <p class="font-emphasis"><strong>Name: </strong><?= $name; ?></p>
+                    <p class="font-emphasis mb-3"><strong>Email address: </strong><?= $email; ?></p>
+                    <form class="form-card" id="tempreset" action="scripts/resetpw-script.php" method="post">
+                        <div class="form-input-wrapper">
+                            <label for="new_pw">New Password</label>
+                            <!-- input -->
+                            <input type="password" name="new_pw" id="new_pw" placeholder="Enter New Password" autocomplete="password" required="" maxlength="45">
+                        </div>
+                        <div class="form-input-wrapper">
+
+                            <label for="new_pw2">Re Enter New Password</label>
+                            <!-- input -->
+                            <input type="password" name="new_pw2" id="new_pw2" placeholder="Enter New Password" autocomplete="password" required="" maxlength="45">
+                        </div>
+                        <div class="button-section my-3">
+                            <button class="btn-primary form-controls-btn loading-btn" type="submit">Reset Password <img id="loading-icon" class="loading-icon d-none" src="./assets/img/icons/loading.svg" alt=""></button>
+                        </div>
+                        <div id="response" class="d-none">
+                        </div>
+                    </form>
+                <?php endif; ?>
+            <?php if ($_GET['action'] == "reset") :
                 //find username and email address to display on screen.
                 $user = $db->prepare('SELECT user_id, user_email, user_name FROM users WHERE user_id = ?');
                 $user->bind_param('s', $_GET['user_id']);
@@ -59,31 +81,53 @@ include("./connect.php");?>
                 $user->store_result();
                 $user->bind_result($user_id, $email, $name);
                 $user->fetch();
-                $user->close();
-                ?>
-                 
+                $user->close();?>
                 <h1>Reset Password</h1>
-                <p class="font-emphasis">You can now change your password:</p>
-                <p class="font-emphasis"><strong>Name: </strong><?=$name;?></p>
-                <p class="font-emphasis mb-3"><strong>Email address: </strong><?=$email;?></p>
-            <form class="form-card" id="resetpw" action="scripts/resetpw-script.php" method="post">
-                <div class="form-input-wrapper">
-                    <label for="new_pw">New Password</label>
-                    <!-- input -->
-                    <input  type="password" name="new_pw" id="new_pw" placeholder="Enter New Password" autocomplete="password" required="" maxlength="45">
-                </div>
-                <div class="form-input-wrapper">
-                    
-                    <label for="new_pw2">Re Enter New Password</label>
-                    <!-- input -->
-                    <input  type="password" name="new_pw2" id="new_pw2" placeholder="Enter New Password" autocomplete="password" required="" maxlength="45">
-                </div>
-                <div class="button-section my-3">
-                    <button class="btn-primary" type="submit">Reset Password</button>
-                </div>
-                <div id="response" class="d-none">
-                </div>
-            </form>
+                    <p class="font-emphasis">You can now change your password:</p>
+                    <p class="font-emphasis"><strong>Name: </strong><?= $name; ?></p>
+                    <p class="font-emphasis mb-3"><strong>Email address: </strong><?= $email; ?></p>
+                    <form class="form-card" id="resetpw" action="scripts/resetpw-script.php" method="post">
+                        <div class="form-input-wrapper">
+                            <label for="new_pw">New Password</label>
+                            <!-- input -->
+                            <input type="password" name="new_pw" id="new_pw" placeholder="Enter New Password" autocomplete="password" required="" maxlength="45">
+                        </div>
+                        <div class="form-input-wrapper">
+
+                            <label for="new_pw2">Re Enter New Password</label>
+                            <!-- input -->
+                            <input type="password" name="new_pw2" id="new_pw2" placeholder="Enter New Password" autocomplete="password" required="" maxlength="45">
+                        </div>
+                        <div class="button-section my-3">
+                            <button class="btn-primary form-controls-btn loading-btn" type="submit">Reset Password <img id="loading-icon" class="loading-icon d-none" src="./assets/img/icons/loading.svg" alt=""></button>
+                        </div>
+                        <div id="response" class="d-none">
+                        </div>
+                    </form>
+            <?php endif; ?>   
+
+              
+            <?php else : ?>
+                <?php if (empty($_GET['user_id'])) :?>
+                    <h1>Reset Password</h1>
+                    <p class="font-emphasis mb-3">Need to reset your password? Enter your email address below and we will email you a password reset link.</p>
+                    <form class="form-card" id="requestpwreset" action="scripts/resetpw-script.php" method="post">
+                        <div class="form-input-wrapper">
+                            <label for="user_email">eMail Address:</label>
+                            <!-- input -->
+                            <input type="text" name="user_email" id="user_email" placeholder="Enter Email Address" autocomplete="email" required="" maxlength="45">
+                        </div>
+                        <div class="button-section my-3">
+                            <button class="btn-primary form-controls-btn loading-btn" type="submit">Request Link<img id="loading-icon" class="loading-icon d-none" src="./assets/img/icons/loading.svg" alt=""></button>
+                        </div>
+                        <div id="response" class="d-none">
+                        </div>
+                    </form>
+
+                                                                                                                                
+                
+                <?php endif; ?>
+
             <?php endif; ?>
         </div>
     </main>
@@ -92,23 +136,26 @@ include("./connect.php");?>
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
     <script>
+
         //script for requesting password reset
         $("#requestpwreset").submit(function(event) {
             event.preventDefault();
-            //declare form variables and collect GET request information
 
-            
-            action = 'requestreset';
             //collect form data and GET request information to pass to back end script
-            var formdata= {
-                action,
-                user_email:$("#user_email").val()
-            }
+            var formData = new FormData($("#requestpwreset").get(0));
+            formData.append("action", "requestreset");
             $.ajax({ //start ajax post
                 type: "POST",
                 url: "scripts/resetpw-script.php",
-                data: formdata,
-                encode: true,
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() { //animate button
+                    $("#loading-icon").show(400);
+                },
+                complete: function() {
+                    $("#loading-icon").hide(400);
+                },
                 success: function(data, responseText) {
                     $("#response").html(data);
                     $("#response").slideDown(400);
@@ -118,30 +165,36 @@ include("./connect.php");?>
 
                 }
             });
-        });     
+        });
     </script>
     <script>
-                //script for password reset
-                $("#resetpw").submit(function(event) {
+        //script for password reset
+        $("#resetpw").submit(function(event) {
             event.preventDefault();
             //declare form variables and collect GET request information
-            key = '<?php echo $_GET['key'];?>';
-            user_id = '<?php echo $_GET['user_id'];?>';
-            action = '<?php echo $_GET['action'];?>';
+            key = '<?php echo $_GET['key']; ?>';
+            user_id = '<?php echo $_GET['user_id']; ?>';
+            action = '<?php echo $_GET['action']; ?>';
             //collect form data and GET request information to pass to back end script
-            var formdata= {
+            var formdata = {
                 key,
                 user_id,
                 action,
-                pw1:$("#new_pw").val(),
-                pw2:$("#new_pw2").val(),
+                pw1: $("#new_pw").val(),
+                pw2: $("#new_pw2").val(),
             }
             //send as an AJAX POST
             $.ajax({ //start ajax post
                 type: "POST",
                 url: "scripts/resetpw-script.php",
-                data: formdata ,
+                data: formdata,
                 encode: true,
+                beforeSend: function() { //animate button
+                    $("#loading-icon").show(400);
+                },
+                complete: function() {
+                    $("#loading-icon").hide(400);
+                },
                 success: function(data, responseText) {
                     $("#response").html(data);
                     $("#response").slideDown(400);
@@ -149,5 +202,38 @@ include("./connect.php");?>
             });
         });
     </script>
+        <script>
+        //script for requesting password reset
+        $("#tempreset").submit(function(event) {
+            event.preventDefault();
+            //collect form data and GET request information to pass to back end script
+            var formData = new FormData($("#tempreset").get(0));
+            var user_id = <?php echo $user_id;?>;
+            formData.append("action", "tempreset");
+            formData.append("user_id", user_id);
+            $.ajax({ //start ajax post
+                type: "POST",
+                url: "scripts/resetpw-script.php",
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() { //animate button
+                    $("#loading-icon").show(400);
+                },
+                complete: function() {
+                    $("#loading-icon").hide(400);
+                },
+                success: function(data, responseText) {
+                    
+
+                    $("#response").html(data);
+                    $("#response").slideDown(400);
+
+
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>

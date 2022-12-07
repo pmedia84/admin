@@ -97,12 +97,12 @@ $social_types = mysqli_query($db, $social_types_query);
                 ?>
 
 
-                <div id="socials">
+                    <div id="socials">
 
-                </div>
+                    </div>
 
 
-                    
+
                     <button class="btn-primary" id="add_social">Add A Social Media Profile</button>
                 <?php else : ?>
                     <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>
@@ -111,41 +111,41 @@ $social_types = mysqli_query($db, $social_types_query);
 
         </section>
 
-         <div class="modal">
-        <div class="modal-body">
-            <div class="modal-close">
-                <button type="button" class="btn-close" id="modal-btn-close" aria-label="Close"></button>
+        <div class="modal">
+            <div class="modal-body">
+                <div class="modal-close">
+                    <button type="button" class="btn-close" id="modal-btn-close" aria-label="Close"></button>
+                </div>
+                <h2>Add Social Media Profile</h2>
+                <form class="form-card" id="add_social_media_profile" action="scripts/edit_socialmedia-script.php" method="POST">
+                    <div class="form-input-wrapper my-2">
+                        <label for="user_email">Social Media Platform</label>
+                        <!-- input -->
+                        <select class="form-select" aria-label="Social Platform" name="socials_type_id" id="socials_type_id" required>
+                            <option value="" selected>Select a Platform</option>
+                            <?php foreach ($social_types as $types) : ?>
+
+                                <option value="<?= $types['socials_type_id']; ?>"><?= $types['socials_type_name']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="form-input-wrapper">
+                        <label for="business_socials_url">URL</label>
+                        <!-- input -->
+                        <input class="text-input input" type="text" name="business_socials_url" id="business_socials_url" placeholder="URL" required>
+                    </div>
+
+
+                    <div class="button-section my-3">
+                        <button class="btn-primary form-controls-btn" type="submit">Add Profile <img src="./assets/img/icons/floppy-disk.svg" alt=""></button>
+
+                    </div>
+                    <div id="response" class="d-none">
+                    </div>
+                </form>
             </div>
-            <h2>Add Social Media Profile</h2>
-            <form class="form-card" id="add_social_media_profile" action="scripts/edit_socialmedia-script.php" method="POST">
-            <div class="form-input-wrapper my-2">
-                                <label for="user_email">Social Media Platform</label>
-                                <!-- input -->
-                                <select class="form-select" aria-label="Social Platform" name="socials_type_id" id="socials_type_id" required>
-                                    <option value="" selected>Select a Platform</option>
-                                    <?php foreach ($social_types as $types) : ?>
-
-                                        <option value="<?= $types['socials_type_id']; ?>"><?= $types['socials_type_name']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>    
-            
-            <div class="form-input-wrapper">
-                    <label for="business_socials_url">URL</label>
-                    <!-- input -->
-                    <input class="text-input input" type="text" name="business_socials_url" id="business_socials_url" placeholder="URL" required >
-                </div>
-
-
-                <div class="button-section my-3">
-                    <button class="btn-primary form-controls-btn" type="submit">Add Profile <img src="./assets/img/icons/floppy-disk.svg" alt=""></button>
-                
-                </div>
-                <div id="response" class="d-none">
-                </div>
-            </form>
         </div>
-    </div>
     </main>
 
     <!-- /Main Body Of Page -->
@@ -190,7 +190,7 @@ $social_types = mysqli_query($db, $social_types_query);
     <script>
         $(document).ready(function() {
             business_id = '<?php echo $business_id; ?>';
-            url = "scripts/edit_socialmedia-script.php?action=load&business_id="+business_id;
+            url = "scripts/edit_socialmedia-script.php?action=load&business_id=" + business_id;
             $.ajax({ //load current address
                 type: "GET",
                 url: url,
@@ -221,19 +221,19 @@ $social_types = mysqli_query($db, $social_types_query);
                 success: function(data, responseText) {
                     $(".modal").removeClass("modal-active");
                     $("#add_social_media_profile")[0].reset();
-                    
-                }
-            });
-            url = "scripts/edit_socialmedia-script.php?action=load&business_id="+business_id;
-            $.ajax({ //load current address
-                type: "GET",
-                url: url,
-                encode: true,
-                success: function(data, responseText) {
-                    $("#socials").html(data);
+                    url = "scripts/edit_socialmedia-script.php?action=load&business_id=" + business_id;
+                    $.ajax({ //load current address
+                        type: "GET",
+                        url: url,
+                        encode: true,
+                        success: function(data, responseText) {
+                            $("#socials").html(data);
 
+                        }
+                    });
                 }
             });
+
         });
     </script>
 

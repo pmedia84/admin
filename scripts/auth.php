@@ -34,8 +34,17 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
         //verify password
      
        if(password_verify($_POST['password'], $password)){
-
-
+        //check if the password is a temp one from new user setup
+        $pw_check = $db->prepare('SELECT user_id, user_pw_status FROM users WHERE user_email = ?');
+        $pw_check ->bind_param('s',$_POST['user_email']);
+        $pw_check->execute();
+        $pw_check->bind_result($user_id, $user_pw_status);
+        $pw_check->fetch();
+        $pw_check->close();
+        if($user_pw_status =="TEMP"){
+            echo "TEMP";
+            exit();
+        }
         ////create session in db user sessions:////
         //declare time and date variables
         date_default_timezone_set('Europe/London');

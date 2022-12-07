@@ -36,7 +36,8 @@ if(empty($_POST['user_id'])){
             <img src="' . $emailheaderlogo . '">
             <div style="padding:16px;font-family:sans-serif;">
                 <h1 style="text-align:center;">' . $user_name . ' Your user details have been updated</h1>
-                <div stylYour user account has been updated:</h2>
+                <div style="padding:16px; border: 10px solid #03b0fa; border-radius: 10px;">
+                <h2>Your user account has been updated:</h2>
                     <p>Dear ' . $user_name . ', we are pleased to confirm that the changes you requested have been completed.</p>
                     <p><strong>Please Note:</strong>If you did not request these changes, please contact us.</p>
                     <br><hr style="color:#3b685c;">
