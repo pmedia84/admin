@@ -58,7 +58,7 @@ if (isset($_POST['news_articles_title'])) {
         $news_articles_status = $_POST['news_articles_status'];
         $user_id = $_POST['user_id'];
         date_default_timezone_set('Europe/London');
-        $article_date = date('d-m-y');
+        $article_date = date('y-m-d');
         //insert new article into table
         $new_article = $db->prepare('INSERT INTO news_articles (news_articles_title, news_articles_date, news_articles_body, news_articles_img, news_articles_author, news_articles_status)VALUES(?,?,?,?,?,?)');
         $new_article->bind_param('ssssis', $news_articles_title, $article_date, $news_articles_body, $news_articles_img, $user_id, $news_articles_status);
@@ -68,7 +68,7 @@ if (isset($_POST['news_articles_title'])) {
         $new_article_id = $db->insert_id;
 
 
-        $response = '<div class="form-response"><p>Article saved. You can no longer edit it from this page. Click <a href="' . $new_article_id . '">Here</a></p></div>';
+        $response = '<div class="form-response"><p>Article saved. You can no longer edit it from this page. Click <a href="http://localhost/admin/news_article.php?action=view&news_articles_id='.$new_article_id.'">Here</a></p></div>';
     }
 
     if ($_POST['action'] == "edit") {

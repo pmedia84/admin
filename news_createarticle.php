@@ -40,15 +40,15 @@ $business->close();
 <!-- Page Title -->
 <title>Mi-Admin | Create News Article</title>
 <!-- /Page Title -->
-    <!-- Tiny MCE -->
-    <script src="https://cdn.tiny.cloud/1/7h48z80zyia9jc41kx9pqhh00e1e2f4pw9kdcmhisk0cm35w/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- Tiny MCE -->
+<script src="https://cdn.tiny.cloud/1/7h48z80zyia9jc41kx9pqhh00e1e2f4pw9kdcmhisk0cm35w/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <script>
     tinymce.init({
         selector: 'textarea#news_article_body',
         height: 500,
 
-        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen         autocorrect',
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | ',
         tinycomments_mode: 'embedded',
 
@@ -131,8 +131,8 @@ $business->close();
                             <div class="form-input-wrapper my-2">
                                 <label for="news_article_body">Article Body</label>
                                 <textarea id="news_article_body" name="news_article_body" required="">
-                                  
-                                </textarea> 
+
+                                </textarea>
                             </div>
 
                             <div class="form-input-wrapper my-2">
@@ -199,8 +199,8 @@ $business->close();
                 type: "POST",
                 url: "scripts/news_createarticle-script.php",
                 data: formData,
-                contentType : false,
-				processData : false,
+                contentType: false,
+                processData: false,
                 success: function(data, responseText) {
                     $("#response").html(data);
                     $("#response").slideDown(400);
@@ -209,8 +209,6 @@ $business->close();
             });
 
         });
-
-
     </script>
 </body>
 
