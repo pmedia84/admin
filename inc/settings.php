@@ -1,6 +1,15 @@
 <?php
+//////////////////////////////////////////////////////////settings script for all cms websites\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+/// Define what type of website this is for \\\
+//Business with services and reviews etc
+//Or wedding site with rsvp features etc
+// Buisness
+// Wedding
+$cms_type = "";
+
 //email settings for contact forms
 //Settings for all form scripts
+
 /// Define who the emails get sent to from forms filled out
 $email_to = "";
 
