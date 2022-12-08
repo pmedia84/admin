@@ -6,26 +6,7 @@ if (!$_SESSION['loggedin'] == true) {
 }
 include("./inc/header.inc.php");
 include("./connect.php");
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\
-//find users and display on screen.
-//connect to user db to check admin rights etc
-//find username and email address to display on screen.
-$user = $db->prepare('SELECT user_id,  user_type, business_id FROM users WHERE user_id = ?');
-$user->bind_param('s', $_SESSION['user_id']);
-$user->execute();
-$user->store_result();
-$user->bind_result($user_id, $user_type, $business_id);
-$user->fetch();
-$user->close();
-//find business details.
-$business = $db->prepare('SELECT business_name, address_id FROM business WHERE business_id =' . $business_id);
 
-$business->execute();
-$business->store_result();
-$business->bind_result($business_name, $address_id);
-$business->fetch();
-$business->close();
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\
 
 if (isset($_GET['business_socials_id'])) { //only run the query if the get request has been submitted correctly
     //find social media information

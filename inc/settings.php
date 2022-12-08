@@ -3,9 +3,10 @@
 /// Define what type of website this is for \\\
 //Business with services and reviews etc
 //Or wedding site with rsvp features etc
-// Buisness
+// Business
 // Wedding
-$cms_type = "";
+// 
+$cms_type = "Business";
 
 //email settings for contact forms
 //Settings for all form scripts
@@ -21,9 +22,16 @@ $from = $username; ///Email address
 $fromname = "Parrot Media"; /// Username and how you want your name to be displayed on emails
 $emailheaderlogo = "https://www.parrotmedia.co.uk/img/pmedia-logo-new.png";//logo url for inserting into the top of email bodies
 
-//Contact details: Phone number, email address etc
-$contactnum ="";
-$emailaddress = "";
-$facebookurl = "";
+////////////////Modules Available\\\\\\\\\\\\\\\\\\\\
+//Reviews
+$module_reviews = "On";
+$api_key = ""; //api key from google source
+$place_id = ""; //Found from google places api
+//Image Gallery
+$module_gallery = "On";
+//Services
+$module_services = "On";
+//News
+$module_news = "On";
 ?>
 

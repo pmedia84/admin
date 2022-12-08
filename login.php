@@ -2,22 +2,49 @@
 
 
 include("connect.php");
+include("inc/settings.php");
+//determine what type of cms is running
+
+//run checks to make sure a business has been set up
+if($cms_type =="Business"){
 //look for a business setup in the db, if not then direct to the setup page
 $business_query = ('SELECT business_id FROM business');
 $business = $db->query($business_query);
 if($business -> num_rows ==0){
     header('Location: setup.php?action=setup_business');
-    exit();
+    
+}
+    //check that there are users set up 
+    $business_user_query = ('SELECT * FROM business_users');
+    $business_user = $db->query($business_user_query);
+    if($business_user -> num_rows <2){
+        header('Location: setup.php?action=check_users_business');
+        
+    }
+session_start();
+
 }
 
-//check if there are users for the business
-$users_query = ('SELECT user_id, business_id FROM users');
-$users = $db->query($users_query);
-if($users -> num_rows ==0){
-    header('Location: setup.php?action=check_users');
-    exit();
-}
-session_start();
+//run checks to make sure a wedding has been set up correctly
+if($cms_type =="Wedding"){
+    
+    //look for a wedding setup in the db, if not then direct to the setup page
+    $wedding_query = ('SELECT wedding_id FROM wedding');
+    $wedding = $db->query($wedding_query);
+    if($wedding -> num_rows ==0){
+        header('Location: setup.php?action=setup_wedding');
+    }
+    //check that there are users set up 
+    $wedding_user_query = ('SELECT wedding_user_id FROM wedding_users');
+    $wedding_user = $db->query($wedding_user_query);
+    if($wedding_user -> num_rows <2){
+        header('Location: setup.php?action=check_users_wedding');
+    }
+    session_start();
+
+
+
+    }
 
 ?>
 <?php include("./inc/header.inc.php"); ?>

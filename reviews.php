@@ -4,29 +4,62 @@ if (!$_SESSION['loggedin'] == true) {
     // Redirect to the login page:
     header('Location: login.php');
 }
+
 include("./inc/header.inc.php");
 include("./connect.php");
-//find users and display on screen.
-//connect to user db to check admin rights etc
-//find username and email address to display on screen.
-$user = $db->prepare('SELECT user_id,  user_type, business_id FROM users WHERE user_id = ?');
-$user->bind_param('s', $_SESSION['user_id']);
-$user->execute();
-$user->store_result();
-$user->bind_result($user_id, $user_type, $business_id);
-$user->fetch();
-$user->close();
-//find news articles
-$news_query = ('SELECT * FROM news_articles ORDER BY news_articles_status ');
-$news = $db->query($news_query);
-//find business details.
-$business = $db->prepare('SELECT * FROM business WHERE business_id =' . $business_id);
+//find if this module is on or off
 
-$business->execute();
-$business->store_result();
-$business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
-$business->fetch();
-$business->close();
+////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
+//Variable for name of CMS
+//wedding is the name of people
+//business name
+$cms_name ="";
+$user_id = $_SESSION['user_id'];
+if ($cms_type == "Business") {
+    //look for the business set up and load information
+    //find business details.
+    $business = $db->prepare('SELECT * FROM business');
+
+    $business->execute();
+    $business->store_result();
+    $business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
+    $business->fetch();
+    $business->close();
+    //set cms name
+    $cms_name = $business_name;
+    //find user details for this business
+    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id='.$user_id);
+
+    $business_users->execute();
+    $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
+    $business_users->fetch();
+    $business_users->close();
+    echo $business_id;
+}
+
+//run checks to make sure a wedding has been set up correctly
+if ($cms_type == "Wedding") {
+
+    //look for a wedding setup in the db, if not then direct to the setup page
+    $wedding_query = ('SELECT wedding_id, wedding_name FROM wedding');
+    $wedding = $db->query($wedding_query);
+    $wedding_details = mysqli_fetch_assoc($wedding);
+    if ($wedding->num_rows == 0) {
+        header('Location: setup.php?action=setup_wedding');
+    }
+    //check that there are users set up 
+    $wedding_user_query = ('SELECT wedding_user_id FROM wedding_users');
+    $wedding_user = $db->query($wedding_user_query);
+    if ($wedding_user->num_rows == 0) {
+        header('Location: setup.php?action=check_users_wedding');
+    }
+
+    if (!$_SESSION['loggedin'] == true) {
+        // Redirect to the login page:
+        header('Location: login.php');
+    }
+}
+
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
@@ -87,7 +120,8 @@ $business->close();
                 <a href="index.php" class="breadcrumb">Home</a> / Manage Reviews
             </div>
             <div class="main-cards">
-
+                <?php if($module_reviews =="On"):?>
+                    
                 <h1>Reviews</h1>
                 <p>Your 5 most recent reviews are displayed here and on your website.</p>
                 <p>This is updated once a week, you can also update it here by clicking the below button.</p>
@@ -102,7 +136,10 @@ $business->close();
                     <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>
                 <?php endif; ?>
             </div>
-
+            <?php else:?>
+                <h1>Module not activated for your website!</h1>
+                <p>Contact us to find out how you can get this feature set up.</p>
+            <?php endif;?>        
         </section>
 
 

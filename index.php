@@ -1,18 +1,61 @@
 <?php
+
 include("connect.php");
+include("inc/settings.php");
+//determine what type of cms is running
+
+//run checks to make sure a business has been set up
+if($cms_type =="Business"){
 //look for a business setup in the db, if not then direct to the setup page
-$business_query = ('SELECT business_id FROM business');
+$business_query = ('SELECT business_id, business_name FROM business');
 $business = $db->query($business_query);
+$business_details = mysqli_fetch_assoc($business);
+
 if($business -> num_rows ==0){
     header('Location: setup.php?action=setup_business');
 }
+    //check that there are users set up 
+    $business_user_query = ('SELECT * FROM business_users');
+    $business_user = $db->query($business_user_query);
+    if($business_user -> num_rows ==0){
+        header('Location: setup.php?action=check_users_business');
+    }
 session_start();
+//find business details
 if (!$_SESSION['loggedin'] == true) {
     // Redirect to the login page:
     header('Location: login.php');
 }
+}
+
+//run checks to make sure a wedding has been set up correctly
+if($cms_type =="Wedding"){
+    
+    //look for a wedding setup in the db, if not then direct to the setup page
+    $wedding_query = ('SELECT wedding_id, wedding_name FROM wedding');
+    $wedding = $db->query($wedding_query);
+    $wedding_details = mysqli_fetch_assoc($wedding);
+    if($wedding -> num_rows ==0){
+        header('Location: setup.php?action=setup_wedding');
+    }
+    //check that there are users set up 
+    $wedding_user_query = ('SELECT wedding_user_id FROM wedding_users');
+    $wedding_user = $db->query($wedding_user_query);
+    if($wedding_user -> num_rows ==0){
+        header('Location: setup.php?action=check_users_wedding');
+    }
+    session_start();
+    if (!$_SESSION['loggedin'] == true) {
+        // Redirect to the login page:
+        header('Location: login.php');
+    }
+
+
+    }
+    
+
 include("./inc/header.inc.php");
-include("connect.php");
+
 //connect to user db to check admin rights etc
 //find username and email address to display on screen.
 $user = $db->prepare('SELECT user_id,  user_type FROM users WHERE user_id = ?');
@@ -79,7 +122,7 @@ $user_amt = $user_num -> num_rows;
                         <img src="assets/img/icons/down.svg" alt="">
                     </a>
                     <div class="header-actions-business-name">
-                        <h2>Lashes Brows & Aesthetics</h2>
+                        <h1><?php if($cms_type =="Business"){echo $business_details['business_name'];} else{ echo $wedding_details['wedding_name'].'\'s Wedding';} ?></h1>
                     </div>
 
                     <a class="header-actions-btn-logout" href="logout.php"><span>Logout</span><img src="assets/img/icons/logout.svg" alt=""></a>
@@ -92,21 +135,12 @@ $user_amt = $user_num -> num_rows;
         <section class="body">
         <div class="breadcrumbs"><span>Home / </span></div>
         <div class="main-dashboard">
-        
-            <div class="dashboard-card">
-                <div class="dashboard-card-header">
-                    <span>25</span>
-                    <img src="assets/img/icons/tags.svg" alt="">
-                </div>
-                <h2>Services</h2>
-                <a href="">Manage</a>
-            </div>
             <div class="dashboard-card">
                 <div class="dashboard-card-header">
                     <span><?=$article_amt;?></span>
                     <img src="assets/img/icons/newspaper.svg" alt="">
                 </div>
-                <h2>News Articles</h2>
+                <h2>News Posts</h2>
                 <a href="news.php">Manage</a>
             </div>
             <div class="dashboard-card">
@@ -127,13 +161,23 @@ $user_amt = $user_num -> num_rows;
                 <a href="users.php">Manage</a>
             </div>
             <?php endif;?>
+            <?php if($user_type =="Admin"):?>
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <span><?=$user_amt;?></span>
+                    <img src="assets/img/icons/users.svg" alt="">
+                </div>
+                <h2>Guest List</h2>
+                <a href="users.php">Manage</a>
+            </div>
+            <?php endif;?>
         </div>
 
        
         </section>
 
         <div class="main-cards">
-        <h2>Published Articles</h2>
+        <h2>Published Posts</h2>
         <?php foreach ($news as $article):
                     $news_article_body= html_entity_decode($article['news_articles_body']);
                     $news_articles_date = strtotime($article['news_articles_date']);
