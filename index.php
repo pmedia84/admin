@@ -1,5 +1,5 @@
 <?php
-if (!$_SESSION['loggedin'] == true) {
+if (!$_SESSION['loggedin'] == TRUE) {
     // Redirect to the login page:
     header('Location: login.php');
 }
