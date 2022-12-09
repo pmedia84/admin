@@ -1,7 +1,7 @@
 <?php
-if (!isset($_SESSION['loggedin'])) {
-	header('Location: login.php');
-	exit;
+if (!$_SESSION['loggedin'] == TRUE) {
+    // Redirect to the login page:
+    header('Location: login.php');
 }
 include("connect.php");
 include("inc/settings.php");
