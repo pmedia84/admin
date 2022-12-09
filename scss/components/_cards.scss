@@ -23,9 +23,9 @@
     }
 }
 
-.std-card{
+.std-card, .event-card{
     background-color: white;
-    padding: .5rem;
+    padding: $spacer-3;
     border-radius: 5px;
 
 }
@@ -131,4 +131,58 @@
 }
 .star-color-rated{//review stars rated
     color: #f9b805;
+}
+
+//event cards, used in wedding events pages
+.event-card{
+    padding: $spacer-3;
+}
+
+.event-card-title-time{
+    color: $grey-600;
+}
+
+.event-card-details{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+    gap: $spacer-3;
+    @media (min-width:$md){
+        flex-direction: row;
+    }
+}
+
+.event-card-invites{
+    background-color: $primary-950;
+    padding: $spacer-2;
+}
+
+.event-card-invites{
+    display: grid;
+    gap: $spacer-2;
+    @media(min-width:$md){
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+.event-card-invites-textbox{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom:1px solid $primary ;
+}
+
+.event-card-guestlist-table{
+    width: 100%;
+    margin-bottom: $spacer-3;
+    th{
+        text-align: left;
+    }
+    td{
+        border-bottom: 1px solid $primary;
+    }
+    tr:nth-child(even){
+        background-color: $primary-900;
+    }
 }

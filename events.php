@@ -182,6 +182,45 @@ if ($cms_type == "Wedding") {
                         </div>
                     <?php endif; ?>
 
+                    <?php if ($cms_type == "Wedding") : ?>
+                        <h2>Your Wedding Day Events</h2>
+                        <p>Keep this information up to date as you plan for big day. Information from this page will be displayed on your website.</p>
+                       
+
+                        <?php foreach ($wedding_events as $event) :
+                            $event_time = strtotime($event['event_time']);
+                            $time = date('H:ia', $event_time);
+                            $event_date = strtotime($event['event_date']);
+                            $date = date('D d M Y', $event_date);
+                        ?>
+
+                            <div class="event-card">
+                                <h3 class="event-card-title mb-3"> <?= $event['event_name']; ?> <span class="event-card-title-time"><?= $time ?></span></h3>
+                                <div class="event-card-details my-3">
+                                    <div class="event-card-item">
+                                        <h4>Location</h4>
+                                        <p><?= $event['event_location'];?></p>
+                                    </div>
+                                    <div class="event-card-item">
+                                        <h4>Date</h4>
+                                        <p><?= $date;?></p>
+                                    </div>
+                                    <div class="event-card-item">
+                                        <h4>Time</h4>
+                                        <p><?= $time;?></p>
+                                    </div>
+                                </div>
+                                <h4>Address</h4>
+                                <address class="my-2"><?= $event['event_address']; ?></address>
+                            <div class="card-actions">
+                                <a class="my-2" href="event.php?action=view&event_id=<?= $event['event_id']; ?>"><i class="fa-solid fa-eye"></i> View Event</a>
+                                <a class="my-2" href="event.php?action=edit&event_id=<?= $event['event_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Event </a>
+                            </div>
+                            </div>
+                        <?php endforeach; ?>
+
+                        
+                    <?php endif; ?>
                 <?php else : ?>
                     <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>
                 <?php endif; ?>

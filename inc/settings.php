@@ -6,7 +6,7 @@
 // Business
 // Wedding
 // 
-$cms_type = "Business";
+$cms_type = "Wedding";
 
 //email settings for contact forms
 //Settings for all form scripts
@@ -33,5 +33,7 @@ $module_gallery = "On";
 $module_services = "On";
 //News
 $module_news = "On";
+//Guest List
+$module_guest_list = "On";
 ?>
 

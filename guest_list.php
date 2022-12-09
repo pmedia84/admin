@@ -12,42 +12,6 @@ include("./connect.php");
 //business name
 $cms_name = "";
 $user_id = $_SESSION['user_id'];
-if ($cms_type == "Business") {
-    //look for the business set up and load information
-    //find business details.
-    $business = $db->prepare('SELECT * FROM business');
-
-    $business->execute();
-    $business->store_result();
-    $business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
-    $business->fetch();
-    $business->close();
-    //set cms name
-    $cms_name = $business_name;
-    //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id=' . $user_id);
-
-    $business_users->execute();
-    $business_users->bind_result($user_id, $user_name, $business_id, $user_type);
-    $business_users->fetch();
-    $business_users->close();
-    //find business address details.
-    $business = $db->prepare('SELECT * FROM addresses WHERE address_id =' . $address_id);
-
-    $business->execute();
-    $business->store_result();
-    $business->bind_result($address_id, $address_house, $address_road, $address_town, $address_county, $address_pc);
-    $business->fetch();
-    $business->close();
-
-
-    //find social media info
-    $socials_query = ('SELECT business_socials.business_socials_id, business_socials.socials_type_id, business_socials.business_socials_url, business_socials.business_id, business_socials_types.socials_type_id, business_socials_types.socials_type_name   FROM business_socials  NATURAL LEFT JOIN business_socials_types WHERE  business_socials.business_id =' . $business_id);
-    $socials = $db->query($socials_query);
-    $social_result = $socials->fetch_assoc();
-    $db->close();
-}
-
 //run checks to make sure a wedding has been set up correctly
 if ($cms_type == "Wedding") {
     //look for the Wedding set up and load information
@@ -69,13 +33,17 @@ if ($cms_type == "Wedding") {
     $wedding_users->fetch();
     $wedding_users->close();
 
+    //find wedding guest list
+    $guest_list_query = ('SELECT * FROM guest_list ORDER BY guest_sname');
+    $guest_list = $db->query($guest_list_query);
+    $guest_list_result = $guest_list->fetch_assoc();
     //find wedding events details
     $wedding_events_query = ('SELECT * FROM wedding_events ORDER BY event_time');
     $wedding_events = $db->query($wedding_events_query);
     $wedding_events_result = $wedding_events->fetch_assoc();
 }
-
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//Guest list method, loads the list from a remote script so that it can be searched with ajax
 
 
 ?>
@@ -86,7 +54,7 @@ if ($cms_type == "Wedding") {
 
 <!-- / -->
 <!-- Page Title -->
-<title>Mi-Admin | Settings</title>
+<title>Mi-Admin | Guest List</title>
 <!-- /Page Title -->
 </head>
 
@@ -146,42 +114,41 @@ if ($cms_type == "Wedding") {
 
 
                 <?php if ($user_type == "Admin") : ?>
-                    <?php if ($cms_type == "Business") : ?>
-                        <h2>Settings</h2>
-                        <div class="std-card">
-                            <h3>Business Details</h3>
-                            <p><strong>Business Name:</strong> <?= $business_name; ?></p>
-                            <p><strong>Email Address:</strong> <?= $business_email; ?></p>
-                            <p><strong>Primary Contact No.:</strong> <?= $business_phone; ?></p>
-                            <p><strong>Business Contact Name.:</strong> <?= $business_contact_name; ?></p>
 
-                            <a href="edit_businessdetails.php" class="my-2">Edit Business Details</a>
+
+                    <?php if ($cms_type == "Wedding") : ?>
+                        <h2>Your Guest List</h2>
+                        <p>Keep this information up to date as you plan for big day. Your invites will be sent out from this information.</p>
+                        <form id="guest_search" action="./scripts/guest_list.script.php" method="POST">
+
+                            <div class="form-input-wrapper">
+
+                                <div class="search-input">
+
+                                    <input type="text" id="search" name="search" placeholder="Search For A Guest ...">
+                                    <button class="btn-primary form-controls-btn loading-btn" type="submit"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                        <form id="guest_search_filter" action="./scripts/guest_list.script.php" method="POST">
+
+                            <div class="form-input-wrapper">
+                                <label for="user_email">Filter By Event</label>
+                                <select class="form-select" name="search" id="search_filter">
+                                <?php foreach ($wedding_events as $event) :?>
+                                    <option value="Developer"><?=$event['event_name'];?></option>
+                                <?php endforeach;?>
+                                </select>
+                            </div>
+                        </form>
+
+                        <div class="std-card d-none" id="guest_list">
+
                         </div>
-                        <div class="std-card">
-                            <h3>Social Media Details</h3>
-                            <p>These are your social media details, make sure these links are correct, clients will follow these links from your website to your social media pages.</p>
-                            <?php
 
-                            foreach ($socials as $social) : ?>
-                                <p><strong>Name:</strong> <?= $social['socials_type_name']; ?></p>
-                                <p><strong>URL:</strong> <?= $social['business_socials_url']; ?></p>
 
-                            <?php endforeach; ?>
-                            <a class="my-2" href="edit_socialmedia.php">Edit Social Media Details</a>
 
-                        </div>
-                        <div class="std-card">
-                            <h3>Primary Business Address</h3>
-                            <p>Make sure this is up to date, this address is displayed on your contact page.</p>
-                            <p><?= $address_house ?></p>
-                            <p><?= $address_road ?></p>
-                            <p><?= $address_town ?></p>
-                            <p><?= $address_county ?></p>
-                            <p><?= $address_pc ?></p>
-                            <a class="my-2" href="edit_address.php">Edit Address</a>
-                        </div>
                     <?php endif; ?>
-
                 <?php else : ?>
                     <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>
                 <?php endif; ?>
@@ -201,5 +168,83 @@ if ($cms_type == "Wedding") {
     <!-- /Footer -->
 
 </body>
+<script>
+    $(document).ready(function() {
+        url = "scripts/guest_list.script.php?action=load_guest_list";
+        $.ajax({ //load image gallery
+            type: "GET",
+            url: url,
+            encode: true,
+            success: function(data, responseText) {
+                $("#guest_list").html(data);
+                $("#guest_list").fadeIn(500);
+
+
+            }
+        });
+    })
+</script>
+<script>
+    //script for searching for guests
+    $("#guest_search").submit(function(event) {
+        event.preventDefault();
+        var formData = new FormData($("#guest_search").get(0));
+        formData.append("action", "guest_search");
+
+        $.ajax({ //start ajax post
+            type: "POST",
+            url: "scripts/guest_list.script.php",
+            data: formData,
+            contentType: false,
+            processData: false,
+
+            success: function(data, responseText) {
+                $("#guest_list").html(data);
+                $("#guest_list").fadeIn(500);
+            }
+        });
+
+    });
+    //script for searching for guests
+    $("#guest_search").on('keyup', function(event) {
+        event.preventDefault();
+        var formData = new FormData($("#guest_search").get(0));
+        formData.append("action", "guest_search");
+
+        $.ajax({ //start ajax post
+            type: "POST",
+            url: "scripts/guest_list.script.php",
+            data: formData,
+            contentType: false,
+            processData: false,
+
+            success: function(data, responseText) {
+                $("#guest_list").html(data);
+                $("#guest_list").fadeIn(500);
+            }
+        });
+
+    });
+        //script for searching for guests
+        $("#search_filter").on('change', function(event) {
+        event.preventDefault();
+        var formData = new FormData($("#guest_search_filter").get(0));
+        formData.append("action", "guest_search");
+
+        $.ajax({ //start ajax post
+            type: "POST",
+            url: "scripts/guest_list.script.php",
+            data: formData,
+            contentType: false,
+            processData: false,
+
+            success: function(data, responseText) {
+                $("#guest_list").html(data);
+                $("#guest_list").fadeIn(500);
+            }
+        });
+
+    });
+</script>
 
 </html>

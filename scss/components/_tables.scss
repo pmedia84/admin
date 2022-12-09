@@ -1,0 +1,13 @@
+.std-table{//standard table settings
+    width: 100%;
+    margin-bottom: $spacer-3;
+    th{
+        text-align: left;
+    }
+    td{
+        border-bottom: 1px solid $primary;
+    }
+    tr:nth-child(even){
+        background-color: $primary-900;
+    }
+}

@@ -269,3 +269,31 @@ input[type="checkbox"]:focus {
     opacity: 1;
 }
 
+/////////Search box input\\\\\\\\\\
+.search-input{
+    display: flex;
+    align-items: center;
+    input{
+        border-bottom-right-radius:0px;
+        border-top-right-radius:0px;
+    }
+    button{
+        height: 33.33px;
+        width: 33.33px;
+        padding: $spacer-1;
+        border: none;
+
+        border-radius: 0;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        svg{
+            height: 100%;
+            margin: 0;
+        }
+        path{
+            fill: #fff;
+        }
+
+    }
+    
+}

@@ -878,6 +878,40 @@ input[type="checkbox"]:focus {
     opacity: 1;
 } 
 
+/*///////Search box input\\\\\\\\\\*/ 
+
+.search-input{
+    display: flex;
+    align-items: center;
+    
+} 
+
+.search-input input{
+        border-bottom-right-radius:0px;
+        border-top-right-radius:0px;
+    } 
+
+.search-input button{
+        height: 33.33px;
+        width: 33.33px;
+        padding: 0.25rem;
+        border: none;
+
+        border-radius: 0;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+
+    } 
+
+.search-input button svg{
+            height: 100%;
+            margin: 0;
+        } 
+
+.search-input button path{
+            fill: #fff;
+        } 
+
 /*dashboard card*/ 
 
 .dashboard-card{
@@ -907,9 +941,9 @@ input[type="checkbox"]:focus {
         height: 35px;
     } 
 
-.std-card{
+.std-card, .event-card{
     background-color: white;
-    padding: .5rem;
+    padding: 1.5rem;
     border-radius: 5px;
 
 } 
@@ -1035,6 +1069,72 @@ input[type="checkbox"]:focus {
 .star-color-rated{/*review stars rated*/
     color: #f9b805;
 } 
+
+/*event cards, used in wedding events pages*/ 
+
+.event-card{
+    padding: 1.5rem;
+} 
+
+.event-card-title-time{
+    color: gray;
+} 
+
+.event-card-details{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 1.5rem;
+} 
+
+@media (min-width:768px){ 
+
+.event-card-details{
+        flex-direction: row
+}
+    } 
+
+.event-card-invites{
+    background-color: hsl(163, 28%, 95%);
+    padding: 0.5rem;
+} 
+
+.event-card-invites{
+    display: grid;
+    gap: 0.5rem;
+} 
+
+@media(min-width:768px){ 
+
+.event-card-invites{
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
+}
+    } 
+
+.event-card-invites-textbox{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom:1px solid hsl(163, 28%, 32%);
+} 
+
+.event-card-guestlist-table{
+    width: 100%;
+    margin-bottom: 1.5rem;
+} 
+
+.event-card-guestlist-table th{
+        text-align: left;
+    } 
+
+.event-card-guestlist-table td{
+        border-bottom: 1px solid hsl(163, 28%, 32%);
+    } 
+
+.event-card-guestlist-table tr:nth-child(even){
+        background-color: hsl(163, 28%, 90%);
+    } 
 
 /*Form response for displaying server messages*/ 
 
@@ -1172,7 +1272,24 @@ input[type="checkbox"]:focus {
 @keyframes loader{
     0%{transform: rotate(0);}
     100%{transform: rotate(360deg);}
-}
+} 
+
+.std-table{/*standard table settings*/
+    width: 100%;
+    margin-bottom: 1.5rem;
+} 
+
+.std-table th{
+        text-align: left;
+    } 
+
+.std-table td{
+        border-bottom: 1px solid hsl(163, 28%, 32%);
+    } 
+
+.std-table tr:nth-child(even){
+        background-color: hsl(163, 28%, 90%);
+    }
 /*spacing utilities*/
 /*m = margin*/
 /*p = padding*/
