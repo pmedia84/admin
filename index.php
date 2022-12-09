@@ -20,7 +20,7 @@ if($business -> num_rows ==0){
     if($business_user -> num_rows ==0){
         header('Location: setup.php?action=check_users_business');
     }
-session_start();
+
 //find business details
 if (!$_SESSION['loggedin'] == true) {
     // Redirect to the login page:
