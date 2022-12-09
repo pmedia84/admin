@@ -21,7 +21,7 @@ if($business -> num_rows ==0){
         header('Location: setup.php?action=check_users_business');
         
     }
-session_start();
+
 
 }
 
