@@ -6,7 +6,7 @@
 // Business
 // Wedding
 // 
-$cms_type = "Wedding";
+$cms_type = "Business";
 
 //email settings for contact forms
 //Settings for all form scripts
