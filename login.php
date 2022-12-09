@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 
 include("connect.php");
 include("inc/settings.php");
@@ -40,7 +40,7 @@ if($cms_type =="Wedding"){
     if($wedding_user -> num_rows <2){
         header('Location: setup.php?action=check_users_wedding');
     }
-    session_start();
+    
 
 
 
