@@ -1,5 +1,8 @@
 <?php
-
+if (!$_SESSION['loggedin'] == true) {
+    // Redirect to the login page:
+    header('Location: login.php');
+}
 include("connect.php");
 include("inc/settings.php");
 //determine what type of cms is running
@@ -22,10 +25,7 @@ if($business -> num_rows ==0){
     }
 
 //find business details
-if (!$_SESSION['loggedin'] == true) {
-    // Redirect to the login page:
-    header('Location: login.php');
-}
+
 }
 
 //run checks to make sure a wedding has been set up correctly
