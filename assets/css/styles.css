@@ -280,6 +280,7 @@ width: 100%;
 .footer{
     padding: 1rem;
     background-color: hsl(163, 28%, 50%);
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
 } 
 .login-main{/*main body content for login screen and password reset form*/
     display: grid;
