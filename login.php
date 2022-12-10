@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include("connect.php");
 include("inc/settings.php");
 //determine what type of cms is running
