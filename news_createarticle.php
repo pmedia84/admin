@@ -16,7 +16,6 @@ if ($cms_type == "Business") {
     //look for the business set up and load information
     //find business details.
     $business = $db->prepare('SELECT * FROM business');
-
     $business->execute();
     $business->store_result();
     $business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
@@ -26,17 +25,13 @@ if ($cms_type == "Business") {
     $cms_name = $business_name;
     //find user details for this business
     $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id='.$user_id);
-
     $business_users->execute();
     $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
     $business_users->fetch();
     $business_users->close();
-    echo $business_id;
 }
-
 //run checks to make sure a wedding has been set up correctly
 if ($cms_type == "Wedding") {
-
     //look for a wedding setup in the db, if not then direct to the setup page
     $wedding_query = ('SELECT wedding_id, wedding_name FROM wedding');
     $wedding = $db->query($wedding_query);
@@ -77,7 +72,6 @@ if ($cms_type == "Wedding") {
     tinymce.init({
         selector: 'textarea#news_article_body',
         height: 500,
-
         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | ',
         tinycomments_mode: 'embedded',
@@ -204,12 +198,7 @@ if ($cms_type == "Wedding") {
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
     <script>
-        $(".nav-btn").click(function() {
-            $(".nav-bar").fadeToggle(500);
-        });
-        $(".btn-close").click(function() {
-            $(".nav-bar").fadeOut(500);
-        })
+
 
         $("#form-reset").click(function() {
             $("#create_news_article *").prop("disabled", false);

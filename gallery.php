@@ -31,7 +31,6 @@ if ($cms_type == "Business") {
     $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
     $business_users->fetch();
     $business_users->close();
-    echo $business_id;
 }
 
 //run checks to make sure a wedding has been set up correctly

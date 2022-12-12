@@ -31,7 +31,6 @@ if ($cms_type == "Business") {
     $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
     $business_users->fetch();
     $business_users->close();
-    echo $business_id;
 }
 
 //run checks to make sure a wedding has been set up correctly
@@ -230,15 +229,13 @@ $image->store_result();
                                         <h2>Image Placement</h2>
                                         <p class="form-hint-small my-2">This determines where you image will be displayed on your website. You can use the same image in different locations if you wish.</p>
                                         <label class="checkbox-form-control" for="home">
-                                            <input type="checkbox" id="home" name="img_placement[]" value="Home" <?php if (str_contains($image_placement, "Home")) :?>Checked <?php endif; ?> />
+                                            <input type="checkbox" id="home" name="img_placement[]" value="Home" <?php if (strpos($image_placement, "Home") !== FALSE ):?>Checked <?php endif;?>/>
                                             Home Screen
                                         </label>
 
 
                                         <label class="checkbox-form-control" for="gallery">
-                                            <input type="checkbox" id="gallery" name="img_placement[]" value="Gallery" <?php
-                                                                                                                        if (str_contains($image_placement, "Gallery")) :
-                                                                                                                        ?>Checked <?php endif; ?> />
+                                            <input type="checkbox" id="gallery" name="img_placement[]" value="Gallery" <?php if (strpos($image_placement, "Gallery") !== FALSE) :?>Checked <?php endif; ?> />
                                             Photo Gallery
                                         </label>
 
@@ -269,7 +266,7 @@ $image->store_result();
                         ?>
                             <div class="std-card">
                                 <h2 class="my-2"><?= $image_title; ?></h2>
-                                <img src="./assets/img/news/<?= $image_filename ?>" alt="">
+                                <img src="./assets/img/gallery/<?= $image_filename ?>" alt="">
                                 <p class="my-2">Image Uploaded: <?= date('d-m-y', $upload_date); ?></p>
                                 <div class="news-create-body"><?= $image_description; ?></div>
                                 <p><strong>Image Placement:</strong></p>
