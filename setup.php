@@ -1,4 +1,5 @@
 <?php
+session_start();
 $business_id = "1";
 $wedding_id = "1";
 if (empty($_GET)) {

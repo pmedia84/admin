@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 if (isset($_GET['user_email'])) {
     $user_email = $_GET['user_email'];
