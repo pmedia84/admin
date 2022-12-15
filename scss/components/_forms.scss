@@ -297,3 +297,15 @@ input[type="checkbox"]:focus {
     }
     
 }
+
+
+.price-list-controls{
+    background-color: $primary-800;
+    border-radius: $border-radius;
+    padding: $spacer-2;
+    @media(min-width: $md){
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

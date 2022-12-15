@@ -1,7 +1,6 @@
 .login-main{//main body content for login screen and password reset form
     display: grid;
     place-items: center;
-    height: 100%;
     @media (min-width: $md) {
         place-items: start;
         grid-template-columns: 1fr;

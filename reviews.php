@@ -4,9 +4,64 @@ if (!$_SESSION['loggedin'] == true) {
     // Redirect to the login page:
     header('Location: login.php');
 }
-
-include("./inc/header.inc.php");
+include("inc/head.inc.php");
+include("inc/settings.php");
 include("./connect.php");
+//find if this module is on or off
+
+////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
+//Variable for name of CMS
+//wedding is the name of people
+//business name
+$cms_name ="";
+$user_id = $_SESSION['user_id'];
+if ($cms_type == "Business") {
+    //look for the business set up and load information
+    //find business details.
+    $business_query = ('SELECT business_id, business_name FROM business');
+    $business = $db->query($business_query);
+    $business_details = mysqli_fetch_assoc($business);
+    $business = $db->prepare('SELECT * FROM business');
+
+    $business->execute();
+    $business->store_result();
+    $business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
+    $business->fetch();
+    $business->close();
+    //set cms name
+    $cms_name = $business_name;
+    //find user details for this business
+    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id='.$user_id);
+
+    $business_users->execute();
+    $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
+    $business_users->fetch();
+    $business_users->close();
+}
+
+//run checks to make sure a wedding has been set up correctly
+if ($cms_type == "Wedding") {
+    //look for the Wedding set up and load information
+    //find Wedding details.
+    $wedding = $db->prepare('SELECT * FROM wedding');
+
+    $wedding->execute();
+    $wedding->store_result();
+    $wedding->bind_result($wedding_id, $wedding_name, $wedding_email, $wedding_phone, $wedding_contact_name);
+    $wedding->fetch();
+    $wedding->close();
+    //set cms name
+    $cms_name = $wedding_name;
+    //find user details for this business
+    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id='.$user_id);
+
+    $business_users->execute();
+    $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
+    $business_users->fetch();
+    $business_users->close();
+}
+
+//////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //find if this module is on or off
 
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
@@ -80,35 +135,7 @@ if ($cms_type == "Wedding") {
 
 
         <!-- Header Section -->
-        <div class="header">
-            <h1 class="header-name mb-3"><?php date_default_timezone_set("Europe/London");
-                                            $h = date('G');
-                                            if ($h >= 5 && $h <= 11) {
-                                                echo "Good morning";
-                                            } else if ($h >= 12 && $h <= 15) {
-                                                echo "Good Afternoon";
-                                            } else {
-                                                echo "Good Evening";
-                                            }
-                                            ?> <?= $_SESSION['user_name']; ?></h1>
-            <div class="header-actions">
-                <div class="header-actions-btn-section">
-                    <div class="header-actions-navbtn">
-                        <a href="#" class="nav-btn" id="nav-btn"><img src="assets/img/icons/menu-bars.svg" alt=""></a>
-                    </div>
-
-                    <a class="header-actions-btn-user" href="">
-                        <img src="assets/img/icons/user.svg" alt="">
-                        <img src="assets/img/icons/down.svg" alt="">
-                    </a>
-                    <div class="header-actions-business-name">
-                        <h2><?= $business_name; ?></h2>
-                    </div>
-
-                    <a class="header-actions-btn-logout" href="logout.php"><span>Logout</span><img src="assets/img/icons/logout.svg" alt=""></a>
-                </div>
-            </div>
-        </div>
+            <?php include("inc/header.inc.php");?>
         <!-- Nav Bar -->
         <?php include("./inc/nav.inc.php"); ?>
         <!-- /nav bar -->

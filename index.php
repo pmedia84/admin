@@ -5,6 +5,7 @@ if (!$_SESSION['loggedin'] == TRUE) {
     header('Location: login.php');
 }
 include("connect.php");
+include("inc/head.inc.php");
 include("inc/settings.php");
 //determine what type of cms is running
 
@@ -14,6 +15,12 @@ if($cms_type =="Business"){
 $business_query = ('SELECT business_id, business_name FROM business');
 $business = $db->query($business_query);
 $business_details = mysqli_fetch_assoc($business);
+$business = $db->prepare('SELECT * FROM business');
+$business->execute();
+$business->store_result();
+$business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
+$business->fetch();
+
 
 if($business -> num_rows ==0){
     header('Location: setup.php?action=setup_business');
@@ -24,7 +31,7 @@ if($business -> num_rows ==0){
     if($business_user -> num_rows ==0){
         header('Location: setup.php?action=check_users_business');
     }
-
+    $business->close();
 //find business details
 
 }
@@ -55,7 +62,7 @@ if($cms_type =="Wedding"){
     }
     
 
-include("./inc/header.inc.php");
+
 
 //connect to user db to check admin rights etc
 //find username and email address to display on screen.
@@ -101,35 +108,7 @@ $user_amt = $user_num -> num_rows;
     <main class="main">
    
         <!-- Header Section -->
-        <div class="header">
-            <h1 class="header-name mb-3"><?php date_default_timezone_set("Europe/London");
-                                            $h = date('G');
-                                            if ($h >= 5 && $h <= 11) {
-                                                echo "Good morning";
-                                            } else if ($h >= 12 && $h <= 15) {
-                                                echo "Good Afternoon";
-                                            } else {
-                                                echo "Good Evening";
-                                            }
-                                            ?> <?= $_SESSION['user_name']; ?></h1>
-            <div class="header-actions">
-                <div class="header-actions-btn-section">
-                    <div class="header-actions-navbtn">
-                        <a href="#" class="nav-btn" id="nav-btn"><img src="assets/img/icons/menu-bars.svg" alt=""></a>
-                    </div>
-
-                    <a class="header-actions-btn-user" href="">
-                        <img src="assets/img/icons/user.svg" alt="">
-                        <img src="assets/img/icons/down.svg" alt="">
-                    </a>
-                    <div class="header-actions-business-name">
-                        <h1><?php if($cms_type =="Business"){echo $business_details['business_name'];} else{ echo $wedding_details['wedding_name'].'\'s Wedding';} ?></h1>
-                    </div>
-
-                    <a class="header-actions-btn-logout" href="logout.php"><span>Logout</span><img src="assets/img/icons/logout.svg" alt=""></a>
-                </div>
-            </div>
-        </div>
+        <?php include("inc/header.inc.php");?>
         <!-- Nav Bar -->
         <?php include("./inc/nav.inc.php"); ?>
         <!-- /nav bar -->
@@ -162,7 +141,7 @@ $user_amt = $user_num -> num_rows;
                 <a href="users.php">Manage</a>
             </div>
             <?php endif;?>
-            <?php if($user_type =="Admin"):?>
+            <?php if($cms_type =="Wedding"):?>
             <div class="dashboard-card">
                 <div class="dashboard-card-header">
                     <span><?=$user_amt;?></span>
@@ -217,15 +196,7 @@ $user_amt = $user_num -> num_rows;
     <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
-    <script>
-        $(".nav-btn").click(function() {
-            $(".nav-bar").fadeToggle(500);
-        });
 
-        $(".btn-close").click(function() {
-            $(".nav-bar").fadeOut(500);
-        })
-    </script>
 </body>
 
 </html>

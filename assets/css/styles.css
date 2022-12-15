@@ -39,7 +39,7 @@ html:focus-within {
 }
 /* Set core body defaults */
 body {
-  min-height: 100vh;
+ /* min-height: 100vh;*/
   text-rendering: optimizeSpeed;
   line-height: 1.5;
 }
@@ -97,7 +97,10 @@ body{
      display: flex;
      flex-direction: column;
     justify-content: space-between;
-    min-height: calc(100vh - env(safe-area-inset-bottom));
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    min-height: stretch;
+    
 }
 a{
     color: hsl(163, 28%, 32%);
@@ -169,7 +172,7 @@ a:hover{
 .header {
     /*header panel with welcome message and header actions*/
     color: hsl(163, 28%, 32%);
-    padding: 1rem;
+    padding: 0 1rem 0 1rem;
 } 
 .header-actions {
     /*top banner with immediate actions for user*/
@@ -203,7 +206,6 @@ a:hover{
 /*Main admin page*/ 
 .main {
     position: relative;
-    margin-block: 1rem;
     display: grid;
     gap: 1rem;
     padding: 1rem;
@@ -280,13 +282,13 @@ width: 100%;
 } 
 .footer{
     padding: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     background-color: hsl(163, 28%, 50%);
-    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
 } 
 .login-main{/*main body content for login screen and password reset form*/
     display: grid;
     place-items: center;
-    height: 100%;
 } 
 @media (min-width: 768px) { 
 .login-main{
@@ -913,6 +915,21 @@ input[type="checkbox"]:focus {
 .search-input button path{
             fill: #fff;
         } 
+
+.price-list-controls{
+    background-color: hsl(163, 28%, 80%);
+    border-radius: 10px;
+    padding: 0.5rem;
+} 
+
+@media(min-width: 768px){ 
+
+.price-list-controls{
+        display: flex;
+        align-items: center;
+        justify-content: space-between
+}
+    } 
 
 /*dashboard card*/ 
 

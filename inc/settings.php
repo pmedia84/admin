@@ -29,8 +29,8 @@ $api_key = ""; //api key from google source
 $place_id = ""; //Found from google places api
 //Image Gallery
 $module_gallery = "On";
-//Services
-$module_services = "On";
+//Price List
+$module_price_list = "On";
 //News
 $module_news = "On";
 //Guest List

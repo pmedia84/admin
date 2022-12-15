@@ -6,7 +6,9 @@
         <ul class="nav-links">
             <?php if($cms_type =="Business"):?>
                 <li ><a class="nav-link" href="index.php">Home <i class="fa-solid fa-house"></i></a></li>
-                <li ><a class="nav-link" href="services.php">Services <i class="fa-solid fa-tags"></i></a></li>
+                <?php if($module_price_list =="On"):?>
+                    <li ><a class="nav-link" href="price_list.php">Price List <i class="fa-solid fa-tags"></i></a></li>
+                <?php endif;?>
                 <li ><a class="nav-link" href="gallery.php">Image Gallery <i class="fa-solid fa-image"></i></a></li>
                 <li ><a class="nav-link" href="news.php">News <i class="fa-solid fa-newspaper"></i></a></li>
                 <?php if($user_type =="Admin"):?>

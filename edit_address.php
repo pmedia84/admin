@@ -4,7 +4,8 @@ if (!$_SESSION['loggedin'] == true) {
     // Redirect to the login page:
     header('Location: login.php');
 }
-include("./inc/header.inc.php");
+include ('inc/head.inc.php');
+include("./inc/settings.php");
 include("./connect.php");
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
@@ -13,6 +14,7 @@ include("./connect.php");
 $cms_name ="";
 $user_id = $_SESSION['user_id'];
 if ($cms_type == "Business") {
+
     //look for the business set up and load information
     //find business details.
     $business = $db->prepare('SELECT * FROM business');
@@ -31,7 +33,6 @@ if ($cms_type == "Business") {
     $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
     $business_users->fetch();
     $business_users->close();
-    echo $business_id;
 }
 
 //run checks to make sure a wedding has been set up correctly
@@ -87,35 +88,8 @@ $db->close();
 
 
         <!-- Header Section -->
-        <div class="header">
-            <h1 class="header-name mb-3"><?php date_default_timezone_set("Europe/London");
-                                            $h = date('G');
-                                            if ($h >= 5 && $h <= 11) {
-                                                echo "Good morning";
-                                            } else if ($h >= 12 && $h <= 15) {
-                                                echo "Good Afternoon";
-                                            } else {
-                                                echo "Good Evening";
-                                            }
-                                            ?> <?= $_SESSION['user_name']; ?></h1>
-            <div class="header-actions">
-                <div class="header-actions-btn-section">
-                    <div class="header-actions-navbtn">
-                        <a href="#" class="nav-btn" id="nav-btn"><img src="assets/img/icons/menu-bars.svg" alt=""></a>
-                    </div>
 
-                    <a class="header-actions-btn-user" href="">
-                        <img src="assets/img/icons/user.svg" alt="">
-                        <img src="assets/img/icons/down.svg" alt="">
-                    </a>
-                    <div class="header-actions-business-name">
-                        <h2><?= $business_name; ?></h2>
-                    </div>
-
-                    <a class="header-actions-btn-logout" href="logout.php"><span>Logout</span><img src="assets/img/icons/logout.svg" alt=""></a>
-                </div>
-            </div>
-        </div>
+        <?php include 'inc/header.inc.php';?>
         <!-- Nav Bar -->
         <?php include("./inc/nav.inc.php"); ?>
         <!-- /nav bar -->

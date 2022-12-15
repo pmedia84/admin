@@ -6,7 +6,11 @@ body{
      display: flex;
      flex-direction: column;
     justify-content: space-between;
-    min-height: calc(100vh - env(safe-area-inset-bottom));
+    min-height: 100vh;
+    min-height: -moz-available;
+    min-height: -webkit-fill-available;
+    min-height: stretch;
+    
 }
 
 a{
