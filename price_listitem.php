@@ -11,7 +11,7 @@ include("connect.php");
 //Variable for name of CMS
 //wedding is the name of people
 //business name
-$cms_name ="";
+$cms_name = "";
 $user_id = $_SESSION['user_id'];
 if ($cms_type == "Business") {
     //look for the business set up and load information
@@ -26,10 +26,10 @@ if ($cms_type == "Business") {
     //set cms name
     $cms_name = $business_name;
     //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id='.$user_id);
+    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id=' . $user_id);
 
     $business_users->execute();
-    $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
+    $business_users->bind_result($user_id, $user_name, $business_id, $user_type);
     $business_users->fetch();
     $business_users->close();
 }
@@ -58,13 +58,22 @@ if ($cms_type == "Wedding") {
 }
 
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//image variable
-if($_GET['action']=="edit"){
+//service variable
+if ($_GET['action'] == "edit") {
     $service_id = $_GET['service_id'];
     //find service details
-    
+
     $service = $db->prepare('SELECT * FROM services WHERE service_id =' . $service_id);
-    
+
+    $service->execute();
+    $service->store_result();
+}
+if ($_GET['action'] == "delete") {
+    $service_id = $_GET['service_id'];
+    //find service details
+
+    $service = $db->prepare('SELECT * FROM services WHERE service_id =' . $service_id);
+
     $service->execute();
     $service->store_result();
 }
@@ -88,7 +97,7 @@ if($_GET['action']=="edit"){
     <!-- Main Body Of Page -->
     <main class="main col-2">
         <!-- Header Section -->
-        <?php include("./inc/header.inc.php");?>
+        <?php include("./inc/header.inc.php"); ?>
         <!-- Nav Bar -->
         <?php include("./inc/nav.inc.php"); ?>
         <!-- /nav bar -->
@@ -102,6 +111,9 @@ if($_GET['action']=="edit"){
                 <?php if ($_GET['action'] == "delete") : ?>
                     / Delete Service
                 <?php endif; ?>
+                <?php if ($_GET['action'] == "add") : ?>
+                    / Create Service
+                <?php endif; ?>
 
             </div>
             <div class="main-cards">
@@ -114,17 +126,62 @@ if($_GET['action']=="edit"){
 
                 <?php if ($_GET['action'] == "edit") : ?>
                     <p class="font-emphasis">This page is best viewed on a large screen</p>
-                <?php else : ?>
+
                 <?php endif; ?>
                 <?php if ($user_type == "Admin") : //detect if user is an admin or not 
                 ?>
+
+                    <?php if ($_GET['action'] == "add") : ?>
+
+                        <div class="std-card">
+                            <form class="form-card" id="add_service" action="scripts/price_list.script.php" method="POST" enctype="multipart/form-data">
+                                <div class="form-input-wrapper">
+
+                                    <h2>Create New Service</h2>
+                                    <label for="service_name"><strong>Service Name</strong></label>
+                                    <!-- input -->
+                                    <input class="text-input input" type="text" name="service_name" id="service_name" placeholder="Service Name" required="" maxlength="45">
+                                </div>
+
+                                <div class="form-input-wrapper my-2">
+                                    <label for="service_description"><strong>Service Description</strong></label>
+                                    <p class="form-hint-small">This is not essential, but can be useful.</p>
+                                    <input class="text-input input" type="text" id="service_description" name="service_description" placeholder="Service Description">
+                                </div>
+                                <div class="form-input-wrapper">
+                                    <label for="service_price"><strong>Price</strong></label>
+                                    <!-- input -->
+                                    <input class="text-input input" type="text" name="service_price" id="service_price" placeholder="Price" required="" maxlength="45">
+                                </div>
+                                <div class="form-input-wrapper">
+                                    <label for="user_email">Category</label>
+                                    <!-- input -->
+                                    Load categories here
+                                    <select class="form-select" aria-label="Message regarding" name="service_category" id="service_category">
+                                                    
+                                                    <option value="Admin" selected>Admin</option>
+                                                    <option value="Editor" selected>Editor</option>
+                                                </select>
+                                </div>
+                                <div class="button-section my-3">
+                                    <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Add Service </button>
+                                </div>
+                                <div id="response" class="d-none">
+                                </div>
+                            </form>
+                        </div>
+
+                    <?php endif; ?>
+
+
+
                     <?php if ($_GET['action'] == "delete") : //if action is delete, detect if the confirm is yes or no
                     ?>
                         <?php if ($_GET['confirm'] == "yes") : //if yes then delete the article
                         ?>
-                        <?php if (($service->num_rows) > 0) :
-                            $service->bind_result($service_id, $service_name, $service_description, $service_category, $service_price, $service_promo);
-                            $service->fetch();
+                            <?php if (($service->num_rows) > 0) :
+                                $service->bind_result($service_id, $service_name, $service_description, $service_category, $service_price, $service_promo);
+                                $service->fetch();
                                 // connect to db and delete the record
                                 $delete_service = "DELETE FROM services WHERE service_id=" . $service_id;
                                 if (mysqli_query($db, $delete_service)) {
@@ -133,20 +190,16 @@ if($_GET['action']=="edit"){
                                     echo '<div class="form-response error"><p>Error deleting service, please try again.</p></div>';
                                 }
                             ?>
-                        <?php else : ?>
-                            <div class="std-card">
-                                <h2>Error</h2>
-                                <p>There has been an error, please return to the last page and try again.</p>
-                            </div>
+
                             <?php endif; ?>
                         <?php else : //if not then display the message to confirm the user wants to delete the news article
                         ?>
                             <?php if (($service->num_rows) > 0) :
-                            $service->bind_result($service_id, $service_name, $service_description, $service_category, $service_price, $service_promo);
-                            $service->fetch();
-                                
-                                
-                                
+                                $service->bind_result($service_id, $service_name, $service_description, $service_category, $service_price, $service_promo);
+                                $service->fetch();
+
+
+
                             ?>
                                 <div class="std-card">
                                     <h2 class="text-alert">Delete: <?= $service_name; ?></h2>
@@ -175,10 +228,10 @@ if($_GET['action']=="edit"){
                                 <form class="form-card" id="edit_service" action="scripts/price_list.script.php" method="POST" enctype="multipart/form-data">
                                     <div class="form-input-wrapper">
 
-                                        <h2><?=$service_name;?></h2>
+                                        <h2><?= $service_name; ?></h2>
                                         <label for="service_name"><strong>Service Name</strong></label>
                                         <!-- input -->
-                                        <input class="text-input input" type="text" name="service_name" id="service_name" placeholder="Service Name" required="" maxlength="45" value="<?= $service_name;?>">
+                                        <input class="text-input input" type="text" name="service_name" id="service_name" placeholder="Service Name" required="" maxlength="45" value="<?= $service_name; ?>">
                                     </div>
 
                                     <div class="form-input-wrapper my-2">
@@ -189,7 +242,7 @@ if($_GET['action']=="edit"){
                                     <div class="form-input-wrapper">
                                         <label for="service_price"><strong>Price</strong></label>
                                         <!-- input -->
-                                        <input class="text-input input" type="text" name="service_price" id="service_price" placeholder="Price" required="" maxlength="45" value="<?= $service_price;?>">
+                                        <input class="text-input input" type="text" name="service_price" id="service_price" placeholder="Price" required="" maxlength="45" value="<?= $service_price; ?>">
                                     </div>
                                     <div class="button-section my-3">
                                         <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes </button>
@@ -206,42 +259,13 @@ if($_GET['action']=="edit"){
                         <?php endif; ?>
                     <?php endif; ?>
 
-                    <?php if ($_GET['action'] == "view") : ?>
-                        <?php if (($image->num_rows) > 0) :
-                            $image->bind_result($image_id, $image_title, $image_description, $image_filename, $image_upload_date, $image_placement);
-                            $image->fetch();
-                            $upload_date = strtotime($image_upload_date);
-                        ?>
-                            <div class="std-card">
-                                <h2 class="my-2"><?= $image_title; ?></h2>
-                                <img src="./assets/img/gallery/<?= $image_filename ?>" alt="">
-                                <p class="my-2">Image Uploaded: <?= date('d-m-y', $upload_date); ?></p>
-                                <div class="news-create-body"><?= $image_description; ?></div>
-                                <p><strong>Image Placement:</strong></p>
-                                <p><?= $image_placement; ?></p>
-                                <div class="card-actions">
-                                    <a class="my-2" href="image.php?action=edit&image_id=<?= $image_id; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Image </a><br>
-                                    <a class="my-2" href="image.php?action=delete&confirm=no&image_id=<?= $image_id; ?>"><i class="fa-solid fa-trash"></i> Delete Image </a>
-                                </div>
-                            <?php else : ?>
-                                <div class="std-card">
-                                    <h2>Error</h2>
-                                    <p>There has been an error, please return to the last page and try again.</p>
-                                </div>
-                            <?php endif; ?>
-                            </div>
 
+
+
+                <?php else : ?>
+                    <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>
+                <?php endif; ?>
             </div>
-
-
-
-            </div>
-        <?php endif; ?>
-
-    <?php else : ?>
-        <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>
-    <?php endif; ?>
-    </div>
 
         </section>
 
@@ -281,11 +305,11 @@ if($_GET['action']=="edit"){
                 success: function(data, responseText) {
                     $("#response").html(data);
                     $("#response").slideDown(400);
-                    if(data === "Done"){
+                    if (data === "Done") {
                         console.log(data);
                         window.location.replace('price_list.php');
                     }
-                    
+
                 }
             });
 

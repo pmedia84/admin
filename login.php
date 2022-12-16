@@ -46,7 +46,7 @@ if($cms_type =="Wedding"){
     }
 
 ?>
-<?php include("./inc/header.inc.php"); ?>
+<?php include("./inc/head.inc.php"); ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
 <meta name="title" content="Manage your website content">
