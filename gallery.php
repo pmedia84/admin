@@ -4,9 +4,10 @@ if (!$_SESSION['loggedin'] == true) {
     // Redirect to the login page:
     header('Location: login.php');
 }
+
+include("./connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
-include("./connect.php");
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
 //wedding is the name of people
@@ -92,7 +93,7 @@ if ($cms_type == "Wedding") {
 
                 <h1>Image Gallery</h1>
 
-                <?php if ($user_type == "Admin") : ?>
+                <?php if ($user_type == "Admin" || $user_type=="Developer") : ?>
                     <button class="btn-primary" id="upload_image"><i class="fa-solid fa-upload"></i>Upload Image </button>
                     <div id="img-gallery">
 

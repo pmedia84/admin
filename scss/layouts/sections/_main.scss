@@ -24,7 +24,9 @@
     place-self: start;
 width: 100%;
 }
-
+.cms-settings-cards{
+    gap: 0;
+}
 //settings for larger screens
 @media (min-width: $md) {
     .main {

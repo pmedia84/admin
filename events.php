@@ -4,9 +4,10 @@ if (!$_SESSION['loggedin'] == true) {
     // Redirect to the login page:
     header('Location: login.php');
 }
+include("./connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
-include("./connect.php");
+
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
 //wedding is the name of people

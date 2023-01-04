@@ -186,3 +186,20 @@
         background-color: $primary-900;
     }
 }
+
+///cms settings cards
+.settings-card{
+    margin-block: $spacer-3;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    background-color: white;
+    border-radius: 5px;
+.switch{
+    align-self: center;
+    margin-inline: $spacer-2;
+}
+}
+
+.settings-card-text{
+    padding: $spacer-2;
+}
