@@ -116,48 +116,14 @@ if ($cms_type == "Wedding") {
             <div class="main-cards">
 
 
-                <?php if ($user_type == "Admin") : ?>
-                    <?php if ($cms_type == "Business") : ?>
-                        <h2>Settings</h2>
-                        <div class="std-card">
-                            <h3>Business Details</h3>
-                            <p><strong>Business Name:</strong> <?= $business_name; ?></p>
-                            <p><strong>Email Address:</strong> <?= $business_email; ?></p>
-                            <p><strong>Primary Contact No.:</strong> <?= $business_phone; ?></p>
-                            <p><strong>Business Contact Name.:</strong> <?= $business_contact_name; ?></p>
+                <?php if ($user_type == "Admin" ||$user_type=="Developer") : ?>
 
-                            <a href="edit_businessdetails.php" class="my-2">Edit Business Details</a>
-                        </div>
-                        <div class="std-card">
-                            <h3>Social Media Details</h3>
-                            <p>These are your social media details, make sure these links are correct, clients will follow these links from your website to your social media pages.</p>
-                            <?php
-
-                            foreach ($socials as $social) : ?>
-                                <p><strong>Name:</strong> <?= $social['socials_type_name']; ?></p>
-                                <p><strong>URL:</strong> <?= $social['business_socials_url']; ?></p>
-
-                            <?php endforeach; ?>
-                            <a class="my-2" href="edit_socialmedia.php">Edit Social Media Details</a>
-
-                        </div>
-                        <div class="std-card">
-                            <h3>Primary Business Address</h3>
-                            <p>Make sure this is up to date, this address is displayed on your contact page.</p>
-                            <p><?= $address_house ?></p>
-                            <p><?= $address_road ?></p>
-                            <p><?= $address_town ?></p>
-                            <p><?= $address_county ?></p>
-                            <p><?= $address_pc ?></p>
-                            <a class="my-2" href="edit_address.php">Edit Address</a>
-                        </div>
-                    <?php endif; ?>
 
                     <?php if ($cms_type == "Wedding") : ?>
                         <h2>Your Wedding Day Events</h2>
                         <p>Keep this information up to date as you plan for big day. Information from this page will be displayed on your website.</p>
                        
-
+                        <a class="btn-primary" href="event.php?action=create">Create An Event <i class="fa-solid fa-plus"></i></a>
                         <?php foreach ($wedding_events as $event) :
                             $event_time = strtotime($event['event_time']);
                             $time = date('H:ia', $event_time);

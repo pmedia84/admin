@@ -102,11 +102,11 @@ $news = $db->query($news_query);
                 <a href="index.php" class="breadcrumb">Home</a> / Manage News Articles
             </div>
             <div class="main-cards">
-            <?php if($module_news == "On"):?>
+            <?php if($news_status == "On"):?>
 
                 <h1>News Articles</h1>
                 <a class="btn-primary" id="add_social" href="news_createarticle.php">Create An Article <i class="fa-solid fa-plus"></i></a>
-                <?php if ($user_type == "Admin") : ?>
+                <?php if ($user_type == "Admin" ||$user_type=="Developer") : ?>
 
                     <div class="news-grid">
                         <?php foreach ($news as $article) :

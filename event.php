@@ -4,9 +4,10 @@ if (!$_SESSION['loggedin'] == true) {
     // Redirect to the login page:
     header('Location: login.php');
 }
+include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
-include("connect.php");
+
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
 //wedding is the name of people
@@ -123,7 +124,7 @@ $event->store_result();
                     <p class="font-emphasis">This page is best viewed on a large screen</p>
                 <?php else : ?>
                 <?php endif; ?>
-                <?php if ($user_type == "Admin") : //detect if user is an admin or not 
+                <?php if ($user_type == "Admin" ||$user_type=="Developer") : //detect if user is an admin or not 
                 ?>
                     <?php if ($_GET['action'] == "delete") : //if action is delete, detect if the confirm is yes or no
                     ?>
@@ -240,7 +241,7 @@ $event->store_result();
 
                     <?php if ($_GET['action'] == "view") : ?>
                         <?php if (($event->num_rows) > 0) :
-                            $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_date, $event_time);
+                            $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_menu_id);
                             $event->fetch();
                             $event_time = strtotime($event_time);
                             $time = date('H:ia', $event_time);
@@ -248,7 +249,7 @@ $event->store_result();
                             $date = date('D d M Y', $event_date);
                         ?>
                             <div class="event-card">
-                                <h3 class="event-card-title mb-3"> <?= $event_name; ?></h3>
+                                <h2 class="event-card-title mb-3"> <?= $event_name; ?></h2>
                                 <div class="event-card-details my-3">
                                     <div class="event-card-item">
                                         <h4>Location</h4>
@@ -268,6 +269,13 @@ $event->store_result();
                                 <?php
                                 echo '<iframe frameborder="0" width="100%" height="250px" src="https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=' . str_replace(",", "", str_replace(" ", "+", $event_address)) . '&z=14&output=embed"></iframe>'; ?>
 
+                                <h4>Event Notes</h4>
+                                <p><?=$event_notes;?></p>
+                                <h4>Event Menu</h4>
+                                <p><?php if($event_menu_id =="0"):?>
+                                    There is no menu set up. <a href="menus.php">Click Here</a> to set up a menu for your <?=$event_name;?>
+                                <?php endif;?>
+                                </p>
 
                                 <div class="event-card-guestlist">
                                     <h4>Invite Details</h4>
@@ -309,7 +317,7 @@ $event->store_result();
                                             <td>Not replied</td>
                                         </tr>
                                     </table>
-                                    <button class="btn-primary">Manage Guest List</button>
+                                    <a class="btn-primary" hre>Manage Guest List</a>
                                 </div>
                                 <div class="card-actions">
                                     <a class="my-2" href="event.php?action=edit&event_id=<?= $event_id; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Event </a>

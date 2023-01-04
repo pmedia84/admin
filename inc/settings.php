@@ -40,11 +40,7 @@ $module_reviews = "On";
 $api_key = ""; //api key from google source
 $place_id = ""; //Found from google places api
 //Image Gallery
-$module_gallery = "On";
-//Price List
-$module_price_list = "On";
-//News
-$module_news = "On";
+
 
 foreach ($modules as $module) {
     //Guest List
@@ -53,19 +49,19 @@ foreach ($modules as $module) {
     }
     //Reviews
     if ($module['module_name'] == "Reviews") {
-        $guest_list_status = $module['module_status'];
+        $reviews_status = $module['module_status'];
     }
     //Image Gallery
     if ($module['module_name'] == "Image Gallery") {
-        $guest_list_status = $module['module_status'];
+        $image_gallery_status = $module['module_status'];
     }
     //Price List
     if ($module['module_name'] == "Price List") {
-        $module_price_list = $module['module_status'];
+        $price_list_status = $module['module_status'];
     }
     //News
     if ($module['module_name'] == "News") {
-        $guest_list_status = $module['module_status'];
+        $news_status = $module['module_status'];
     }
 
 
