@@ -9,7 +9,9 @@
                             } else {
                                 echo "Good Evening";
                             }
-                            ?> <?= $_SESSION['user_name']; ?></h1>
+                            ?> <?php if(!empty($_SESSION['user_name'])){
+                                    echo $_SESSION['user_name'];
+                            } ; ?></h1>
     <div class="header-actions">
         <div class="header-actions-btn-section">
             <div class="header-actions-navbtn">

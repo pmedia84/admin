@@ -11,7 +11,7 @@ include("./connect.php");
 //Variable for name of CMS
 //wedding is the name of people
 //business name
-$cms_name = "";
+
 $user_id = $_SESSION['user_id'];
 if ($cms_type == "Business") {
     //look for the business set up and load information
@@ -74,6 +74,7 @@ if ($cms_type == "Wedding") {
     $wedding_events_query = ('SELECT * FROM wedding_events ORDER BY event_time');
     $wedding_events = $db->query($wedding_events_query);
     $wedding_events_result = $wedding_events->fetch_assoc();
+   
 }
 
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

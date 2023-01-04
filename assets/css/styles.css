@@ -97,11 +97,18 @@ body{
      display: flex;
      flex-direction: column;
     justify-content: space-between;
-    height: 100vh;
     min-height: -webkit-fill-available;
     min-height: stretch;
+ 
     
 }
+@media(min-width:768px){
+body{
+        min-height: 100vh
+ 
+    
+}
+    }
 a{
     color: hsl(163, 28%, 32%);
     display: inline-block;
@@ -172,6 +179,7 @@ a:hover{
     /*header panel with welcome message and header actions*/
     color: hsl(163, 28%, 32%);
     padding: 0 1rem 0 1rem;
+    margin-block: 0.5rem;
 } 
 .header-actions {
     /*top banner with immediate actions for user*/
@@ -640,6 +648,7 @@ a.btn-primary{
     width: 95%;
     max-width: 600px;
     margin: 0 auto;
+    margin-block: 1.5rem;
 } 
 
 /*/form input wrapper, holds labels and inputs together*/ 
@@ -1404,6 +1413,7 @@ input[type="checkbox"]:focus {
 .wrap-words{
     word-wrap: anywhere;
 }
+
 
 
 /*# sourceMappingURL=styles.css.map */
