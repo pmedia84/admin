@@ -105,8 +105,9 @@ if ($cms_type == "Wedding") {
                             <div class="form-input-wrapper">
                                 <label for="user_email">Filter By Event</label>
                                 <select class="form-select" name="search" id="search_filter">
+                                    <option value="">Show All Events</option>
                                 <?php foreach ($wedding_events as $event) :?>
-                                    <option value="Developer"><?=$event['event_name'];?></option>
+                                    <option value="<?=$event['event_name'];?>"><?=$event['event_name'];?></option>
                                 <?php endforeach;?>
                                 </select>
                             </div>
@@ -199,7 +200,7 @@ if ($cms_type == "Wedding") {
         $("#search_filter").on('change', function(event) {
         event.preventDefault();
         var formData = new FormData($("#guest_search_filter").get(0));
-        formData.append("action", "guest_search");
+        formData.append("action", "guest_search_filter");
 
         $.ajax({ //start ajax post
             type: "POST",

@@ -9,7 +9,7 @@ if (isset($_GET['action'])) {
         $guest_list_result = $guest_list->fetch_assoc();
         $num_guests = $guest_list->num_rows;
         echo 
-        '<p>Total Number Of Guests '.$num_guests.'</p>';
+        '<p>Total Number Of Guests: <strong>'.$num_guests.'</strong></p>';
         echo
         '<table class="std-table">
             <tr>
@@ -18,9 +18,14 @@ if (isset($_GET['action'])) {
                 <th>RSVP Status</th>
             </tr>'; 
     foreach($guest_list as $guest){
+        if($guest['guest_extra_invites']>=1){
+            $plus= "+".$guest['guest_extra_invites'];
+        }else{
+            $plus="";
+        }
         echo' <tr>
-        <td><a href="">'.$guest['guest_fname'].' '.$guest['guest_sname'].' +1</a></td>
-        <td>Wedding Ceremony, reception, Evening do</td>
+        <td><a href="guest.php?guest_id='.$guest['guest_id'].'&action=view">'.$guest['guest_fname'].' '.$guest['guest_sname'].' '.$plus.'</a></td>
+        <td>'.$guest['guest_events'].'</td>
         <td>Not Replied</td>
     </tr>                   
     ';}
@@ -60,8 +65,44 @@ if (isset($_POST['action'])) {
                    </tr>'; 
            foreach($guest_list as $guest){
                echo' <tr>
-               <td><a href="">'.$guest['guest_fname'].' '.$guest['guest_sname'].' +1</a></td>
-               <td>Wedding Ceremony, reception, Evening do</td>
+               <td><a href="guest.php?guest_id='.$guest['guest_id'].'&action=view">'.$guest['guest_fname'].' '.$guest['guest_sname'].' + '.$guest['guest_extra_invites'].'</a></td>
+               <td>'.$guest['guest_events'].'</td>
+               <td>Not Replied</td>
+           </tr>                   
+           ';}
+       
+           echo '</table>';
+    }
+
+    if($_POST['action']=="guest_search_filter"){
+        include("../connect.php");
+        $search = mysqli_real_escape_string($db, $_POST['search']);
+               //load guest list from the db and send back to the front page
+               
+               //find wedding guest list
+               $guest_list_query = ('SELECT * FROM guest_list WHERE guest_events LIKE "%'.$search.'%"   ORDER BY guest_sname');
+               $guest_list = $db->query($guest_list_query);
+               $guest_list_result = $guest_list->fetch_assoc();
+               $num_guests = $guest_list->num_rows;
+               if($num_guests ==null){
+                echo '<p>Sorry, no guests have been assigned to your '.$search.'</p>';
+               }
+               if($num_guests >0){
+
+                echo '<p>'.$num_guests.' Guests found attending '.$search.'</p>';
+               }
+
+               echo
+               '<table class="std-table">
+                   <tr>
+                       <th>Name</th>
+                       <th>Attending</th>
+                       <th>RSVP Status</th>
+                   </tr>'; 
+           foreach($guest_list as $guest){
+               echo' <tr>
+               <td><a href="guest.php?guest_id='.$guest['guest_id'].'&action=view">'.$guest['guest_fname'].' '.$guest['guest_sname'].' + '.$guest['guest_extra_invites'].'</a></td>
+               <td>'.$guest['guest_events'].'</td>
                <td>Not Replied</td>
            </tr>                   
            ';}
