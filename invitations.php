@@ -27,7 +27,7 @@ if ($cms_type == "Wedding") {
     $wedding->close();
     //set cms name
     $cms_name = $wedding_name;
-    //find user details for this business
+    //find user details for this wedding
     $wedding_users = $db->prepare('SELECT users.user_id, users.user_name, wedding_users.wedding_id, wedding_users.user_type FROM users NATURAL LEFT JOIN wedding_users WHERE users.user_id=' . $user_id);
 
     $wedding_users->execute();
@@ -35,17 +35,13 @@ if ($cms_type == "Wedding") {
     $wedding_users->fetch();
     $wedding_users->close();
 
-    //find wedding guest list
-    $guest_list_query = ('SELECT * FROM guest_list ORDER BY guest_sname');
-    $guest_list = $db->query($guest_list_query);
-    $guest_list_result = $guest_list->fetch_assoc();
     //find wedding events details
     $wedding_events_query = ('SELECT * FROM wedding_events ORDER BY event_time');
     $wedding_events = $db->query($wedding_events_query);
     $wedding_events_result = $wedding_events->fetch_assoc();
 }
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//Guest list method, loads the list from a remote script so that it can be searched with ajax
+
 
 
 ?>
@@ -56,7 +52,7 @@ if ($cms_type == "Wedding") {
 
 <!-- / -->
 <!-- Page Title -->
-<title>Mi-Admin | Guest List</title>
+<title>Mi-Admin | Invite List</title>
 <!-- /Page Title -->
 </head>
 
@@ -78,7 +74,7 @@ if ($cms_type == "Wedding") {
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / <?php if ($cms_type == "Business") {
                                                                                                 echo "Settings";
                                                                                             } else {
-                                                                                                echo "Guest List";
+                                                                                                echo "Invitations";
                                                                                             } ?></div>
             <div class="main-cards">
 
@@ -87,7 +83,7 @@ if ($cms_type == "Wedding") {
 
 
                     <?php if ($cms_type == "Wedding") : ?>
-                        <h2>Your Guest List</h2>
+                        <h2>Your Invitations</h2>
                         <p>Keep this information up to date as you plan for big day. Your invites will be sent out from this information.</p>
                         <a href="guest.php?action=create" class="btn-primary">Add Guest  <i class="fa-solid fa-user-plus"></i></a>
                         <div class="search-controls">

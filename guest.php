@@ -64,14 +64,19 @@ if ($cms_type == "Wedding") {
 }
 
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//guest variable
-$guest_id = $_GET['guest_id'];
-//find guest details
+//guest variable, only required for edit and view actions
+if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
+    $guest_id = $_GET['guest_id'];
+    //find guest details
 
-$guest = $db->prepare('SELECT * FROM guest_list WHERE guest_id =' . $guest_id);
+    $guest = $db->prepare('SELECT * FROM guest_list WHERE guest_id =' . $guest_id);
 
-$guest->execute();
-$guest->store_result();
+    $guest->execute();
+    $guest->store_result();
+} else {
+    $guest_id = "";
+}
+
 
 
 ?>
@@ -108,6 +113,9 @@ $guest->store_result();
                 <?php if ($_GET['action'] == "view") : ?>
                     / View Guest
                 <?php endif; ?>
+                <?php if ($_GET['action'] == "create") : ?>
+                    / Add Guest
+                <?php endif; ?>
             </div>
             <div class="main-cards">
                 <?php if ($_GET['action'] == "edit") : ?>
@@ -119,10 +127,11 @@ $guest->store_result();
                 <?php if ($_GET['action'] == "delete") : ?>
                     <h1>Delete Guest</h1>
                 <?php endif; ?>
-
-                <?php if ($_GET['action'] == "edit") : ?>
-                <?php else : ?>
+                <?php if ($_GET['action'] == "create") : ?>
+                    <h1>Add Guest</h1>
                 <?php endif; ?>
+
+
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : //detect if user is an admin or not 
                 ?>
                     <?php if ($_GET['action'] == "delete") : //if action is delete, detect if the confirm is yes or no
@@ -178,10 +187,60 @@ $guest->store_result();
 
 
                     <?php endif; ?>
+                    
+                    <?php if ($_GET['action'] == "create") : ?>
+                        <div class="std-card">
+                            <form class="form-card" id="add_guest" action="scripts/guest.script.php" method="POST" enctype="multipart/form-data">
+                                <div class="form-input-wrapper">
+                                    <label for="guest_fname"><strong>First Name</strong></label>
+                                    <!-- input -->
+                                    <input class="text-input input" type="text" name="guest_fname" id="guest_fname" placeholder="Guest First Name" required="" maxlength="45">
+                                </div>
+                                <div class="form-input-wrapper">
+                                    <label for="guest_sname"><strong>Surname</strong></label>
+                                    <!-- input -->
+                                    <input class="text-input input" type="text" name="guest_sname" id="guest_sname" placeholder="Guest Surname" required="" maxlength="45">
+                                </div>
+
+                                <div class="form-input-wrapper my-2">
+                                    <label for="guest_email"><strong>Email Address</strong></label>
+                                    <input class="text-input input" type="text" id="guest_email" name="guest_email" placeholder="Email Address">
+                                </div>
+
+                                <div class="form-input-wrapper my-2">
+                                    <label for="guest_address"><strong>Address</strong></label>
+                                    <textarea name="guest_address" id="guest_address"></textarea>
+                                </div>
+
+                                <div class="form-input-wrapper my-2">
+                                    <label for="guest_postcode"><strong>Postcode</strong></label>
+                                    <input class="text-input input" type="text" id="guest_postcode" name="guest_postcode" placeholder="Postcode">
+                                </div>
+
+                                <div class="form-input-wrapper my-2">
+                                    <label for="guest_extra_invites"><strong>Extra Invites</strong></label>
+                                    <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
+                                    <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" min="0" max="10">
+
+
+                                </div>
+                                <div class="button-section my-3">
+                                    <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Add Guest </button>
+                                </div>
+
+                                <div id="response" class="d-none">
+                                    <p>Article Saved <img src="./assets/img/icons/check.svg" alt=""></p>
+                                </div>
+                            </form>
+                        </div>
+
+                    <?php endif; ?>
+
+
 
                     <?php if ($_GET['action'] == "edit") : ?>
                         <?php if (($guest->num_rows) > 0) :
-                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type,$guest_group_id, $guest_events);
+                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
                             $guest->fetch();
 
                         ?>
@@ -216,14 +275,14 @@ $guest->store_result();
                                     <div class="form-input-wrapper my-2">
                                         <label for="guest_extra_invites"><strong>Extra Invites</strong></label>
 
-                                        <?php if($guest_type=="Member"): ?>
-                                            <p class="form-hint-small my-2">You can't assign extra invites to <?=$guest_fname;?> as they are a member of another guest group.</p>
+                                        <?php if ($guest_type == "Member") : ?>
+                                            <p class="form-hint-small my-2">You can't assign extra invites to <?= $guest_fname; ?> as they are a member of another guest group.</p>
                                             <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="0" disabled>
-                                        <?php endif;?>
-                                        <?php if($guest_type=="Group Organiser"): ?>
+                                        <?php endif; ?>
+                                        <?php if ($guest_type == "Group Organiser") : ?>
                                             <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
                                             <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
-                                        <?php endif;?>
+                                        <?php endif; ?>
 
                                     </div>
                                     <div class="button-section my-3">
@@ -245,7 +304,7 @@ $guest->store_result();
 
                     <?php if ($_GET['action'] == "view") : ?>
                         <?php if (($guest->num_rows) > 0) :
-                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code,$guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id,$guest_events, $guest_dietery);
+                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
                             $guest->fetch();
 
                         ?>
@@ -273,52 +332,55 @@ $guest->store_result();
                             <?php endif; ?>
                             </p>
                             <h3>Dietary Requirements </h3>
-                            <p><?=$guest_dietery;?></p>
-                            <a href="guest.php?action=edit&guest_id=<?= $guest_id ?>" class="btn-primary my-2">Edit Guest</a>
+                            <p><?= $guest_dietery; ?></p>
+                            <div class="card-actions">
+                                <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Guest </a><br>
+                                <a class="my-2" href="image.php?action=delete&confirm=no&image_id=<?= $image_id; ?>"><i class="fa-solid fa-trash"></i> Remove Guest </a>
+                            </div>
                             </div>
 
-                            <?php if($guest_type =="Group Organiser") :
-                                $guest_group_query = ('SELECT guest_id, guest_fname, guest_sname, guest_rsvp_status, guest_events FROM guest_list  WHERE guest_group_id='.$guest_group_id.' AND guest_type ="Member" ORDER BY guest_sname');
+                            <?php if ($guest_type == "Group Organiser") :
+                                $guest_group_query = ('SELECT guest_id, guest_fname, guest_sname, guest_rsvp_status, guest_events FROM guest_list  WHERE guest_group_id=' . $guest_group_id . ' AND guest_type ="Member" ORDER BY guest_sname');
                                 $guest_group = $db->query($guest_group_query);
-                                $guest_group_result = $guest_group->fetch_assoc();  
-                                  
-                            ?>
-                                <div class="std-card">
-                                <h3>Group</h3>
-                                <p>The guest group that <?= $guest_fname; ?> is organising.</p>
-
-                                <table class="std-table">
-                                    
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Attending</th>
-                                        <th>RSVP Status</th>
-                                        
-                                    </tr>
-                                    <?php foreach($guest_group as $guest): ?>
-                                    <tr>
-                                        <td><a href="guest.php?action=view&guest_id=<?=$guest['guest_id'];?>"><?=$guest['guest_fname']." ".$guest['guest_sname'];?></a></td>
-                                        <td><?=$guest['guest_events'];?></td>
-                                        <td><?=$guest['guest_rsvp_status'];?></td>
-                                    </tr>
-                                <?php endforeach;?>
-
-                                </table>
-                            </div>
-                            <?php endif;?>
-                        <?php if($guest_type =="Member"):
-                                    $group_details_query = ('SELECT guest_id, guest_fname, guest_sname, guest_group_id FROM guest_list WHERE guest_group_id='.$guest_group_id.' AND guest_type = "Group Organiser"');
-                                    $group_details = $db->query($group_details_query);
-                                    $group_details_result = $group_details->fetch_assoc(); 
+                                $guest_group_result = $guest_group->fetch_assoc();
 
                             ?>
-                            <?php if($group_details-> num_rows>=1):?>
                                 <div class="std-card">
-                                    <h3>Guest Group</h3>
-                                    <p><?=$guest_fname;?> is a member of a guest group that is managed by <a href="guest.php?action=view&guest_id=<?=$group_details_result['guest_id'];?>"><?=$group_details_result['guest_fname']." ".$group_details_result['guest_sname'];?></a></p>
+                                    <h3>Group</h3>
+                                    <p>The guest group that <?= $guest_fname; ?> is organising.</p>
+
+                                    <table class="std-table">
+
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Attending</th>
+                                            <th>RSVP Status</th>
+
+                                        </tr>
+                                        <?php foreach ($guest_group as $guest) : ?>
+                                            <tr>
+                                                <td><a href="guest.php?action=view&guest_id=<?= $guest['guest_id']; ?>"><?= $guest['guest_fname'] . " " . $guest['guest_sname']; ?></a></td>
+                                                <td><?= $guest['guest_events']; ?></td>
+                                                <td><?= $guest['guest_rsvp_status']; ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+
+                                    </table>
                                 </div>
-                            <?php endif;?>
-                        <?php endif;?>
+                            <?php endif; ?>
+                            <?php if ($guest_type == "Member") :
+                                $group_details_query = ('SELECT guest_id, guest_fname, guest_sname, guest_group_id FROM guest_list WHERE guest_group_id=' . $guest_group_id . ' AND guest_type = "Group Organiser"');
+                                $group_details = $db->query($group_details_query);
+                                $group_details_result = $group_details->fetch_assoc();
+
+                            ?>
+                                <?php if ($group_details->num_rows >= 1) : ?>
+                                    <div class="std-card">
+                                        <h3>Guest Group</h3>
+                                        <p><?= $guest_fname; ?> is a member of a guest group that is managed by <a href="guest.php?action=view&guest_id=<?= $group_details_result['guest_id']; ?>"><?= $group_details_result['guest_fname'] . " " . $group_details_result['guest_sname']; ?></a></p>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         <?php else : ?>
                             <div class="std-card">
                                 <h2>Error</h2>
@@ -374,6 +436,26 @@ $guest->store_result();
 
         });
     </script>
+    <script>
+        //script for adding a guest
+        $("#add_guest").submit(function(event) {
+            event.preventDefault();
+            var formData = new FormData($("#add_guest").get(0));
+            formData.append("action", "create");
+            $.ajax({ //start ajax post
+                type: "POST",
+                url: "scripts/guest.script.php",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data, responseText) {
+                    //window.location.replace('guest.php?action=view&guest_id=' + guest_id);
+                }
+            });
+
+        });
+    </script>
+
 </body>
 
 </html>

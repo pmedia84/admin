@@ -241,7 +241,7 @@ $event->store_result();
 
                     <?php if ($_GET['action'] == "view") : ?>
                         <?php if (($event->num_rows) > 0) :
-                            $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_menu_id);
+                            $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_capacity);
                             $event->fetch();
                             $event_time = strtotime($event_time);
                             $time = date('H:ia', $event_time);
@@ -263,6 +263,10 @@ $event->store_result();
                                         <h4>Time</h4>
                                         <p><?= $time; ?></p>
                                     </div>
+                                    <div class="event-card-item">
+                                        <h4>Venue Capacity</h4>
+                                        <p><?= $event_capacity; ?></p>
+                                    </div>
                                 </div>
                                 <h4>Address</h4>
                                 <address class="my-2"><?= $event_address; ?></address>
@@ -271,53 +275,71 @@ $event->store_result();
 
                                 <h4>Event Notes</h4>
                                 <p><?=$event_notes;?></p>
-                                <h4>Event Menu</h4>
-                                <p><?php if($event_menu_id =="0"):?>
-                                    There is no menu set up. <a href="menus.php">Click Here</a> to set up a menu for your <?=$event_name;?>
-                                <?php endif;?>
+
                                 </p>
 
                                 <div class="event-card-guestlist">
+                                    <?php 
+                                    //load all invites details
+                                    $guest_allocated_query = ('SELECT invite_id FROM invitations  WHERE event_id='.$event_id);
+                                    $invites = $db->query($guest_allocated_query);
+                                    $guests_allocated = $invites->num_rows;
+                                    //find additional invites
+                                    $extra_invites_query = ('SELECT guest_list.guest_id, SUM(guest_list.guest_extra_invites) AS extra_inv, invitations.guest_id FROM guest_list NATURAL LEFT JOIN invitations WHERE guest_id=invitations.guest_id');
+                                    $extra_invites = $db->query($extra_invites_query);
+                                    $extra_inv = $extra_invites->fetch_array();
+                                    $total_inv = $extra_inv['extra_inv'];
+                                    //
+                                    $invites_sent = ('SELECT invite_id FROM invitations  WHERE event_id='.$event_id.' AND invite_status="Sent"');
+                                    $invites = $db->query($invites_sent);
+                                    $invites_sent = $invites->num_rows;
+                                    ?>
                                     <h4>Invite Details</h4>
+                                    <p>Note that the figures below also include guests that can bring others with them.</p>
                                     <div class="event-card-invites">
                                         <div class="event-card-invites-textbox">
-                                            <p>Invites Available </p><span>50</span>
+                                            <p>Invites Available </p><span><?=$event_capacity - $total_inv -$guests_allocated;?></span>
                                         </div>
                                         <div class="event-card-invites-textbox">
-                                            <p>Invites Sent </p><span>50</span>
+                                            <?php  
+                                            ?>
+                                            <p>Invites Sent </p><span><?=$invites_sent;?></span>
                                         </div>
+
                                         <div class="event-card-invites-textbox">
-                                            <p>Invites Available </p><span>50</span>
-                                        </div>
-                                        <div class="event-card-invites-textbox">
-                                            <p>Guests Allocated </p><span>50</span>
+                                            <p>Guests Allocated </p><span><?=$total_inv;?></span>
                                         </div>
                                     </div>
 
                                     <h4>Guest List</h4>
                                     <table class="event-card-guestlist-table ">
+                                        <?php
+                                        $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, invitations.event_id, invitations.guest_id, invitations.invite_status, invitations.invite_rsvp_status FROM guest_list NATURAL LEFT JOIN invitations WHERE guest_list.guest_id = invitations.guest_id AND event_id='.$event_id);
+                                        $guest_list = $db->query($guest_list_query);
+                                        ?>
+  
                                         <tr>
                                             <th>Name</th>
                                             <th>Invited</th>
                                             <th>RSVP Status</th>
                                         </tr>
-                                        <tr>
-                                            <td><a href="">Karl</a></td>
-                                            <td>Yes</td>
-                                            <td>Not replied</td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="">Amy</a></td>
-                                            <td>Yes</td>
-                                            <td>Not replied</td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="">Jeffery</a></td>
-                                            <td>Yes</td>
-                                            <td>Not replied</td>
-                                        </tr>
+                                        <?php foreach($guest_list as $guest):
+                                                    if($guest['guest_extra_invites']>=1){
+                                                        $plus= "+".$guest['guest_extra_invites'];
+                                                    }else{
+                                                        $plus="";
+                                                    }    
+                                        ?>
+                                            <tr>
+                                                <td><a href="guest.php?action=view&guest_id=<?=$guest['guest_id'];?>"><?=$guest['guest_fname']." ".$guest['guest_sname'].' '.$plus;?></a></td>
+                                                <td><?=$guest['invite_status'];?></td>
+                                                <td><?=$guest['invite_status'];?></td>
+                                            </tr>
+                                        <?php endforeach;?> 
+
+
                                     </table>
-                                    <a class="btn-primary" hre>Manage Guest List</a>
+                                    <a class="btn-primary" href="event.php?action=assign">Assign Guests</a>
                                 </div>
                                 <div class="card-actions">
                                     <a class="my-2" href="event.php?action=edit&event_id=<?= $event_id; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Event </a>

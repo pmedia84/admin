@@ -28,7 +28,7 @@ $pass = "Krb833908"; /// Password
 $from = $username; ///Email address
 
 $fromname = "Parrot Media"; /// Username and how you want your name to be displayed on emails
-$emailheaderlogo = "https://www.parrotmedia.co.uk/img/pmedia-logo-new.png";//logo url for inserting into the top of email bodies
+$emailheaderlogo = "https://www.parrotmedia.co.uk/img/pmedia-logo-new.png"; //logo url for inserting into the top of email bodies
 
 ////////////////Modules Available\\\\\\\\\\\\\\\\\\\\
 //connect to modules table and load available modules
@@ -63,6 +63,8 @@ foreach ($modules as $module) {
     if ($module['module_name'] == "News") {
         $news_status = $module['module_status'];
     }
-
-
+    //Invite Manager
+    if ($module['module_name'] == "Invite Manager") {
+        $invite_manager_status = $module['module_status'];
+    }
 }

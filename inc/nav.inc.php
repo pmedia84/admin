@@ -32,6 +32,9 @@
                 <?php if ($guest_list_status == "On") : ?>
                     <li><a class="nav-link" href="guest_list.php">Guest List <i class="fa-solid fa-people-group"></i></a></li>
                 <?php endif; ?>
+                <?php if ($invite_manager_status == "On") : ?>
+                    <li><a class="nav-link" href="invitations.php">Invitations <i class="fa-solid fa-newspaper"></i></a></li>
+                <?php endif; ?>
                 <?php if ($image_gallery_status == "On") : ?>
                     <li><a class="nav-link" href="gallery.php">Image Gallery <i class="fa-solid fa-image"></i></a></li>
                 <?php endif; ?>

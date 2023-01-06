@@ -4,9 +4,10 @@ if (!$_SESSION['loggedin'] == true) {
     // Redirect to the login page:
     header('Location: login.php');
 }
+include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
-include("connect.php");
+
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
 //wedding is the name of people
@@ -36,25 +37,25 @@ if ($cms_type == "Business") {
 
 //run checks to make sure a wedding has been set up correctly
 if ($cms_type == "Wedding") {
+    //look for the Wedding set up and load information
+    //find Wedding details.
+    $wedding = $db->prepare('SELECT * FROM wedding');
 
-    //look for a wedding setup in the db, if not then direct to the setup page
-    $wedding_query = ('SELECT wedding_id, wedding_name FROM wedding');
-    $wedding = $db->query($wedding_query);
-    $wedding_details = mysqli_fetch_assoc($wedding);
-    if ($wedding->num_rows == 0) {
-        header('Location: setup.php?action=setup_wedding');
-    }
-    //check that there are users set up 
-    $wedding_user_query = ('SELECT wedding_user_id FROM wedding_users');
-    $wedding_user = $db->query($wedding_user_query);
-    if ($wedding_user->num_rows == 0) {
-        header('Location: setup.php?action=check_users_wedding');
-    }
+    $wedding->execute();
+    $wedding->store_result();
+    $wedding->bind_result($wedding_id, $wedding_name, $wedding_email, $wedding_phone, $wedding_contact_name);
+    $wedding->fetch();
+    $wedding->close();
+    //set cms name
+    $cms_name = $wedding_name;
+    //find user details for this business
+    $wedding_users = $db->prepare('SELECT users.user_id, users.user_name, wedding_users.wedding_id, wedding_users.user_type FROM users NATURAL LEFT JOIN wedding_users WHERE users.user_id=' . $user_id);
 
-    if (!$_SESSION['loggedin'] == true) {
-        // Redirect to the login page:
-        header('Location: login.php');
-    }
+    $wedding_users->execute();
+    $wedding_users->bind_result($user_id, $user_name, $wedding_id, $user_type);
+    $wedding_users->fetch();
+    $wedding_users->close();
+
 }
 
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -118,7 +119,7 @@ $image->store_result();
                     <p class="font-emphasis">This page is best viewed on a large screen</p>
                 <?php else : ?>
                 <?php endif; ?>
-                <?php if ($user_type == "Admin") : //detect if user is an admin or not 
+                <?php if ($user_type == "Admin" ||$user_type=="Developer") : //detect if user is an admin or not 
                 ?>
                     <?php if ($_GET['action'] == "delete") : //if action is delete, detect if the confirm is yes or no
                     ?>

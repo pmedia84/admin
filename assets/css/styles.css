@@ -992,7 +992,7 @@ input:checked + .slider:before {
             fill: #fff;
         } 
 
-.price-list-controls{
+.price-list-controls, .search-controls{
     background-color: hsl(163, 28%, 80%);
     border-radius: 10px;
     padding: 0.5rem;
@@ -1000,7 +1000,7 @@ input:checked + .slider:before {
 
 @media(min-width: 768px){ 
 
-.price-list-controls{
+.price-list-controls, .search-controls{
         display: flex;
         align-items: center;
         justify-content: space-between
