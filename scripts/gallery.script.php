@@ -102,7 +102,7 @@ if (isset($_POST['action'])) {
         } else { //else set store in db as an array
             $img_placement = implode(",", $_POST['img_placement']);
         }
-
+        
         //Update image
         $update_image = $db->prepare('UPDATE images SET image_title=?, image_description=?, image_placement=?  WHERE image_id =?');
         $update_image->bind_param('sssi', $image_title, $image_description, $img_placement, $image_id);
