@@ -357,7 +357,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
                                             <th>RSVP Status</th>
 
                                         </tr>
-                                        <?php foreach ($guest_group as $guest) : ?>
+                                        <?php foreach ($guest_group as $guest):?>
                                             <tr>
                                                 <td><a href="guest.php?action=view&guest_id=<?= $guest['guest_id']; ?>"><?= $guest['guest_fname'] . " " . $guest['guest_sname']; ?></a></td>
                                                 <td><?= $guest['guest_events']; ?></td>
@@ -369,6 +369,19 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
                                 </div>
                             <?php endif; ?>
                             <?php if ($guest_type == "Member") :
+                                $group_details_query = ('SELECT guest_id, guest_fname, guest_sname, guest_group_id FROM guest_list WHERE guest_group_id=' . $guest_group_id . ' AND guest_type = "Group Organiser"');
+                                $group_details = $db->query($group_details_query);
+                                $group_details_result = $group_details->fetch_assoc();
+
+                            ?>
+                                <?php if ($group_details->num_rows >= 1):?>
+                                    <div class="std-card">
+                                        <h3>Guest Group</h3>
+                                        <p><?= $guest_fname; ?> is a member of a guest group that is managed by <a href="guest.php?action=view&guest_id=<?= $group_details_result['guest_id']; ?>"><?= $group_details_result['guest_fname'] . " " . $group_details_result['guest_sname']; ?></a></p>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                                <?php if ($guest_type == "Member" || $guest_group_id==NULL) :
                                 $group_details_query = ('SELECT guest_id, guest_fname, guest_sname, guest_group_id FROM guest_list WHERE guest_group_id=' . $guest_group_id . ' AND guest_type = "Group Organiser"');
                                 $group_details = $db->query($group_details_query);
                                 $group_details_result = $group_details->fetch_assoc();

@@ -52,7 +52,7 @@ if ($cms_type == "Wedding") {
 
 <!-- / -->
 <!-- Page Title -->
-<title>Mi-Admin | Invite List</title>
+<title>Mi-Admin | Invitation List</title>
 <!-- /Page Title -->
 </head>
 
@@ -64,7 +64,7 @@ if ($cms_type == "Wedding") {
 
 
         <!-- Header Section -->
-        <?php include("inc/header.inc.php");?>
+        <?php include("inc/header.inc.php"); ?>
         <!-- Nav Bar -->
         <?php include("./inc/nav.inc.php"); ?>
         <!-- /nav bar -->
@@ -79,38 +79,47 @@ if ($cms_type == "Wedding") {
             <div class="main-cards">
 
 
-                <?php if ($user_type == "Admin" || $user_type=="Developer") : ?>
+                <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
 
 
                     <?php if ($cms_type == "Wedding") : ?>
                         <h2>Your Invitations</h2>
-                        <p>Keep this information up to date as you plan for big day. Your invites will be sent out from this information.</p>
-                        <a href="guest.php?action=create" class="btn-primary">Add Guest  <i class="fa-solid fa-user-plus"></i></a>
-                        <div class="search-controls">
-                            <form id="guest_search" action="./scripts/guest_list.script.php" method="POST">
+                        <p>This is your invite list, this list is automatically populated when you assign guests to events.</p>
+                        
+                            <form id="invite_search" action="./scripts/guest_list.script.php" method="POST">
+                            <div class="search-controls">
+
                                 <div class="form-input-wrapper">
-                                <label for="search">Search by guest name</label>
+                                    <label for="search">Search by guest name</label>
                                     <div class="search-input">
-                                   
                                         <input type="text" id="search" name="search" placeholder="Search For A Guest ...">
                                         <button class="btn-primary form-controls-btn loading-btn" type="submit"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></button>
                                     </div>
                                 </div>
-                            </form>
-                            <form id="guest_search_filter" action="./scripts/guest_list.script.php" method="POST">
                                 <div class="form-input-wrapper">
                                     <label for="user_email">Filter By Event</label>
-                                    <select class="form-select" name="search" id="search_filter">
+                                    <select class="form-select" name="event_name" id="search_filter">
                                         <option value="">Show All Events</option>
-                                    <?php foreach ($wedding_events as $event) :?>
-                                        <option value="<?=$event['event_name'];?>"><?=$event['event_name'];?></option>
-                                    <?php endforeach;?>
+                                        <?php foreach ($wedding_events as $event) : ?>
+                                            <option value="<?= $event['event_name']; ?>"><?= $event['event_name']; ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="form-input-wrapper">
+                                    <label for="user_email">Filter By RSVP Status</label>
+                                    <select class="form-select" name="rsvp_status" id="rsvp_status">
+                                            <option value="">Show All Status</option>
+                                            <option value="Not Replied">Not Replied</option>
+                                            <option value="Attending">Attending</option>
+                                            <option value="Unsure">Unsure</option>
+                                            <option value="Not Attending">Not Attending</option>
+                                    </select>
+                                </div>
 
-                        <div class="std-card d-none" id="guest_list">
+                        
+                            </div>
+                            </form>
+                        <div class="std-card d-none" id="invite_list">
 
                         </div>
 
@@ -138,14 +147,14 @@ if ($cms_type == "Wedding") {
 </body>
 <script>
     $(document).ready(function() {
-        url = "scripts/guest_list.script.php?action=load_guest_list";
+        url = "scripts/invitations.script.php?action=load_guest_list";
         $.ajax({ //load image gallery
             type: "GET",
             url: url,
             encode: true,
             success: function(data, responseText) {
-                $("#guest_list").html(data);
-                $("#guest_list").fadeIn(500);
+                $("#invite_list").html(data);
+                $("#invite_list").fadeIn(500);
 
 
             }
@@ -154,65 +163,65 @@ if ($cms_type == "Wedding") {
 </script>
 <script>
     //script for searching for guests
-    $("#guest_search").submit(function(event) {
+    $("#invite_search").on('submit keyup change',function(event) {
         event.preventDefault();
-        var formData = new FormData($("#guest_search").get(0));
-        formData.append("action", "guest_search");
+        var formData = new FormData($("#invite_search").get(0));
+        formData.append("action", "invite_search");
 
         $.ajax({ //start ajax post
             type: "POST",
-            url: "scripts/guest_list.script.php",
+            url: "scripts/invitations.script.php",
             data: formData,
             contentType: false,
             processData: false,
 
             success: function(data, responseText) {
-                $("#guest_list").html(data);
-                $("#guest_list").fadeIn(500);
+                $("#invite_list").html(data);
+                $("#invite_list").fadeIn(500);
             }
         });
 
     });
-    //script for searching for guests
-    $("#guest_search").on('keyup', function(event) {
-        event.preventDefault();
-        var formData = new FormData($("#guest_search").get(0));
-        formData.append("action", "guest_search");
+    // //script for searching for guests
+    // $("#guest_search").on('keyup', function(event) {
+    //     event.preventDefault();
+    //     var formData = new FormData($("#guest_search").get(0));
+    //     formData.append("action", "guest_search");
 
-        $.ajax({ //start ajax post
-            type: "POST",
-            url: "scripts/guest_list.script.php",
-            data: formData,
-            contentType: false,
-            processData: false,
+    //     $.ajax({ //start ajax post
+    //         type: "POST",
+    //         url: "scripts/invitations.script.php",
+    //         data: formData,
+    //         contentType: false,
+    //         processData: false,
 
-            success: function(data, responseText) {
-                $("#guest_list").html(data);
-                $("#guest_list").fadeIn(500);
-            }
-        });
+    //         success: function(data, responseText) {
+    //             $("#invite_list").html(data);
+    //             $("#invite_list").fadeIn(500);
+    //         }
+    //     });
 
-    });
-        //script for searching for guests
-        $("#search_filter").on('change', function(event) {
-        event.preventDefault();
-        var formData = new FormData($("#guest_search_filter").get(0));
-        formData.append("action", "guest_search_filter");
+    // });
+    // //script for searching for guests
+    // $("#search_filter").on('change', function(event) {
+    //     event.preventDefault();
+    //     var formData = new FormData($("#eventsearch_filter").get(0));
+    //     formData.append("action", "event_search_filter");
 
-        $.ajax({ //start ajax post
-            type: "POST",
-            url: "scripts/guest_list.script.php",
-            data: formData,
-            contentType: false,
-            processData: false,
+    //     $.ajax({ //start ajax post
+    //         type: "POST",
+    //         url: "scripts/invitations.script.php",
+    //         data: formData,
+    //         contentType: false,
+    //         processData: false,
 
-            success: function(data, responseText) {
-                $("#guest_list").html(data);
-                $("#guest_list").fadeIn(500);
-            }
-        });
+    //         success: function(data, responseText) {
+    //             $("#invite_list").html(data);
+    //             $("#invite_list").fadeIn(500);
+    //         }
+    //     });
 
-    });
+    // });
 </script>
 
 </html>
