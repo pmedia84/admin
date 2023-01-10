@@ -240,9 +240,21 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
 
                     <?php if ($_GET['action'] == "edit") : ?>
                         <?php if (($guest->num_rows) > 0) :
+                        //load guest information
                             $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
                             $guest->fetch();
 
+                        //load guest group information if they are an organiser
+                        if($guest_type=="Group Organiser"){
+                            $group_details = $db->prepare('SELECT guest_group_status FROM guest_groups  WHERE guest_group_id=' . $guest_group_id);
+
+                            $group_details->execute();
+                            $group_details->bind_result($guest_group_status);
+                            $group_details->fetch();
+                            //$group_details->close();
+                        }else{
+                            $guest_group_status="";
+                        }    
                         ?>
                             <h2><?= $guest_fname . ' ' . $guest_sname; ?></h2>
                             <div class="std-card">
@@ -272,18 +284,21 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
                                         <label for="guest_postcode"><strong>Postcode</strong></label>
                                         <input class="text-input input" type="text" id="guest_postcode" name="guest_postcode" placeholder="Postcode" value="<?= $guest_postcode; ?>">
                                     </div>
+
                                     <div class="form-input-wrapper my-2">
                                         <label for="guest_extra_invites"><strong>Extra Invites</strong></label>
-
-                                        <?php if ($guest_type == "Member") : ?>
-                                            <p class="form-hint-small my-2">You can't assign extra invites to <?= $guest_fname; ?> as they are a member of another guest group.</p>
-                                            <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="0" disabled>
-                                        <?php endif; ?>
-                                        <?php if ($guest_type == "Group Organiser") : ?>
-                                            <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
-                                            <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
-                                        <?php endif; ?>
-
+                                        <?php if($guest_group_status =="Assigned"):?>
+                                        <p class="form-hint-small my-2"><?=$guest_fname;?> has already assigned guests to their group, so you can only increase the number of invites available.</p>
+                                        <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="<?= $guest_extra_invites; ?>" max="10">
+                                        <?php endif;?>
+                                        <?php if($guest_group_status =="Unassigned"):?>
+                                        <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
+                                        <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
+                                        <?php endif;?>
+                                        <?php if($guest_type=="Sole"):?>
+                                        <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
+                                        <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
+                                        <?php endif;?>
                                     </div>
                                     <div class="button-section my-3">
                                         <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes </button>
@@ -381,19 +396,12 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
                                     </div>
                                 <?php endif; ?>
                             <?php endif; ?>
-                                <?php if ($guest_type == "Member" || $guest_group_id==NULL) :
-                                $group_details_query = ('SELECT guest_id, guest_fname, guest_sname, guest_group_id FROM guest_list WHERE guest_group_id=' . $guest_group_id . ' AND guest_type = "Group Organiser"');
-                                $group_details = $db->query($group_details_query);
-                                $group_details_result = $group_details->fetch_assoc();
-
-                            ?>
-                                <?php if ($group_details->num_rows >= 1) : ?>
+                                <?php if ($guest_type == "Sole") :?>
                                     <div class="std-card">
                                         <h3>Guest Group</h3>
-                                        <p><?= $guest_fname; ?> is a member of a guest group that is managed by <a href="guest.php?action=view&guest_id=<?= $group_details_result['guest_id']; ?>"><?= $group_details_result['guest_fname'] . " " . $group_details_result['guest_sname']; ?></a></p>
+                                        <p><?= $guest_fname; ?> is not associated with a group, they are a sole invite. If you want them to bring guests, you can assign them invites by editing their details. </p>
                                     </div>
-                                <?php endif; ?>
-                            <?php endif; ?>
+                            <?php endif;?>
                         <?php else : ?>
                             <div class="std-card">
                                 <h2>Error</h2>
@@ -433,9 +441,11 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
             event.preventDefault();
             //declare form variables and collect GET request information
             guest_id = '<?php echo $guest_id; ?>';
+            guest_group_id = '<?php echo $guest_group_id; ?>';
             var formData = new FormData($("#edit_guest").get(0));
             formData.append("action", "edit");
             formData.append("guest_id", guest_id);
+            formData.append("guest_group_id", guest_group_id);
             $.ajax({ //start ajax post
                 type: "POST",
                 url: "scripts/guest.script.php",
@@ -446,7 +456,6 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
                     window.location.replace('guest.php?action=view&guest_id=' + guest_id);
                 }
             });
-
         });
     </script>
     <script>
@@ -462,7 +471,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
                 contentType: false,
                 processData: false,
                 success: function(data, responseText) {
-                    //window.location.replace('guest.php?action=view&guest_id=' + guest_id);
+                    window.location.replace('guest_list.php');
                 }
             });
 
