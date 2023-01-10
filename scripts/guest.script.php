@@ -18,7 +18,7 @@
 
         //if the guest now has extra invites associated with their record then add a group for them, but only if they are not a member of a group already
         
-        if($_POST['guest_extra_invites']>=1){
+        if($_POST['guest_extra_invites']>0){
             if($guest_group_id==NULL){
             //create a guest group if the guest being changed has one or more extra invites
             //set up a group name using first and last name of primary guest

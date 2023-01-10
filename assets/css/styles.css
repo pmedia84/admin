@@ -1407,7 +1407,17 @@ input:checked + .slider:before {
 
 .std-table tr:nth-child(even){
         background-color: hsl(163, 28%, 90%);
-    }
+    } 
+
+.guest-list-actions{
+    width: 100%;
+    max-width: 100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem;
+    font-size: 1.25rem;
+}
 /*spacing utilities*/
 /*m = margin*/
 /*p = padding*/

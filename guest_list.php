@@ -39,10 +39,7 @@ if ($cms_type == "Wedding") {
     $guest_list_query = ('SELECT * FROM guest_list ORDER BY guest_sname');
     $guest_list = $db->query($guest_list_query);
     $guest_list_result = $guest_list->fetch_assoc();
-    //find wedding events details
-    $wedding_events_query = ('SELECT * FROM wedding_events ORDER BY event_time');
-    $wedding_events = $db->query($wedding_events_query);
-    $wedding_events_result = $wedding_events->fetch_assoc();
+
 }
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //Guest list method, loads the list from a remote script so that it can be searched with ajax
@@ -101,17 +98,7 @@ if ($cms_type == "Wedding") {
                                     </div>
                                 </div>
                             </form>
-                            <form id="guest_search_filter" action="./scripts/guest_list.script.php" method="POST">
-                                <div class="form-input-wrapper">
-                                    <label for="user_email">Filter By Event</label>
-                                    <select class="form-select" name="search" id="search_filter">
-                                        <option value="">Show All Events</option>
-                                    <?php foreach ($wedding_events as $event) :?>
-                                        <option value="<?=$event['event_name'];?>"><?=$event['event_name'];?></option>
-                                    <?php endforeach;?>
-                                    </select>
-                                </div>
-                            </form>
+                            
                         </div>
 
                         <div class="std-card d-none" id="guest_list">
@@ -197,26 +184,7 @@ if ($cms_type == "Wedding") {
         });
 
     });
-        //script for searching for guests
-        $("#search_filter").on('change', function(event) {
-        event.preventDefault();
-        var formData = new FormData($("#guest_search_filter").get(0));
-        formData.append("action", "guest_search_filter");
-
-        $.ajax({ //start ajax post
-            type: "POST",
-            url: "scripts/guest_list.script.php",
-            data: formData,
-            contentType: false,
-            processData: false,
-
-            success: function(data, responseText) {
-                $("#guest_list").html(data);
-                $("#guest_list").fadeIn(500);
-            }
-        });
-
-    });
+       
 </script>
 
 </html>

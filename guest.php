@@ -335,6 +335,15 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
                         <?php if (($guest->num_rows) > 0) :
                             $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
                             $guest->fetch();
+                            //search for any events the guest is associated with
+                            $guest_invites = $db->query('SELECT wedding_events.event_id, wedding_events.event_name, invitations.guest_id, invitations.event_id, guest_list.guest_id, guest_list.guest_fname FROM wedding_events
+                            LEFT JOIN invitations ON invitations.event_id=wedding_events.event_id
+                            LEFT JOIN guest_list ON guest_list.guest_id=invitations.guest_id
+                            WHERE guest_list.guest_id='.$guest_id);
+                            if($guest_invites ->num_rows>1){
+                                $guest_invites ->fetch_array();
+                            }
+
 
                         ?>
                             <h2><?= $guest_fname . ' ' . $guest_sname; ?></h2>
@@ -351,15 +360,13 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
                                 <h3>Extra Invites</h3>
                                 <p><?= $guest_extra_invites; ?></p>
                                 <h3>Events</h3>
-
-                                <p>
-                                    <?php if ($guest_events == NULL) : ?>
-                                        <?= $guest_fname; ?> has not been assigned to any events yet. <a href="">Assign Event</a>
-                                    <?php else : ?>
-                                <p><?= $guest_fname; ?> is attending these events:</p>
-                                <p><strong><?= $guest_events; ?></strong></p>
-                            <?php endif; ?>
-                            </p>
+                                <?php if ($guest_invites ->num_rows>=1):?>
+                                <?php foreach($guest_invites as $invite):?>
+                                 <p><a href="event.php?action=view&event_id=<?=$invite['event_id'];?>"><?=$invite['event_name'];?></a></p>
+                                 <?php endforeach;?> 
+                                 <?php else:?>
+                                 <p><?=$guest_fname;?> Has not been assigned to any events yet. You can do that in your event manager <a href="events.php">Click Here</a></p>     
+                                 <?php endif;?>       
                             <h3>Dietary Requirements </h3>
                             <p><?= $guest_dietery; ?></p>
                             <div class="card-actions">
