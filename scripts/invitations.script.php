@@ -10,7 +10,7 @@ if (isset($_GET['action'])) {
                                 LEFT JOIN invitations ON guest_list.guest_id = invitations.guest_id
                                 LEFT JOIN wedding_events ON invitations.event_id = wedding_events.event_id
                                 WHERE invitations.guest_id=guest_list.guest_id
-                                ORDER BY guest_list.guest_sname');
+                                ORDER BY wedding_events.event_name');
         $guest_list = $db->query($guest_list_query);
         $guest_list_result = $guest_list->fetch_assoc();
         $num_invites = $guest_list->num_rows;
@@ -68,7 +68,7 @@ if (isset($_POST['action'])) {
                AND guest_list.guest_fname LIKE ("'.$search.'%")
                '.$event_filter.'
                '.$rsvp_status_filter.'
-               ORDER BY guest_list.guest_sname');
+               ORDER BY wedding_events.event_name');
 
                $guest_list = $db->query($guest_list_query);
                $guest_list_result = $guest_list->fetch_assoc();
