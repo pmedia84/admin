@@ -65,7 +65,7 @@ if ($cms_type == "Wedding") {
 
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //guest variable, only required for edit and view actions
-if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
+if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="delete") {
     $guest_id = $_GET['guest_id'];
     //find guest details
 
@@ -125,34 +125,42 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
                     <h1>View Guest</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "delete") : ?>
-                    <h1>Delete Guest</h1>
+                    <h1>Remove Guest</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "create") : ?>
                     <h1>Add Guest</h1>
                 <?php endif; ?>
 
 
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : //detect if user is an admin or not 
+                <?php if ($user_type == "Admin" || $user_type == "Developer") : //detect if user is an admin or developer 
                 ?>
                     <?php if ($_GET['action'] == "delete") : //if action is delete, detect if the confirm is yes or no
                     ?>
-                        <?php if ($_GET['confirm'] == "yes") : //if yes then delete the article
+                        <?php if ($_GET['confirm'] == "yes") : //if yes then delete the guest
                         ?>
-                            <?php if (($image->num_rows) > 0) :
-                                $image->bind_result($image_id, $image_title, $image_description, $image_filename, $image_upload_date, $image_placement);
-                                $image->fetch();
-                                // connect to db and delete the record
-                                $delete_image = "DELETE FROM images WHERE image_id=" . $image_id;
-                                //delete image on server
-                                $file =  "assets/img/gallery/" . $image_filename;
+                        <?php if (($guest->num_rows) > 0) :
+                            //load guest information
+                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
+                            $guest->fetch();
+                            //load any invites the guest may have and delete them also;
+                            $remove_invites = "DELETE FROM invitations WHERE guest_id=$guest_id";
+                            
 
-                                if (fopen($file, "w")) {
-                                    unlink($file);
-                                };
-                                if (mysqli_query($db, $delete_image)) {
-                                    echo '<div class="std-card"><div class="form-response error"><p>' . $image_title . ' Has Been Deleted</p></div></div>';
+                            if(mysqli_query($db, $remove_invites)){
+                                echo mysqli_error($db);
+                            }
+                            
+
+                            
+                                // connect to db and delete the guest
+                                $remove_guest = "DELETE FROM guest_list WHERE guest_id=$guest_id";
+                                if (mysqli_query($db, $remove_guest)) {
+                                    
+                                    echo '<div class="std-card"><div class="form-response error"><p>' . $guest_fname.' '.$guest_sname . ' Has been removed from your guest list</p></div></div>';
+                                    
                                 } else {
-                                    echo '<div class="form-response error"><p>Error deleting image, please try again.</p></div>';
+                                    echo '<div class="form-response error"><p>Error removing guest, please try again.</p></div>';
+                                    //echo mysqli_error($db);
                                 }
                             ?>
                             <?php else : ?>
@@ -163,23 +171,29 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
                             <?php endif; ?>
                         <?php else : //if not then display the message to confirm the user wants to delete the news article
                         ?>
-                            <?php if (($image->num_rows) > 0) :
-                                $image->bind_result($image_id, $image_title, $image_description, $image_filename, $image_upload_date, $image_placement);
-                                $image->fetch();
-
-
-
+                        <?php if (($guest->num_rows) > 0) :
+                        //load guest information
+                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
+                            $guest->fetch();
                             ?>
                                 <div class="std-card">
-                                    <h2 class="text-alert">Delete: <?= $image_title; ?></h2>
-                                    <p><?= $image_filename; ?></p>
-                                    <img src="./assets/img/gallery/<?= $image_filename; ?>" alt="" class="delete-thumb my-3">
-                                    <p>Are you sure you want to delete this image?</p>
+                                    <h2 class="text-alert">Remove: <?= $guest_fname.' '.$guest_sname;?> From your guest list?</h2>
+                                    <p>Are you sure you want to remove this guest from your guest list?</p>
                                     <p><strong>This Cannot Be Reversed</strong></p>
-                                    <div class="button-section">
-                                        <a class="btn-primary btn-delete my-2" href="image.php?action=delete&confirm=yes&image_id=<?= $image_id; ?>"><i class="fa-solid fa-trash"></i>Delete Image</a>
-                                        <a class="btn-primary btn-secondary my-2" href="image.php?action=view&image_id=<?= $image_id; ?>"><i class="fa-solid fa-ban"></i>Cancel</a>
+                                    <p><strong>Note:</strong> This will also remove any assignments they have to your events.</p>
+                                    <?php if($guest_type =="Group Organiser"):?>
+                                    <p><strong><?=$guest_fname;?> is a group organiser and cannot be removed!</strong></p>
+                                    <p><strong>Remove their extra invites and try again.</strong></p>
+                                    <div class="card-actions">
+                                        <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Guest </a><br>
                                     </div>
+                                    <?php else:?>
+                                        <div class="button-section">
+                                        <a class="btn-primary btn-delete my-2" href="guest.php?action=delete&confirm=yes&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i>Remove Guest</a>
+                                        <a class="btn-primary btn-secondary my-2" href="guest.php?action=view&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-ban"></i>Cancel</a>
+                                    </div>
+                                    <?php endif;?>
+
                                 </div>
                             <?php endif; ?>
                         <?php endif; ?>
@@ -350,7 +364,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view") {
                             <p><?= $guest_dietery; ?></p>
                             <div class="card-actions">
                                 <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Guest </a><br>
-                                <a class="my-2" href="image.php?action=delete&confirm=no&image_id=<?= $image_id; ?>"><i class="fa-solid fa-trash"></i> Remove Guest </a>
+                                <a class="my-2" href="guest.php?action=delete&confirm=no&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i> Remove Guest </a>
                             </div>
                             </div>
 
