@@ -33,7 +33,13 @@
                     <li><a class="nav-link" href="guest_list.php">Guest List <i class="fa-solid fa-people-group"></i></a></li>
                 <?php endif; ?>
                 <?php if ($invite_manager_status == "On") : ?>
-                    <li><a class="nav-link" href="invitations.php">Invitations <i class="fa-solid fa-newspaper"></i></a></li>
+                    <li><a class="nav-link" href="invitations.php">Invitations <i class="fa-solid fa-champagne-glasses"></i></a></li>
+                <?php endif; ?>
+                <?php if ($guest_messaging_status == "On") : ?>
+                    <li><a class="nav-link" href="messaging.php">Guest Messages <i class="fa-solid fa-message"></i></a></li>
+                <?php endif; ?>
+                <?php if ($gift_list_status == "On") : ?>
+                    <li><a class="nav-link" href="gift_list.php">Gift List <i class="fa-solid fa-gifts"></i></a></li>
                 <?php endif; ?>
                 <?php if ($image_gallery_status == "On") : ?>
                     <li><a class="nav-link" href="gallery.php">Image Gallery <i class="fa-solid fa-image"></i></a></li>
@@ -44,6 +50,7 @@
                 <?php if ($user_type == "Admin" || $user_type=="Developer") : ?>
                     <li><a class="nav-link" href="events.php">Events <i class="fa-solid fa-calendar-day"></i></a></li>
                 <?php endif; ?>
+
             <?php endif; ?>
             <?php if ($user_type == "Developer") : ?>
                     <li><a class="nav-link" href="cms_settings.php">CMS Settings <i class="fa-solid fa-gear"></i></a></li>

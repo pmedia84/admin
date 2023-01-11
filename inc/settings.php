@@ -67,4 +67,12 @@ foreach ($modules as $module) {
     if ($module['module_name'] == "Invite Manager") {
         $invite_manager_status = $module['module_status'];
     }
+    //Guest Messaging 
+    if ($module['module_name'] == "Guest Messaging") {
+        $guest_messaging_status = $module['module_status'];
+    }
+    //Gift List 
+    if ($module['module_name'] == "Gift List") {
+        $gift_list_status = $module['module_status'];
+    }
 }

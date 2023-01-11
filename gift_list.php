@@ -36,12 +36,12 @@ if ($cms_type == "Wedding") {
     $wedding_users->close();
 
     //find wedding guest list
-    $guest_list_query = ('SELECT * FROM guest_list ORDER BY guest_sname');
-    $guest_list = $db->query($guest_list_query);
-    $guest_list_result = $guest_list->fetch_assoc();
+    $gift_list_query = ('SELECT * FROM gift_list');
+    $gift_list = $db->query($gift_list_query);
+    $gift_list_result = $gift_list->fetch_assoc();
 }
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-//Guest list method, loads the list from a remote script so that it can be searched with ajax
+//Gift list method, loads the list from a remote script so that it can be searched with ajax
 
 
 ?>
@@ -68,7 +68,7 @@ if ($cms_type == "Wedding") {
         <!-- Nav Bar -->
         <?php include("./inc/nav.inc.php"); ?>
         <!-- /nav bar -->
-        <section class="body">
+        <div class="body">
 
 
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / <?php if ($cms_type == "Business") {
@@ -77,32 +77,33 @@ if ($cms_type == "Wedding") {
                                                                                                 echo "Guest List";
                                                                                             } ?></div>
             <div class="main-cards">
-
-
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-
-
                     <?php if ($cms_type == "Wedding") : ?>
-                        <h2>Your Guest List</h2>
+                        <h1>Your Gift List</h1>
                         <p>Keep this information up to date as you plan for big day. Your invites will be sent out from this information.</p>
-                        <a href="guest.php?action=create" class="btn-primary">Add Guest <i class="fa-solid fa-user-plus"></i></a>
-                        <div class="search-controls">
-                            <form id="guest_search" action="./scripts/guest_list.script.php" method="POST">
-                                <div class="form-input-wrapper">
-                                    <label for="search">Search by guest name</label>
-                                    <div class="search-input">
+                        <a href="gift_item.php?action=create" class="btn-primary">Add Item <i class="fa-solid fa-gift"></i></a>
 
-                                        <input type="text" id="search" name="search" placeholder="Search For A Guest ...">
-                                        <button class="btn-primary form-controls-btn loading-btn" type="submit"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></button>
+                        <?php if ($gift_list->num_rows > 0) : ?>
+                            <?php foreach ($gift_list as $gift_item) : ?>
+                                <div class="std-card">
+                                    <?php if ($gift_item['gift_item_name'] == "") : ?>
+                                        <h1>Gift List Message</h1>
+                                        <p><?= $gift_item['gift_item_desc']; ?></p>
+                                    <?php endif; ?>
+                                    <?php if ($gift_item['gift_item_name'] > "") : ?>
+                                        <h1><?= $gift_item['gift_item_name']; ?></h1>
+                                        <p><?= $gift_item['gift_item_desc']; ?></p>
+                                        <p><strong>URL: </strong><a href="http://<?= $gift_item['gift_item_url']; ?>" target="_blank"><?= $gift_item['gift_item_url']; ?></a></p>
+                                    <?php endif; ?>
+                                    <div class="card-actions">
+                                        <a class="my-2" href="gift_item.php?action=edit&gift_item_id=<?= $gift_item['gift_item_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Item </a><br>
+                                        <a class="my-2" href="gift_item.php?action=delete&confirm=no&gift_item_id=<?= $gift_item['gift_item_id']; ?>"><i class="fa-solid fa-trash"></i> Remove Item </a>
                                     </div>
                                 </div>
-                            </form>
 
-                        </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
 
-                        <div class="std-card d-none" id="guest_list">
-
-                        </div>
 
 
 
@@ -112,7 +113,7 @@ if ($cms_type == "Wedding") {
                 <?php endif; ?>
             </div>
 
-        </section>
+        </div>
 
 
     </main>
@@ -126,63 +127,7 @@ if ($cms_type == "Wedding") {
     <!-- /Footer -->
 
 </body>
-<script>
-    $(document).ready(function() {
-        url = "scripts/guest_list.script.php?action=load_guest_list";
-        $.ajax({ //load image gallery
-            type: "GET",
-            url: url,
-            encode: true,
-            success: function(data, responseText) {
-                $("#guest_list").html(data);
-                $("#guest_list").fadeIn(500);
 
 
-            }
-        });
-    })
-</script>
-<script>
-    //script for searching for guests
-    $("#guest_search").submit(function(event) {
-        event.preventDefault();
-        var formData = new FormData($("#guest_search").get(0));
-        formData.append("action", "guest_search");
-
-        $.ajax({ //start ajax post
-            type: "POST",
-            url: "scripts/guest_list.script.php",
-            data: formData,
-            contentType: false,
-            processData: false,
-
-            success: function(data, responseText) {
-                $("#guest_list").html(data);
-                $("#guest_list").fadeIn(500);
-            }
-        });
-
-    });
-    //script for searching for guests
-    $("#guest_search").on('keyup', function(event) {
-        event.preventDefault();
-        var formData = new FormData($("#guest_search").get(0));
-        formData.append("action", "guest_search");
-
-        $.ajax({ //start ajax post
-            type: "POST",
-            url: "scripts/guest_list.script.php",
-            data: formData,
-            contentType: false,
-            processData: false,
-
-            success: function(data, responseText) {
-                $("#guest_list").html(data);
-                $("#guest_list").fadeIn(500);
-            }
-        });
-
-    });
-</script>
 
 </html>

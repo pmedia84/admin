@@ -92,6 +92,10 @@ $image_amt = $image_num->num_rows;
 $user_num = ('SELECT user_id FROM users');
 $user_num = $db->query($user_num);
 $user_amt = $user_num->num_rows;
+//find the amount of guests
+$guest_num = ('SELECT guest_id FROM guest_list');
+$guest_num = $db->query($guest_num);
+$guest_amt = $guest_num->num_rows;
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -134,7 +138,7 @@ $user_amt = $user_num->num_rows;
                     <h2>Photo Gallery</h2>
                     <a href="gallery.php">Manage</a>
                 </div>
-                <?php if ($user_type == "Admin") : ?>
+                    <?php if ($user_type == "Admin") : ?>
                     <div class="dashboard-card">
                         <div class="dashboard-card-header">
                             <span><?= $user_amt; ?></span>
@@ -147,11 +151,11 @@ $user_amt = $user_num->num_rows;
                 <?php if ($cms_type == "Wedding") : ?>
                     <div class="dashboard-card">
                         <div class="dashboard-card-header">
-                            <span><?= $user_amt; ?></span>
+                            <span><?= $guest_amt; ?></span>
                             <img src="assets/img/icons/users.svg" alt="">
                         </div>
                         <h2>Guest List</h2>
-                        <a href="users.php">Manage</a>
+                        <a href="guest_list.php">Manage</a>
                     </div>
                 <?php endif; ?>
             </div>
