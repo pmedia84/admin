@@ -85,7 +85,7 @@ if ($cms_type == "Wedding") {
                     <?php if ($cms_type == "Wedding") : ?>
                         <h2>Your Invitations</h2>
                         <p>This is your invite list, this list is automatically populated when you assign guests to events.</p>
-                        
+                        <a class="btn-primary" href="invitations_dl.php">Download Invitations <i class="fa-solid fa-download"></i></a>
                             <form id="invite_search" action="./scripts/guest_list.script.php" method="POST">
                             <div class="search-controls">
 
