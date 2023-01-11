@@ -10,6 +10,7 @@
         $guest_postcode= mysqli_real_escape_string($db, $_POST['guest_postcode']);
         $guest_extra_invites= mysqli_real_escape_string($db, $_POST['guest_extra_invites']);
         $guest_group_id = $_POST['guest_group_id'];
+        
         //Update guest
         $guest = $db->prepare('UPDATE guest_list SET guest_fname=?, guest_sname=?, guest_email=?, guest_address=?, guest_postcode=?,guest_extra_invites=?  WHERE guest_id =?');
         $guest->bind_param('sssssii',$guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_extra_invites, $guest_id);
@@ -76,6 +77,11 @@
         $guest_postcode= mysqli_real_escape_string($db, $_POST['guest_postcode']);
         $guest_extra_invites= mysqli_real_escape_string($db, $_POST['guest_extra_invites']);
         $guest_extra_invites= mysqli_real_escape_string($db, $_POST['guest_extra_invites']);
+        //create and RSVP CODE
+        $code = rand(1000,20000);
+        $code_name = mb_substr($_POST['guest_sname'],0,3);
+        $code_name = strtoupper($code_name);
+        $guest_rsvp_code = $code_name . $code; // Generate random RSVP Code
         if($_POST['guest_extra_invites']>=1){
             //if the guest has 1 or more extra invites then ad them as a group organiser
             $guest_type= "Group Organiser";
@@ -86,8 +92,8 @@
         }
         
         //insert guest
-        $guest = $db->prepare('INSERT INTO guest_list (guest_fname, guest_sname, guest_email, guest_address, guest_postcode, guest_extra_invites, guest_type) VALUES (?,?,?,?,?,?,?)');
-        $guest->bind_param('sssssis',$guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_extra_invites, $guest_type);
+        $guest = $db->prepare('INSERT INTO guest_list (guest_fname, guest_sname, guest_email, guest_address, guest_postcode, guest_rsvp_code, guest_extra_invites, guest_type) VALUES (?,?,?,?,?,?,?,?)');
+        $guest->bind_param('ssssssis',$guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_extra_invites, $guest_type);
         $guest->execute();
         $guest->close();
 

@@ -29,7 +29,11 @@ if (isset($_GET['action'])) {
         echo' <tr>
         <td><a href="guest.php?guest_id='.$guest['guest_id'].'&action=view">'.$guest['guest_fname'].' '.$guest['guest_sname'].' '.$plus.'</a></td>
         <td>'.$guest['guest_extra_invites'].'</td>
-        <td><div class="guest-list-actions"><a href="guest.php?guest_id='.$guest['guest_id'].'&action=view"><i class="fa-solid fa-eye"></i></a><a href="guest.php?guest_id='.$guest['guest_id'].'&action=view"><i class="fa-solid fa-pen-to-square"></i></a></div></td>
+        <td><div class="guest-list-actions">
+                <a href="guest.php?guest_id='.$guest['guest_id'].'&action=view"><i class="fa-solid fa-eye"></i></a>
+                <a href="guest.php?guest_id='.$guest['guest_id'].'&action=edit"><i class="fa-solid fa-pen-to-square"></i></a>
+            </div>
+        </td>
     </tr>                   
     ';}
 
