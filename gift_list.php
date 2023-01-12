@@ -84,29 +84,32 @@ if ($cms_type == "Wedding") {
                         <a href="gift_item.php?action=create" class="btn-primary">Add Item <i class="fa-solid fa-gift"></i></a>
 
                         <?php if ($gift_list->num_rows > 0) : ?>
-                            <?php foreach ($gift_list as $gift_item) : ?>
-                                <div class="std-card">
-                                    <?php if ($gift_item['gift_item_name'] == "") : ?>
-                                        <h1>Gift List Message</h1>
-                                        <p><?= $gift_item['gift_item_desc']; ?></p>
-                                    <?php endif; ?>
-                                    <?php if ($gift_item['gift_item_name'] > "") : ?>
-                                        <h1><?= $gift_item['gift_item_name']; ?></h1>
-                                        <p><?= $gift_item['gift_item_desc']; ?></p>
-                                        <p><strong>URL: </strong><a href="http://<?= $gift_item['gift_item_url']; ?>" target="_blank"><?= $gift_item['gift_item_url']; ?></a></p>
-                                    <?php endif; ?>
-                                    <div class="card-actions">
-                                        <a class="my-2" href="gift_item.php?action=edit&gift_item_id=<?= $gift_item['gift_item_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Item </a><br>
-                                        <a class="my-2" href="gift_item.php?action=delete&confirm=no&gift_item_id=<?= $gift_item['gift_item_id']; ?>"><i class="fa-solid fa-trash"></i> Remove Item </a>
+                            <div class="grid-row-2col">
+                                <?php foreach ($gift_list as $gift_item) : ?>
+                                    <div class="std-card">
+                                        <div class="std-card-body">
+                                            <?php if ($gift_item['gift_item_name'] == "") : ?>
+                                                <h1>Gift List Message</h1>
+                                                <p><?= $gift_item['gift_item_desc']; ?></p>
+                                                <p><strong>Image:</strong></p>
+                                                <img class="gift-item-thumb" src="assets/img/gift_list/<?=$gift_item['gift_item_img'];?>" alt="">
+                                            <?php endif; ?>
+                                            <?php if ($gift_item['gift_item_name'] > "") : ?>
+                                                <h1><?= $gift_item['gift_item_name']; ?></h1>
+                                                <p><?= $gift_item['gift_item_desc']; ?></p>
+                                                <p><strong>URL: </strong><a href="http://<?= $gift_item['gift_item_url']; ?>" target="_blank"><?= $gift_item['gift_item_url']; ?></a></p>
+                                                <p><strong>Image:</strong></p>
+                                                <img class="gift-item-thumb" src="assets/img/gift_list/<?=$gift_item['gift_item_img'];?>" alt="">
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="card-actions">
+                                            <a class="my-2" href="gift_item.php?action=edit&gift_item_id=<?= $gift_item['gift_item_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Item </a><br>
+                                            <a class="my-2" href="gift_item.php?action=delete&confirm=no&gift_item_id=<?= $gift_item['gift_item_id']; ?>"><i class="fa-solid fa-trash"></i> Remove Item </a>
+                                        </div>
                                     </div>
-                                </div>
-
-                            <?php endforeach; ?>
+                                <?php endforeach; ?>
+                            </div>
                         <?php endif; ?>
-
-
-
-
                     <?php endif; ?>
                 <?php else : ?>
                     <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>
