@@ -32,6 +32,9 @@
                 <?php if ($guest_list_status == "On") : ?>
                     <li><a class="nav-link" href="guest_list.php">Guest List <i class="fa-solid fa-people-group"></i></a></li>
                 <?php endif; ?>
+                <?php if ($user_type == "Admin" || $user_type=="Developer") : ?>
+                    <li><a class="nav-link" href="events.php">Events <i class="fa-solid fa-calendar-day"></i></a></li>
+                <?php endif; ?>
                 <?php if ($invite_manager_status == "On") : ?>
                     <li><a class="nav-link" href="invitations.php">Invitations <i class="fa-solid fa-champagne-glasses"></i></a></li>
                 <?php endif; ?>
@@ -47,9 +50,7 @@
                 <?php if ($news_status == "On") : ?>
                     <li><a class="nav-link" href="news.php">News <i class="fa-solid fa-newspaper"></i></a></li>
                 <?php endif; ?>
-                <?php if ($user_type == "Admin" || $user_type=="Developer") : ?>
-                    <li><a class="nav-link" href="events.php">Events <i class="fa-solid fa-calendar-day"></i></a></li>
-                <?php endif; ?>
+
 
             <?php endif; ?>
             <?php if ($user_type == "Developer") : ?>

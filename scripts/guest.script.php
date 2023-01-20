@@ -6,7 +6,7 @@
         $guest_fname= mysqli_real_escape_string($db, $_POST['guest_fname']);
         $guest_sname= mysqli_real_escape_string($db, $_POST['guest_sname']);
         $guest_email= mysqli_real_escape_string($db, $_POST['guest_email']);
-        $guest_address= mysqli_real_escape_string($db, $_POST['guest_address']);
+        $guest_address= htmlspecialchars($_POST['guest_address']);
         $guest_postcode= mysqli_real_escape_string($db, $_POST['guest_postcode']);
         $guest_extra_invites= mysqli_real_escape_string($db, $_POST['guest_extra_invites']);
         $guest_group_id = $_POST['guest_group_id'];
@@ -73,7 +73,7 @@
         $guest_fname= mysqli_real_escape_string($db, $_POST['guest_fname']);
         $guest_sname= mysqli_real_escape_string($db, $_POST['guest_sname']);
         $guest_email= mysqli_real_escape_string($db, $_POST['guest_email']);
-        $guest_address= mysqli_real_escape_string($db, $_POST['guest_address']);
+        $guest_address= htmlspecialchars($_POST['guest_address']);
         $guest_postcode= mysqli_real_escape_string($db, $_POST['guest_postcode']);
         $guest_extra_invites= mysqli_real_escape_string($db, $_POST['guest_extra_invites']);
         $guest_extra_invites= mysqli_real_escape_string($db, $_POST['guest_extra_invites']);

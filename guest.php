@@ -301,18 +301,20 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
 
                                     <div class="form-input-wrapper my-2">
                                         <label for="guest_extra_invites"><strong>Extra Invites</strong></label>
-                                        <?php if($guest_group_status =="Assigned"):?>
+                                        <?php if($guest_group_status =="Assigned" && $guest_type =="Group Organiser"):?>
                                         <p class="form-hint-small my-2"><?=$guest_fname;?> has already assigned guests to their group, so you can only increase the number of invites available.</p>
                                         <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="<?= $guest_extra_invites; ?>" max="10">
                                         <?php endif;?>
-                                        <?php if($guest_group_status =="Unassigned"):?>
+                                        <?php if($guest_group_status =="Unassigned" || $guest_type =="Group Organiser"):?>
                                         <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
                                         <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
                                         <?php endif;?>
+
                                         <?php if($guest_type=="Sole"):?>
                                         <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
                                         <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
                                         <?php endif;?>
+
                                     </div>
                                     <div class="button-section my-3">
                                         <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes </button>

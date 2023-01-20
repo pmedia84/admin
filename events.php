@@ -132,7 +132,7 @@ if ($cms_type == "Wedding") {
                         ?>
 
                             <div class="event-card">
-                                <h3 class="event-card-title mb-3"> <?= $event['event_name']; ?> <span class="event-card-title-time"><?= $time ?></span></h3>
+                                <h3 class="event-card-title mb-3"> <a href="event.php?action=view&event_id=<?= $event['event_id']; ?>"><?= $event['event_name']; ?> <span class="event-card-title-time"><?= $time ?></a></span></h3>
                                 <div class="event-card-details my-3">
                                     <div class="event-card-item">
                                         <h4>Location</h4>
@@ -152,6 +152,7 @@ if ($cms_type == "Wedding") {
                             <div class="card-actions">
                                 <a class="my-2" href="event.php?action=view&event_id=<?= $event['event_id']; ?>"><i class="fa-solid fa-eye"></i> View Event</a>
                                 <a class="my-2" href="event.php?action=edit&event_id=<?= $event['event_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Event </a>
+                                <a class="my-2" href="event.php?action=assign&event_id=<?= $event['event_id'];?>"><i class="fa-solid fa-user-plus"></i> Assign Guests </a>
                             </div>
                             </div>
                         <?php endforeach; ?>

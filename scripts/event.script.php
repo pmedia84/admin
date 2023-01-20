@@ -10,18 +10,17 @@ if ((array_key_exists('action', $_GET))) {
         $invites = $db->query($guest_allocated_query);
         $guests_allocated = $invites->num_rows;
         //find additional invites
-        $extra_invites_query = ('SELECT guest_list.guest_id, SUM(guest_list.guest_extra_invites) AS extra_inv, invitations.guest_id FROM guest_list NATURAL LEFT JOIN invitations WHERE guest_list.guest_id=invitations.guest_id AND invitations.event_id='.$event_id);
+        $extra_invites_query = ('SELECT guest_list.guest_id, SUM(guest_list.guest_extra_invites) AS extra_inv, invitations.guest_id FROM guest_list  LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id WHERE invitations.event_id=' . $event_id);
         $extra_invites = $db->query($extra_invites_query);
         $extra_inv = $extra_invites->fetch_array();
         $total_inv = $extra_inv['extra_inv'];
+
         //
         $invites_sent = ('SELECT invite_id FROM invitations  WHERE event_id=' . $event_id . ' AND invite_status="Sent"');
         $invites = $db->query($invites_sent);
         $invites_sent = $invites->num_rows;
         //find event details
-
         $event = $db->prepare('SELECT * FROM wedding_events WHERE event_id =' . $event_id);
-
         $event->execute();
         $event->store_result();
         $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_capacity);
@@ -32,7 +31,6 @@ if ((array_key_exists('action', $_GET))) {
         $date = date('D d M Y', $event_date);
     }
 }
-
 ?>
 <?php if (array_key_exists('action', $_GET)) : ?>
     <?php if ($_GET['action'] == "load") : ?>
@@ -55,10 +53,12 @@ if ((array_key_exists('action', $_GET))) {
 
         <h3>Guest List</h3>
         <p>To remove a guest from this event, click the minus button beside their name.</p>
+        <p>You can only remove guests that are group organisers or sole invites.</p>
         <table class="event-card-guestlist-table ">
             <?php
-            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, invitations.event_id, invitations.guest_id, invitations.invite_status, invitations.invite_rsvp_status FROM guest_list NATURAL LEFT JOIN invitations WHERE guest_list.guest_id = invitations.guest_id AND event_id=' . $event_id);
+            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_type, guest_list.guest_group_id, invitations.event_id, invitations.guest_id, invitations.invite_status FROM guest_list  LEFT JOIN invitations ON invitations.guest_id = guest_list.guest_id WHERE event_id=' . $event_id . ' ORDER BY guest_list.guest_type');
             $guest_list = $db->query($guest_list_query);
+
             ?>
 
             <tr>
@@ -71,13 +71,19 @@ if ((array_key_exists('action', $_GET))) {
                 } else {
                     $plus = "";
                 }
+
             ?>
                 <tr>
                     <td><a href="guest.php?action=view&guest_id=<?= $guest['guest_id']; ?>"><?= $guest['guest_fname'] . " " . $guest['guest_sname'] . ' ' . $plus; ?></a></td>
-                    <td>
-                        <label class="checkbox-form-control">
-                            <button class="btn-primary btn-secondary remove_guest" data-guestid="<?=$guest['guest_id'];?>"><i class="fa-solid fa-user-minus" ></i></button>
-                        </label>
+                    <td><?php if ($guest['guest_type'] == "Group Organiser" || $guest['guest_type'] == "Sole") : ?>
+                            <label class="checkbox-form-control">
+                                <button class="btn-primary btn-secondary remove_guest" data-guestid="<?= $guest['guest_id']; ?>" data-guesttype="<?= $guest['guest_type']; ?>" data-guestgroupid="<?= $guest['guest_group_id']; ?>"><i class="fa-solid fa-user-minus"></i></button>
+                            </label>
+                        <?php else : ?>
+                            <label class="checkbox-form-control">
+                                <button class="btn-primary btn-secondary remove_guest disabled" disabled><i class="fa-solid fa-user-minus"></i></button>
+                            </label>
+                        <?php endif; ?>
                     </td>
 
                 </tr>
@@ -91,7 +97,7 @@ if ((array_key_exists('action', $_GET))) {
             Assign All Available Guests
         </label>
         <?php
-        $available_inv_query = ('SELECT guest_id, guest_fname, guest_sname, guest_extra_invites FROM guest_list WHERE NOT EXISTS(SELECT guest_id, event_id FROM invitations WHERE guest_list.guest_id=invitations.guest_id AND event_id='.$event_id.')');
+        $available_inv_query = ('SELECT guest_id, guest_fname, guest_sname, guest_extra_invites, guest_type FROM guest_list WHERE guest_type="Group Organiser" AND NOT EXISTS(SELECT guest_id, event_id FROM invitations WHERE guest_list.guest_id=invitations.guest_id )');
         $available_inv = $db->query($available_inv_query);
         $available_inv_result = $available_inv->fetch_assoc();
         ?>
@@ -111,9 +117,12 @@ if ((array_key_exists('action', $_GET))) {
                     <tr>
                         <td><a href="guest.php?action=view&guest_id=<?= $inv['guest_id']; ?>"><?= $inv['guest_fname'] . " " . $inv['guest_sname'] . ' ' . $plus; ?></a></td>
                         <td>
+
                             <label class="checkbox-form-control" for="gallery">
                                 <input class="assign_check" type="checkbox" id="gallery" name="guest_id[]" value="<?= $inv['guest_id']; ?>" />
                             </label>
+
+
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -139,9 +148,12 @@ if ((array_key_exists('action', $_GET))) {
                     data: formData,
                     contentType: false,
                     processData: false,
+                    beforeSend: function() { //animate button
+                        $("#active_guest_list").fadeOut(300);
+                    },
+
                     success: function(data, responseText) {
-                        $("#active_guest_list").html(data);
-                        $("#active_guest_list").fadeIn(500);
+
                         var event_id = <?php echo $event_id; ?>;
                         url = "scripts/event.script.php?action=load&event_id=" + event_id;
                         $.ajax({ //load active guest list
@@ -161,22 +173,29 @@ if ((array_key_exists('action', $_GET))) {
         <script>
             //remove guests from list
             $(".remove_guest").on("click", function() {
-                
+
                 var formData = new FormData();
                 var guest_id = $(this).data("guestid");
+                var guest_type = $(this).data("guesttype");
+                var guest_group_id = $(this).data("guestgroupid");
                 var event_id = <?php echo $event_id; ?>;
                 formData.append("action", "remove_guest");
                 formData.append("event_id", event_id);
                 formData.append("guest_id", guest_id);
+                formData.append("guest_type", guest_type);
+                formData.append("guest_group_id", guest_group_id);
                 $.ajax({ //start ajax post
                     type: "POST",
                     url: "scripts/event.script.php",
                     data: formData,
                     contentType: false,
                     processData: false,
+                    beforeSend: function() { //animate button
+                        $("#active_guest_list").fadeOut(300);
+                    },
+
                     success: function(data, responseText) {
-                        $("#active_guest_list").html(data);
-                        $("#active_guest_list").fadeIn(500);
+
                         var event_id = <?php echo $event_id; ?>;
                         url = "scripts/event.script.php?action=load&event_id=" + event_id;
                         $.ajax({ //load active guest list
@@ -185,7 +204,7 @@ if ((array_key_exists('action', $_GET))) {
                             encode: true,
                             success: function(data, responseText) {
                                 $("#active_guest_list").html(data);
-                                $("#active_guest_list").fadeIn(500);
+                                $("#active_guest_list").fadeIn(300);
                             }
                         });
                     }
@@ -201,7 +220,7 @@ if ((array_key_exists('action', $_GET))) {
     <?php endif; ?>
 <?php endif; ?>
 
-<?php 
+<?php
 
 if (array_key_exists('action', $_POST)) {
     if ($_POST['action'] == "assign") {
@@ -222,11 +241,12 @@ if (array_key_exists('action', $_POST)) {
         //declare event_id and guest_id
         $event_id = $_POST['event_id'];
         $guest_id = $_POST['guest_id'];
-        //insert into guest group tables
+        //remove from invitation table
         $invite = $db->prepare('DELETE FROM  invitations  WHERE guest_id=? AND event_id=?');
         $invite->bind_param('ii', $guest_id, $event_id);
         $invite->execute();
         $invite->close();
+        //remove any group members if this guest is a group organiser
     }
     if ($_POST['action'] == "edit_event") {
         include("..//connect.php");
@@ -237,11 +257,11 @@ if (array_key_exists('action', $_POST)) {
         $event_address = mysqli_real_escape_string($db, $_POST['event_address']);
         $event_date = mysqli_real_escape_string($db, $_POST['event_date']);
         $event_time = mysqli_real_escape_string($db, $_POST['event_time']);
-        $event_notes= mysqli_real_escape_string($db, $_POST['event_notes']);
-        $event_capacity= mysqli_real_escape_string($db, $_POST['event_capacity']);
+        $event_notes = mysqli_real_escape_string($db, $_POST['event_notes']);
+        $event_capacity = mysqli_real_escape_string($db, $_POST['event_capacity']);
         //insert into guest group tables
         $event = $db->prepare('UPDATE wedding_events SET event_name=?, event_location=?, event_address=?, event_date=?, event_time=?, event_notes=?, event_capacity=?  WHERE event_id =?');
-        $event->bind_param('sssssssi',$event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_capacity, $event_id);
+        $event->bind_param('sssssssi', $event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_capacity, $event_id);
         $event->execute();
         $event->close();
     }
@@ -253,11 +273,11 @@ if (array_key_exists('action', $_POST)) {
         $event_address = mysqli_real_escape_string($db, $_POST['event_address']);
         $event_date = mysqli_real_escape_string($db, $_POST['event_date']);
         $event_time = mysqli_real_escape_string($db, $_POST['event_time']);
-        $event_notes= mysqli_real_escape_string($db, $_POST['event_notes']);
-        $event_capacity= mysqli_real_escape_string($db, $_POST['event_capacity']);
+        $event_notes = mysqli_real_escape_string($db, $_POST['event_notes']);
+        $event_capacity = mysqli_real_escape_string($db, $_POST['event_capacity']);
         //insert into events table
         $new_event = $db->prepare('INSERT INTO wedding_events (event_name, event_location, event_address, event_date, event_time, event_notes, event_capacity ) VALUES (?,?,?,?,?,?,?)');
-        $new_event->bind_param('ssssssi',$event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_capacity);
+        $new_event->bind_param('ssssssi', $event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_capacity);
         $new_event->execute();
         $new_event->close();
     }

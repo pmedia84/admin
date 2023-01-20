@@ -109,9 +109,8 @@ if ($cms_type == "Wedding") {
                                     <label for="user_email">Filter By RSVP Status</label>
                                     <select class="form-select" name="rsvp_status" id="rsvp_status">
                                             <option value="">Show All Status</option>
-                                            <option value="Not Replied">Not Replied</option>
+                                            <option value="">Not Replied</option>
                                             <option value="Attending">Attending</option>
-                                            <option value="Unsure">Unsure</option>
                                             <option value="Not Attending">Not Attending</option>
                                     </select>
                                 </div>

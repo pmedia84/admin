@@ -14,27 +14,7 @@ include("inc/settings.php");
 //business name
 $cms_name = "";
 $user_id = $_SESSION['user_id'];
-if ($cms_type == "Business") {
-    //look for the business set up and load information
-    //find business details.
-    $business = $db->prepare('SELECT * FROM business');
 
-    $business->execute();
-    $business->store_result();
-    $business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
-    $business->fetch();
-    $business->close();
-    //set cms name
-    $cms_name = $business_name;
-    //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id=' . $user_id);
-
-    $business_users->execute();
-    $business_users->bind_result($user_id, $user_name, $business_id, $user_type);
-    $business_users->fetch();
-    $business_users->close();
-    echo $business_id;
-}
 
 //run checks to make sure a wedding has been set up correctly
 if ($cms_type == "Wedding") {
@@ -403,7 +383,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     <h4>Event Notes</h4>
                                     <p><?= $event_notes; ?></p>
 
-                                    </p>
+                                    
 
                                     <div class="event-card-guestlist">
                                         <?php
@@ -412,10 +392,11 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                         $invites = $db->query($guest_allocated_query);
                                         $guests_allocated = $invites->num_rows;
                                         //find additional invites
-                                        $extra_invites_query = ('SELECT guest_list.guest_id, SUM(guest_list.guest_extra_invites) AS extra_inv, invitations.guest_id FROM guest_list NATURAL LEFT JOIN invitations WHERE guest_list.guest_id=invitations.guest_id AND invitations.event_id='.$event_id);
+                                        $extra_invites_query = ('SELECT guest_list.guest_id, SUM(guest_list.guest_extra_invites) AS extra_inv, invitations.guest_id FROM guest_list  LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id WHERE invitations.event_id='.$event_id);
                                         $extra_invites = $db->query($extra_invites_query);
                                         $extra_inv = $extra_invites->fetch_array();
                                         $total_inv = $extra_inv['extra_inv'];
+                                       
                                         //
                                         $invites_sent = ('SELECT invite_id FROM invitations  WHERE event_id=' . $event_id . ' AND invite_status="Sent"');
                                         $invites = $db->query($invites_sent);
@@ -441,8 +422,9 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                         <h4>Guest List</h4>
                                         <table class="event-card-guestlist-table ">
                                             <?php
-                                            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, invitations.event_id, invitations.guest_id, invitations.invite_status, invitations.invite_rsvp_status FROM guest_list NATURAL LEFT JOIN invitations WHERE guest_list.guest_id = invitations.guest_id AND event_id=' . $event_id);
+                                            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, invitations.event_id, invitations.guest_id, invitations.invite_status, invitations.invite_rsvp_status FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id WHERE invitations.event_id='.$event_id);
                                             $guest_list = $db->query($guest_list_query);
+                                            
                                             ?>
 
                                             <tr>
