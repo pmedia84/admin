@@ -43,7 +43,7 @@ if ($cms_type == "Wedding") {
 
     $wedding->execute();
     $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_email, $wedding_phone, $wedding_contact_name);
+    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_email, $wedding_phone, $wedding_contact_name);
     $wedding->fetch();
     $wedding->close();
     //set cms name
@@ -131,7 +131,7 @@ $image->store_result();
                                 // connect to db and delete the record
                                 $delete_image = "DELETE FROM images WHERE image_id=" . $image_id;
                                 //delete image on server
-                                $file =  "assets/img/gallery/".$image_filename;
+                                $file = $_SERVER['DOCUMENT_ROOT']."/alex-emma/assets/img/gallery/".$image_filename;
                                
                                 if(fopen($file,"w")){
                                     unlink($file);

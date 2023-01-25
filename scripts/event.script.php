@@ -97,7 +97,7 @@ if ((array_key_exists('action', $_GET))) {
             Assign All Available Guests
         </label>
         <?php
-        $available_inv_query = ('SELECT guest_id, guest_fname, guest_sname, guest_extra_invites, guest_type FROM guest_list WHERE guest_type="Group Organiser" AND NOT EXISTS(SELECT guest_id, event_id FROM invitations WHERE guest_list.guest_id=invitations.guest_id )');
+        $available_inv_query = ('SELECT guest_id, guest_fname, guest_sname, guest_extra_invites, guest_type FROM guest_list WHERE guest_type<>"Member" AND NOT EXISTS(SELECT guest_id, event_id FROM invitations WHERE guest_list.guest_id=invitations.guest_id )');
         $available_inv = $db->query($available_inv_query);
         $available_inv_result = $available_inv->fetch_assoc();
         ?>
@@ -118,8 +118,8 @@ if ((array_key_exists('action', $_GET))) {
                         <td><a href="guest.php?action=view&guest_id=<?= $inv['guest_id']; ?>"><?= $inv['guest_fname'] . " " . $inv['guest_sname'] . ' ' . $plus; ?></a></td>
                         <td>
 
-                            <label class="checkbox-form-control" for="gallery">
-                                <input class="assign_check" type="checkbox" id="gallery" name="guest_id[]" value="<?= $inv['guest_id']; ?>" />
+                            <label class="checkbox-form-control" for="guest">
+                                <input class="assign_check" type="checkbox" id="guest" name="guest_id[]" value="<?= $inv['guest_id']; ?>" />
                             </label>
 
 

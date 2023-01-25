@@ -65,7 +65,7 @@ if ($cms_type == "Wedding") {
 
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //guest variable, only required for edit and view actions
-if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="delete") {
+if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] == "delete") {
     $guest_id = $_GET['guest_id'];
     //find guest details
 
@@ -138,26 +138,25 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
                     ?>
                         <?php if ($_GET['confirm'] == "yes") : //if yes then delete the guest
                         ?>
-                        <?php if (($guest->num_rows) > 0) :
-                            //load guest information
-                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
-                            $guest->fetch();
-                            //load any invites the guest may have and delete them also;
-                            $remove_invites = "DELETE FROM invitations WHERE guest_id=$guest_id";
-                            
+                            <?php if (($guest->num_rows) > 0) :
+                                //load guest information
+                                $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
+                                $guest->fetch();
+                                //load any invites the guest may have and delete them also;
+                                $remove_invites = "DELETE FROM invitations WHERE guest_id=$guest_id";
 
-                            if(mysqli_query($db, $remove_invites)){
-                                echo mysqli_error($db);
-                            }
-                            
 
-                            
+                                if (mysqli_query($db, $remove_invites)) {
+                                    echo mysqli_error($db);
+                                }
+
+
+
                                 // connect to db and delete the guest
                                 $remove_guest = "DELETE FROM guest_list WHERE guest_id=$guest_id";
                                 if (mysqli_query($db, $remove_guest)) {
-                                    
-                                    echo '<div class="std-card"><div class="form-response error"><p>' . $guest_fname.' '.$guest_sname . ' Has been removed from your guest list</p></div></div>';
-                                    
+
+                                    echo '<div class="std-card"><div class="form-response error"><p>' . $guest_fname . ' ' . $guest_sname . ' Has been removed from your guest list</p></div></div>';
                                 } else {
                                     echo '<div class="form-response error"><p>Error removing guest, please try again.</p></div>';
                                     //echo mysqli_error($db);
@@ -171,28 +170,28 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
                             <?php endif; ?>
                         <?php else : //if not then display the message to confirm the user wants to delete the news article
                         ?>
-                        <?php if (($guest->num_rows) > 0) :
-                        //load guest information
-                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
-                            $guest->fetch();
+                            <?php if (($guest->num_rows) > 0) :
+                                //load guest information
+                                $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
+                                $guest->fetch();
                             ?>
                                 <div class="std-card">
-                                    <h2 class="text-alert">Remove: <?= $guest_fname.' '.$guest_sname;?> From your guest list?</h2>
+                                    <h2 class="text-alert">Remove: <?= $guest_fname . ' ' . $guest_sname; ?> From your guest list?</h2>
                                     <p>Are you sure you want to remove this guest from your guest list?</p>
                                     <p><strong>This Cannot Be Reversed</strong></p>
                                     <p><strong>Note:</strong> This will also remove any assignments they have to your events.</p>
-                                    <?php if($guest_type =="Group Organiser"):?>
-                                    <p><strong><?=$guest_fname;?> is a group organiser and cannot be removed!</strong></p>
-                                    <p><strong>Remove their extra invites and try again.</strong></p>
-                                    <div class="card-actions">
-                                        <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Guest </a><br>
-                                    </div>
-                                    <?php else:?>
+                                    <?php if ($guest_type == "Group Organiser") : ?>
+                                        <p><strong><?= $guest_fname; ?> is a group organiser and cannot be removed!</strong></p>
+                                        <p><strong>Remove their extra invites and try again.</strong></p>
+                                        <div class="card-actions">
+                                            <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Guest </a><br>
+                                        </div>
+                                    <?php else : ?>
                                         <div class="button-section">
-                                        <a class="btn-primary btn-delete my-2" href="guest.php?action=delete&confirm=yes&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i>Remove Guest</a>
-                                        <a class="btn-primary btn-secondary my-2" href="guest.php?action=view&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-ban"></i>Cancel</a>
-                                    </div>
-                                    <?php endif;?>
+                                            <a class="btn-primary btn-delete my-2" href="guest.php?action=delete&confirm=yes&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i>Remove Guest</a>
+                                            <a class="btn-primary btn-secondary my-2" href="guest.php?action=view&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-ban"></i>Cancel</a>
+                                        </div>
+                                    <?php endif; ?>
 
                                 </div>
                             <?php endif; ?>
@@ -201,10 +200,11 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
 
 
                     <?php endif; ?>
-                    
+
                     <?php if ($_GET['action'] == "create") : ?>
-                        <div class="std-card">
-                            <form class="form-card" id="add_guest" action="scripts/guest.script.php" method="POST" enctype="multipart/form-data">
+
+                        <form id="add_guest" action="scripts/guest.script.php" method="POST" enctype="multipart/form-data">
+                            <div class="form-card">
                                 <div class="form-input-wrapper">
                                     <label for="guest_fname"><strong>First Name</strong></label>
                                     <!-- input -->
@@ -215,38 +215,52 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
                                     <!-- input -->
                                     <input class="text-input input" type="text" name="guest_sname" id="guest_sname" placeholder="Guest Surname" required="" maxlength="45">
                                 </div>
-
                                 <div class="form-input-wrapper my-2">
                                     <label for="guest_email"><strong>Email Address</strong></label>
                                     <input class="text-input input" type="text" id="guest_email" name="guest_email" placeholder="Email Address">
                                 </div>
-
                                 <div class="form-input-wrapper my-2">
                                     <label for="guest_address"><strong>Address</strong></label>
                                     <textarea name="guest_address" id="guest_address"></textarea>
                                 </div>
-
                                 <div class="form-input-wrapper my-2">
                                     <label for="guest_postcode"><strong>Postcode</strong></label>
                                     <input class="text-input input" type="text" id="guest_postcode" name="guest_postcode" placeholder="Postcode">
                                 </div>
-
                                 <div class="form-input-wrapper my-2">
                                     <label for="guest_extra_invites"><strong>Extra Invites</strong></label>
                                     <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
-                                    <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" min="0" max="10">
-
-
+                                    <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" min="0" max="">
                                 </div>
-                                <div class="button-section my-3">
-                                    <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Add Guest </button>
-                                </div>
+                            </div>
+                            <div class="form-card">
+                                <h2>Assign To Events</h2>
+                                <p>You can assign this guest to your events now, or you can do this within the event manager tab.</p>
+    
+                                <?php if($wedding_events -> num_rows>0):?>
+                                <?php foreach($wedding_events as $event):?>
+                                    <div class="form-input-wrapper my-2">
+                                    <label class="radio-form-control" for="eventid<?=$event['event_id'];?>"> <strong><?=$event['event_name'];?></strong>
+                                        <input class="radio" type="radio" id="eventid<?=$event['event_id'];?>" name="event_id" value="<?=$event['event_id'];?>" />
+                                        
+                                    </label>
+                                     </div>
 
-                                <div id="response" class="d-none">
-                                    <p>Article Saved <img src="./assets/img/icons/check.svg" alt=""></p>
-                                </div>
-                            </form>
-                        </div>
+                                <?php endforeach; ?>
+                                <?php else:?>
+                                    <p>There are no events set up, you will need to create them in your <a href="events">Events Tab</a></p>
+                                <?php endif;?>    
+                                
+
+                            </div>
+                            <div class="button-section my-3">
+                                <button class="btn-primary form-controls-btn" type="submit"> Submit</button>
+                            </div>
+
+                            <div id="response" class="d-none">
+                            </div>
+                        </form>
+
 
                     <?php endif; ?>
 
@@ -254,21 +268,21 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
 
                     <?php if ($_GET['action'] == "edit") : ?>
                         <?php if (($guest->num_rows) > 0) :
-                        //load guest information
+                            //load guest information
                             $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
                             $guest->fetch();
 
-                        //load guest group information if they are an organiser
-                        if($guest_type=="Group Organiser"){
-                            $group_details = $db->prepare('SELECT guest_group_status FROM guest_groups  WHERE guest_group_id=' . $guest_group_id);
+                            //load guest group information if they are an organiser
+                            if ($guest_type == "Group Organiser") {
+                                $group_details = $db->prepare('SELECT guest_group_status FROM guest_groups  WHERE guest_group_id=' . $guest_group_id);
 
-                            $group_details->execute();
-                            $group_details->bind_result($guest_group_status);
-                            $group_details->fetch();
-                            //$group_details->close();
-                        }else{
-                            $guest_group_status="";
-                        }    
+                                $group_details->execute();
+                                $group_details->bind_result($guest_group_status);
+                                $group_details->fetch();
+                                //$group_details->close();
+                            } else {
+                                $guest_group_status = "";
+                            }
                         ?>
                             <h2><?= $guest_fname . ' ' . $guest_sname; ?></h2>
                             <div class="std-card">
@@ -301,19 +315,19 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
 
                                     <div class="form-input-wrapper my-2">
                                         <label for="guest_extra_invites"><strong>Extra Invites</strong></label>
-                                        <?php if($guest_group_status =="Assigned" && $guest_type =="Group Organiser"):?>
-                                        <p class="form-hint-small my-2"><?=$guest_fname;?> has already assigned guests to their group, so you can only increase the number of invites available.</p>
-                                        <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="<?= $guest_extra_invites; ?>" max="10">
-                                        <?php endif;?>
-                                        <?php if($guest_group_status =="Unassigned" || $guest_type =="Group Organiser"):?>
-                                        <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
-                                        <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
-                                        <?php endif;?>
+                                        <?php if ($guest_group_status == "Assigned" && $guest_type == "Group Organiser") : ?>
+                                            <p class="form-hint-small my-2"><?= $guest_fname; ?> has already assigned guests to their group, so you can only increase the number of invites available.</p>
+                                            <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="<?= $guest_extra_invites; ?>" max="10">
+                                        <?php endif; ?>
+                                        <?php if ($guest_group_status == "Unassigned") : ?>
+                                            <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
+                                            <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
+                                        <?php endif; ?>
 
-                                        <?php if($guest_type=="Sole"):?>
-                                        <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
-                                        <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
-                                        <?php endif;?>
+                                        <?php if ($guest_type == "Sole") : ?>
+                                            <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
+                                            <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
+                                        <?php endif; ?>
 
                                     </div>
                                     <div class="button-section my-3">
@@ -321,7 +335,6 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
                                     </div>
 
                                     <div id="response" class="d-none">
-                                        <p>Article Saved <img src="./assets/img/icons/check.svg" alt=""></p>
                                     </div>
                                 </form>
                             </div>
@@ -341,9 +354,9 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
                             $guest_invites = $db->query('SELECT wedding_events.event_id, wedding_events.event_name, invitations.guest_id, invitations.event_id, guest_list.guest_id, guest_list.guest_fname FROM wedding_events
                             LEFT JOIN invitations ON invitations.event_id=wedding_events.event_id
                             LEFT JOIN guest_list ON guest_list.guest_id=invitations.guest_id
-                            WHERE guest_list.guest_id='.$guest_id);
-                            if($guest_invites ->num_rows>1){
-                                $guest_invites ->fetch_array();
+                            WHERE guest_list.guest_id=' . $guest_id);
+                            if ($guest_invites->num_rows > 1) {
+                                $guest_invites->fetch_array();
                             }
 
 
@@ -362,19 +375,19 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
                                 <h3>Extra Invites</h3>
                                 <p><?= $guest_extra_invites; ?></p>
                                 <h3>Events</h3>
-                                <?php if ($guest_invites ->num_rows>=1):?>
-                                <?php foreach($guest_invites as $invite):?>
-                                 <p><a href="event.php?action=view&event_id=<?=$invite['event_id'];?>"><?=$invite['event_name'];?></a></p>
-                                 <?php endforeach;?> 
-                                 <?php else:?>
-                                 <p><?=$guest_fname;?> Has not been assigned to any events yet. You can do that in your event manager <a href="events.php">Click Here</a></p>     
-                                 <?php endif;?>       
-                            <h3>Dietary Requirements </h3>
-                            <p><?= $guest_dietery; ?></p>
-                            <div class="card-actions">
-                                <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Guest </a><br>
-                                <a class="my-2" href="guest.php?action=delete&confirm=no&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i> Remove Guest </a>
-                            </div>
+                                <?php if ($guest_invites->num_rows >= 1) : ?>
+                                    <?php foreach ($guest_invites as $invite) : ?>
+                                        <p><a href="event.php?action=view&event_id=<?= $invite['event_id']; ?>"><?= $invite['event_name']; ?></a></p>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <p><?= $guest_fname; ?> Has not been assigned to any events yet. You can do that in your event manager <a href="events.php">Click Here</a></p>
+                                <?php endif; ?>
+                                <h3>Dietary Requirements </h3>
+                                <p><?= $guest_dietery; ?></p>
+                                <div class="card-actions">
+                                    <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Guest </a><br>
+                                    <a class="my-2" href="guest.php?action=delete&confirm=no&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i> Remove Guest </a>
+                                </div>
                             </div>
 
                             <?php if ($guest_type == "Group Organiser") :
@@ -395,7 +408,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
                                             <th>RSVP Status</th>
 
                                         </tr>
-                                        <?php foreach ($guest_group as $guest):?>
+                                        <?php foreach ($guest_group as $guest) : ?>
                                             <tr>
                                                 <td><a href="guest.php?action=view&guest_id=<?= $guest['guest_id']; ?>"><?= $guest['guest_fname'] . " " . $guest['guest_sname']; ?></a></td>
                                                 <td><?= $guest['guest_events']; ?></td>
@@ -412,19 +425,19 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" ||$_GET['action']=="d
                                 $group_details_result = $group_details->fetch_assoc();
 
                             ?>
-                                <?php if ($group_details->num_rows >= 1):?>
+                                <?php if ($group_details->num_rows >= 1) : ?>
                                     <div class="std-card">
                                         <h3>Guest Group</h3>
                                         <p><?= $guest_fname; ?> is a member of a guest group that is managed by <a href="guest.php?action=view&guest_id=<?= $group_details_result['guest_id']; ?>"><?= $group_details_result['guest_fname'] . " " . $group_details_result['guest_sname']; ?></a></p>
                                     </div>
                                 <?php endif; ?>
                             <?php endif; ?>
-                                <?php if ($guest_type == "Sole") :?>
-                                    <div class="std-card">
-                                        <h3>Guest Group</h3>
-                                        <p><?= $guest_fname; ?> is not associated with a group, they are a sole invite. If you want them to bring guests, you can assign them invites by editing their details. </p>
-                                    </div>
-                            <?php endif;?>
+                            <?php if ($guest_type == "Sole") : ?>
+                                <div class="std-card">
+                                    <h3>Guest Group</h3>
+                                    <p><?= $guest_fname; ?> is not associated with a group, they are a sole invite. If you want them to bring guests, you can assign them invites by editing their details. </p>
+                                </div>
+                            <?php endif; ?>
                         <?php else : ?>
                             <div class="std-card">
                                 <h2>Error</h2>

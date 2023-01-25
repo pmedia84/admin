@@ -96,10 +96,19 @@
         $guest->bind_param('ssssssis',$guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_extra_invites, $guest_type);
         $guest->execute();
         $guest->close();
-
-        //if the guest has extra invites associated with their record then add a group for them
+        $new_guest_id = $db->insert_id;//last id entered
+       
+        //add this guest to the event they have been added to.
+        if(isset($_POST['event_id'])){
+            $event_id = $_POST['event_id'];
+            $invite = $db->prepare('INSERT INTO invitations (guest_id, event_id) VALUES (?,?)');
+            $invite->bind_param('ii',$new_guest_id, $event_id);
+            $invite->execute();
+            $invite->close();
+        }
+         //if the guest has extra invites associated with their record then add a group for them
         if($_POST['guest_extra_invites']>=1){
-            $new_guest_id = $db->insert_id;//last id entered
+            
             //create a guest group if the guest being added has one or more extra invites
             //set up a group name using first and last name of primary guest
             $group_name = $guest_fname.' '.$guest_sname;
@@ -117,5 +126,6 @@
 
 
         }
+
        
     }

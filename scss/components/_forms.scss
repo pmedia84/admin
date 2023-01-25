@@ -88,7 +88,7 @@ input{
     outline: none;
 }
 input[type=text], input[type=password], textarea, select, input[type=file],input[type=number], input[type=date], input[type=time]{
-    appearance: none;
+    
     border: 1px solid $primary;
     border-radius: 5px;
     padding: $spacer-1;
@@ -162,12 +162,11 @@ textarea{
 }
 
 //checkboxes
-.checkbox-form-control{ //label acts as the wrapper
+.checkbox-form-control, .radio-form-control{ //label acts as the wrapper
     font-size: 1rem;
     font-weight: 400;
-    line-height: 1.1;
     display: grid;
-    grid-template-columns: 1em auto;
+    grid-template-columns: max-content auto;
     gap: 0.5em;
 }
 input[type="checkbox"]{//basic styling
@@ -205,6 +204,40 @@ input[type="checkbox"]:focus {
     outline: max(2px, 0.15em) solid $primary;
     outline-offset: max(2px, 0.15em);
   }
+///Radio Button
+.radio-form-control{
+    height: 2rem;
+}
+input[type=radio]{
+    appearance: none;
+    border: 3px solid $primary;
+    width: 1.375rem;
+    height: 1.375rem;
+    border-radius: 100%;
+    font-size: 1.8rem;
+    transition: box-shadow 300ms ease-out;
+    margin: 0;
+    &:focus{
+        box-shadow: 0 0 2px 3px $primary-500;
+        transition: box-shadow 300ms ease-out;
+    }
+}
+input[type=radio]:checked{
+    background-color: $primary;
+    border: 3px solid #FFF;
+    outline: 2px solid #999;
+}
+
+
+
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.radio-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
 
   //////Toggle Switches
 /* The switch - the box around the slider */
@@ -377,3 +410,4 @@ input[type="checkbox"]:focus {
         justify-content: space-between;
     }
 }
+
