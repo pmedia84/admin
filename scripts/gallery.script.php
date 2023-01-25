@@ -15,7 +15,7 @@ if (isset($_POST['action'])) {
             $img_filename = "";
         } else { //if there is an image uploaded then save it to the folder
             //////////////////////sort the image upload first////////////////////////////////////////
-            $dir = $_SERVER['DOCUMENT_ROOT']. "/alex-emma/assets/img/gallery/";
+            $dir = $_SERVER['DOCUMENT_ROOT']. "/assets/img/gallery/";
             $file = $dir . basename($_FILES['gallery_img']['name']);
             $imageFileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             // Check if image file is a actual image or fake image
@@ -139,7 +139,7 @@ if (isset($_GET['action'])) {
             echo "<div class='img-card'>
                 
                     <div class='img-card-header-img'>
-                        <img src='./assets/img/gallery/" . $home_item['image_filename'] . "'>
+                        <img src='".$_SERVER['DOCUMENT_ROOT']."/assets/img/gallery/" . $home_item['image_filename'] . "'>
                         <h3>" . $home_item['image_title'] . "</h3>
                     </div>
                     <div class='card-actions img-card-actions'>

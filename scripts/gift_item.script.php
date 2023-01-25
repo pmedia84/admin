@@ -114,7 +114,7 @@ if ($_POST['action'] == "create") { //check if the action type of create has bee
         $gift_item_img = "";
     } else { //if there is an image uploaded then save it to the folder
         //////////////////////sort the image upload first////////////////////////////////////////
-        $dir = "../assets/img/gift_list/";
+        $dir = $_SERVER['DOCUMENT_ROOT']. "/assets/img/gallery/";
         $file = $dir . basename($_FILES['gift_item_img']['name']);
         $imageFileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
         // Check if image file is a actual image or fake image
