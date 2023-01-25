@@ -50,7 +50,7 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
         $session_time = date('h:i:s');
         $session_status = "Active";
         $session = $db->prepare('INSERT INTO user_sessions (user_id, session_date, session_time, session_status)VALUES(?,?,?,?)');
-        $session ->bind_param('ssss',$user_id, $session_date, $session_time, $session_status);
+        $session ->bind_param('isss',$user_id, $session_date, $session_time, $session_status);
         $session ->execute();
         //remove old failed login attempts and only leave the current active session.
         $remove = "DELETE FROM user_sessions WHERE session_status = 'Failed' AND user_id=".$user_id;
