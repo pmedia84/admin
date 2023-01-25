@@ -131,10 +131,13 @@ $image->store_result();
                                 // connect to db and delete the record
                                 $delete_image = "DELETE FROM images WHERE image_id=" . $image_id;
                                 //delete image on server
-                                $file = $_SERVER['DOCUMENT_ROOT']."/alex-emma/assets/img/gallery/".$image_filename;
-                               
+                                $file = $_SERVER['DOCUMENT_ROOT']."/admin/assets/img/gallery/".$image_filename;
+                               $gallery = $_SERVER['DOCUMENT_ROOT']."/assets/img/gallery/".$image_filename;
                                 if(fopen($file,"w")){
                                     unlink($file);
+                                };
+                                if(fopen($gallery,"w")){
+                                    unlink($gallery);
                                 };
                                 if (mysqli_query($db, $delete_image)) {
                                     echo '<div class="std-card"><div class="form-response error"><p>' . $image_title . ' Has Been Deleted</p></div></div>';
