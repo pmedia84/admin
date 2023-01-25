@@ -182,7 +182,7 @@ if (isset($_GET['action'])) {
             echo "<div class='img-card'>
         
             <div class='img-card-header-img'>
-                <img src='".$_SERVER['DOCUMENT_ROOT']."/alex-emma/assets/img/gallery/".$other_item['image_filename']. "'>
+                <img src='".$_SERVER['DOCUMENT_ROOT']."/assets/img/gallery/".$other_item['image_filename']. "'>
             </div>
             
         <div class='img-card-body'>
