@@ -57,7 +57,7 @@ if (isset($_POST['action'])) {
                 // if everything is ok, try to upload file
             } else {
                 if (move_uploaded_file($_FILES["gallery_img"]["tmp_name"], $file)) {
-                    if (move_uploaded_file($_FILES["gallery_img"]["tmp_name"], $file)) {
+                    if (move_uploaded_file($_FILES["gallery_img"]["tmp_name"], $admin_gallery)) {
                         //move uploaded file to admin
                     }
                     $response = '<div class="form-response"><p>success, your image has been added to your gallery.</p></div>';
