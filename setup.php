@@ -43,10 +43,7 @@ if ($cms_type == "Wedding") {
     }
 
 
-    //check if there are users for the wedding
-    $users_query = ('SELECT wedding_user_id FROM wedding_users WHERE wedding_id=' . $wedding_id);
-    $users = $db->query($users_query);
-    $users_result = $users->num_rows;
+
 }
 
 
@@ -270,7 +267,7 @@ if ($cms_type == "Wedding") {
                                 <label for="wedding_email">eMail Address:</label>
 
                                 <!-- input -->
-                                <input type="email" name="wedding_email" id="wedding_email" placeholder="Email Address" autocomplete="email" required="" maxlength="45">
+                                <input type="text" name="wedding_email" id="wedding_email" placeholder="Email Address" autocomplete="email" required="" maxlength="45">
                             </div>
                             <div class="form-input-wrapper">
                                 <label for="wedding_phone">Primary Phone No.:</label>
@@ -313,7 +310,7 @@ if ($cms_type == "Wedding") {
                     $dev_user_result = $dev_user->fetch_assoc();
               
                     ?>
-                    <?php if ($admin_user == null) : ?>
+                    <?php if ($admin_user->num_rows == 0) : ?>
                         <h1>The Wedding of <?= $wedding_result['wedding_name']; ?></h1>
                         <p><strong>Admin User Required</strong></p>
                         <p>You need to set up an admin user for your wedding website.</p>
@@ -346,7 +343,7 @@ if ($cms_type == "Wedding") {
                             <div id="response" class="d-none">
                             </div>
                         </form>
-                        <?php else: ?>
+                        <?php else:?>
                             <?php if ($dev_user_result == null) : ?>
                             <h1><?= $wedding_result['wedding_name']; ?></h1>
                             <p><strong>Developer User Required</strong></p>
