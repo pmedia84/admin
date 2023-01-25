@@ -15,6 +15,7 @@ if (isset($_POST['action'])) {
             $img_filename = "";
         } else { //if there is an image uploaded then save it to the folder
             //////////////////////sort the image upload first////////////////////////////////////////
+            $admin_gallery = "../assets/img/gallery/";
             $dir = $_SERVER['DOCUMENT_ROOT']. "/assets/img/gallery/";
             $file = $dir . basename($_FILES['gallery_img']['name']);
             $imageFileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
@@ -56,6 +57,9 @@ if (isset($_POST['action'])) {
                 // if everything is ok, try to upload file
             } else {
                 if (move_uploaded_file($_FILES["gallery_img"]["tmp_name"], $file)) {
+                    if (move_uploaded_file($_FILES["gallery_img"]["tmp_name"], $admin_gallery)){
+                        //copy file to admin area
+                    }
                     $response = '<div class="form-response"><p>success, your image has been added to your gallery.</p></div>';
                     //define articles img variable
                     $image_filename = basename($_FILES['gallery_img']['name']);
@@ -139,7 +143,7 @@ if (isset($_GET['action'])) {
             echo "<div class='img-card'>
                 
                     <div class='img-card-header-img'>
-                        <img src='../".$home_item['image_filename']."'>
+                        <img src='assets/img/gallery/".$home_item['image_filename']."'>
                         <h3>" . $home_item['image_title'] . "</h3>
                     </div>
                     <div class='card-actions img-card-actions'>
@@ -160,7 +164,7 @@ if (isset($_GET['action'])) {
             echo "<div class='img-card'>
         
             <div class='img-card-header-img'>
-                <img src='./assets/img/gallery/" . $gallery_item['image_filename'] . "'>
+            <img src='assets/img/gallery/".$gallery_item['image_filename']."'>
                 <h3>" . $gallery_item['image_title'] . "</h3>
             </div>
             <div class='card-actions img-card-actions'>
@@ -182,7 +186,7 @@ if (isset($_GET['action'])) {
             echo "<div class='img-card'>
         
             <div class='img-card-header-img'>
-                <img src='".$_SERVER['DOCUMENT_ROOT']."/assets/img/gallery/".$other_item['image_filename']. "'>
+            <img src='assets/img/gallery/".$other_item['image_filename']."'>
             </div>
             
         <div class='img-card-body'>
