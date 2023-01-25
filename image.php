@@ -132,7 +132,7 @@ $image->store_result();
                                 $delete_image = "DELETE FROM images WHERE image_id=" . $image_id;
                                 //delete image on server
                                 $file = $_SERVER['DOCUMENT_ROOT']."/admin/assets/img/gallery/".$image_filename;
-                               $gallery = $_SERVER['DOCUMENT_ROOT']."/assets/img/gallery/".$image_filename;
+                                $gallery = $_SERVER['DOCUMENT_ROOT']."/assets/img/gallery/".$image_filename;
                                 if(fopen($file,"w")){
                                     unlink($file);
                                 };
