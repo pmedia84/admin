@@ -15,7 +15,7 @@ if (isset($_POST['action'])) {
             $img_filename = "";
         } else { //if there is an image uploaded then save it to the folder
             //////////////////////sort the image upload first////////////////////////////////////////
-            $admin_gallery = $_SERVER['DOCUMENT_ROOT']. "/admin/assets/img/gallery/";
+            $admin_gallery = $_SERVER['DOCUMENT_ROOT']. "/admin/assets/img/gallery/".basename($_FILES['gallery_img']['name']);
             $dir = $_SERVER['DOCUMENT_ROOT']. "/assets/img/gallery/";
             $file = $dir . basename($_FILES['gallery_img']['name']);
             $imageFileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
