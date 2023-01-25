@@ -15,7 +15,7 @@ if (isset($_POST['action'])) {
             $img_filename = "";
         } else { //if there is an image uploaded then save it to the folder
             //////////////////////sort the image upload first////////////////////////////////////////
-            $admin_gallery = "../assets/img/gallery/";
+            $admin_gallery = "/assets/img/gallery/";
             $dir = $_SERVER['DOCUMENT_ROOT']. "/assets/img/gallery/";
             $file = $dir . basename($_FILES['gallery_img']['name']);
             $imageFileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
@@ -57,6 +57,9 @@ if (isset($_POST['action'])) {
                 // if everything is ok, try to upload file
             } else {
                 if (move_uploaded_file($_FILES["gallery_img"]["tmp_name"], $file)) {
+                    if (move_uploaded_file($_FILES["gallery_img"]["tmp_name"], $file)) {
+                        //move uploaded file to admin
+                    }
                     $response = '<div class="form-response"><p>success, your image has been added to your gallery.</p></div>';
                     //define articles img variable
                     $image_filename = basename($_FILES['gallery_img']['name']);
