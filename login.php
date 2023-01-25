@@ -44,7 +44,7 @@ if($cms_type =="Wedding"){
     //check that there are users set up 
     $wedding_user_query = ('SELECT wedding_user_id FROM wedding_users');
     $wedding_user = $db->query($wedding_user_query);
-    if($wedding_user -> num_rows <2){
+    if($wedding_user -> num_rows <1){
         header('Location: setup.php?action=check_users_wedding');
     }
     

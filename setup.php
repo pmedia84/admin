@@ -21,7 +21,7 @@ if ($cms_type == "Business") {
         $business_id = $ar['business_id'];
         
     } else {
-        $business_id = "1";
+        $business_id = "";
     }
     //check if there are users for the business
     $users_query = ('SELECT user_id, business_id FROM business_users WHERE business_id=' . $business_id);
@@ -37,8 +37,9 @@ if ($cms_type == "Wedding") {
     if ($wedding->num_rows > 0) {
         $ar = mysqli_fetch_assoc($wedding);
         $wedding_id = $ar['wedding_id'];
+        
     }else {
-        $wedding_id = "1";
+        $wedding_id = "";
     }
 
 
@@ -47,7 +48,6 @@ if ($cms_type == "Wedding") {
     $users = $db->query($users_query);
     $users_result = $users->num_rows;
 }
-
 
 
 
@@ -292,12 +292,13 @@ if ($cms_type == "Wedding") {
                         <h1>Setup Wedding</h1>
                         <p><strong>Wedding already setup!</strong></p>
                     <?php endif; ?>
-
+                    <?php endif; ?>
+                    
                     <?php if ($_GET['action'] == "check_users_wedding") : ?>
                     
                     <?php
                     //display wedding name
-                    $wedding_query = ('SELECT wedding_id, wedding_name FROM wedding ORDER BY wedding_id LIMIT 1');
+                    $wedding_query = ('SELECT wedding_id, wedding_name FROM wedding LIMIT 1');
                     $wedding = $db->query($wedding_query);
                     $wedding_result = $wedding->fetch_array();
                     ?>
@@ -310,8 +311,9 @@ if ($cms_type == "Wedding") {
                     $dev_user_query = ('SELECT user_type, wedding_id FROM wedding_users WHERE wedding_id=' . $wedding_id . ' AND user_type = "Developer" ');
                     $dev_user = $db->query($dev_user_query);
                     $dev_user_result = $dev_user->fetch_assoc();
+              
                     ?>
-                    <?php if ($admin_user_result == null) : ?>
+                    <?php if ($admin_user == null) : ?>
                         <h1>The Wedding of <?= $wedding_result['wedding_name']; ?></h1>
                         <p><strong>Admin User Required</strong></p>
                         <p>You need to set up an admin user for your wedding website.</p>
@@ -344,8 +346,8 @@ if ($cms_type == "Wedding") {
                             <div id="response" class="d-none">
                             </div>
                         </form>
-                    <?php else : ?>
-                        <?php if ($dev_user_result == null) : ?>
+                        <?php else: ?>
+                            <?php if ($dev_user_result == null) : ?>
                             <h1><?= $wedding_result['wedding_name']; ?></h1>
                             <p><strong>Developer User Required</strong></p>
                             <p>You need to set up a Developer user for this business.</p>
@@ -383,11 +385,12 @@ if ($cms_type == "Wedding") {
                             <?php header('location: login.php'); ?>
                         <?php endif; ?>
                     <?php endif; ?>
-                
+                    
             <?php endif; ?>
-                <?php endif; ?>
+                
+            
             <?php endif;?>
-
+           
             
 
 
@@ -499,7 +502,7 @@ if ($cms_type == "Wedding") {
                         $("#response").slideDown(400);
 
                     }
-                    window.location.replace(url);
+                    //window.location.replace(url);
 
 
 
