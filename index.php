@@ -5,12 +5,9 @@ if (!$_SESSION['loggedin'] == TRUE) {
     
     header('Location: login.php');
 }
-//check the right user is logged in, needs to be admin or developer
-if(!$_SESSION['user_type']== "Developer" || $_SESSION['user_type']=="Admin"){
-    session_destroy();
-    header('Location: login.php');
-}
-
+$exp_date = date('Y-m-d');
+$exp_dates=strtotime($exp_date);
+echo $exp_dates;
 include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
