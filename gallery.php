@@ -4,6 +4,11 @@ if (!$_SESSION['loggedin'] == true) {
     // Redirect to the login page:
     header('Location: login.php');
 }
+//check the right user is logged in, needs to be admin or developer
+if($_SESSION['user_type']== "Developer" || $_SESSION['user_type']=="Admin"){
+    session_destroy();
+    header('Location: login.php');
+}
 
 include("./connect.php");
 include("inc/head.inc.php");
