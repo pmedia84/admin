@@ -49,7 +49,7 @@ if ($cms_type == "Wedding") {
     $wedding->close();
     //set cms name
     $cms_name = $wedding_name;
-    //find user details for this business
+    //find user details for this wedding
     $wedding_users = $db->prepare('SELECT users.user_id, users.user_name, wedding_users.wedding_id, wedding_users.user_type FROM users NATURAL LEFT JOIN wedding_users WHERE users.user_id=' . $user_id);
 
     $wedding_users->execute();
