@@ -6,7 +6,7 @@ if (!$_SESSION['loggedin'] == TRUE) {
     header('Location: login.php');
 }
 //check the right user is logged in, needs to be admin or developer
-if($_SESSION['user_type']== "Developer" || $_SESSION['user_type']=="Admin"){
+if(!$_SESSION['user_type']== "Developer" || $_SESSION['user_type']=="Admin"){
     session_destroy();
     header('Location: login.php');
 }
