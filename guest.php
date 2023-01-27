@@ -387,6 +387,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                 <div class="card-actions">
                                     <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Guest </a><br>
                                     <a class="my-2" href="guest.php?action=delete&confirm=no&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i> Remove Guest </a>
+                                    <a class="my-2" href="events.php"><i class="fa-solid fa-user-plus"></i> Assign Guest To Events </a>
                                 </div>
                             </div>
 
