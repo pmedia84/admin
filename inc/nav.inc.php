@@ -1,7 +1,7 @@
 <nav class="nav-bar">
     <div class="nav-container">
         <div class="close">
-            <button class="btn btn-close" id="nav-btn-close"></button>
+            <button class="btn btn-close nav-btn-close" id="nav-btn-close"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <ul class="nav-links">
             <?php if ($cms_type == "Business") : ?>

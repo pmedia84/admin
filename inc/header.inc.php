@@ -15,12 +15,11 @@
     <div class="header-actions">
         <div class="header-actions-btn-section">
             <div class="header-actions-navbtn">
-                <a href="#" class="nav-btn" id="nav-btn"><img src="assets/img/icons/menu-bars.svg" alt=""></a>
+                <a href="#" class="nav-btn" id="nav-btn"><i class="fa-solid fa-bars"></i></a>
             </div>
 
             <a class="header-actions-btn-user" href="">
-                <img src="assets/img/icons/user.svg" alt="">
-                <img src="assets/img/icons/down.svg" alt="">
+            <i class="fa-solid fa-user"></i>
             </a>
             <div class="header-actions-business-name">
                 <h1><?php if ($cms_type == "Business") {
@@ -29,7 +28,7 @@
                         echo $wedding_name . '\'s Wedding';
                     } ?></h1>
             </div>
-            <a class="header-actions-btn-logout" href="logout.php"><span>Logout</span><img src="assets/img/icons/logout.svg" alt=""></a>
+            <a class="header-actions-btn-logout" href="logout.php"><span>Logout</span><i class="fa-solid fa-right-from-bracket"></i></a>
         </div>
     </div>
 </div>

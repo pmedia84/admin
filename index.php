@@ -5,9 +5,7 @@ if (!$_SESSION['loggedin'] == TRUE) {
     
     header('Location: login.php');
 }
-$exp_date = date('Y-m-d');
-$exp_dates=strtotime($exp_date);
-echo $exp_dates;
+
 include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
