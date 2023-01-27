@@ -254,7 +254,7 @@ if (array_key_exists('action', $_POST)) {
         $event_id = $_POST['event_id'];
         $event_name = mysqli_real_escape_string($db, $_POST['event_name']);
         $event_location = mysqli_real_escape_string($db, $_POST['event_location']);
-        $event_address = mysqli_real_escape_string($db, $_POST['event_address']);
+        $event_address= htmlspecialchars($_POST['event_address']);
         $event_date = mysqli_real_escape_string($db, $_POST['event_date']);
         $event_time = mysqli_real_escape_string($db, $_POST['event_time']);
         $event_notes = mysqli_real_escape_string($db, $_POST['event_notes']);
@@ -270,7 +270,7 @@ if (array_key_exists('action', $_POST)) {
         //declare variables
         $event_name = mysqli_real_escape_string($db, $_POST['event_name']);
         $event_location = mysqli_real_escape_string($db, $_POST['event_location']);
-        $event_address = mysqli_real_escape_string($db, $_POST['event_address']);
+        $event_address= htmlspecialchars($_POST['event_address']);
         $event_date = mysqli_real_escape_string($db, $_POST['event_date']);
         $event_time = mysqli_real_escape_string($db, $_POST['event_time']);
         $event_notes = mysqli_real_escape_string($db, $_POST['event_notes']);
