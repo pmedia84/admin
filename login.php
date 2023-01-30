@@ -1,12 +1,12 @@
 <?php
 session_start();
 //find the referring page to redirect to once logged in
-if(empty($_SERVER['HTTP_REFERER'])){
-    $redirect = "";
-   
+if(!empty($_GET)){
+    $location=urldecode($_GET['location']);
 }else{
-    $redirect = $_SERVER['HTTP_REFERER'];
+    $location="index";
 }
+
 
 include("connect.php");
 include("inc/settings.php");
@@ -118,7 +118,7 @@ if($cms_type =="Wedding"){
     <script>
         $("#login").submit(function(event) {
             event.preventDefault();
-            var redirect = '<?php echo $redirect;?>';
+            var redirect = '<?php echo $location;?>';
             var formData = new FormData($("#login").get(0));
             var user_email = $("#user_email").val();
             $.ajax({ //start ajax post
@@ -131,13 +131,7 @@ if($cms_type =="Wedding"){
                     $("#response").html(data);
                     $("#response").slideDown(400);
                     if (data === 'correct') {
-                        if(redirect ===''){
-                            window.location.replace('index.php');
-                            
-                        }else{
-                            window.location.replace(redirect);
-                        }
-                        
+                        window.location.replace(redirect);
                     }
                     if (data === 'TEMP') {
                         window.location.replace('resetpw.php?action=temp&user_email='+user_email);
