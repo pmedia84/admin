@@ -98,7 +98,7 @@ if ($cms_type == "Wedding") {
             <?php if (isset($_GET['action'])) :
                 //scripts for changing temporary passwords for new users
                 //find username and email address to display on screen.
-                $user = $db->prepare('SELECT user_id, user_email, user_name, user_pw_status FROM users WHERE user_email = ?');
+                $user = $db->prepare('SELECT user_id, user_email, user_name, user_pw_status FROM users WHERE user_email = ? AND user_type <>"wedding_guest"');
                 $user->bind_param('s', $user_email);
                 $user->execute();
                 $user->bind_result($user_id, $email, $name, $user_pw_status);

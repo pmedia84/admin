@@ -58,6 +58,9 @@ $guest_home_img_res = $guest_home_img->fetch_assoc();
 <!-- Page Title -->
 <title>Mi-Admin | Wedding Website Settings</title>
 <!-- /Page Title -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0/dist/themes/light.css" />
+<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0/dist/shoelace.js"></script>
 </head>
 
 <body>

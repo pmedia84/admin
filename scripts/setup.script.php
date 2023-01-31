@@ -165,7 +165,7 @@ if (isset($_POST['action'])) {
         //set a pw status of temp
         $user_pw_status = "TEMP";
         //check user does not exist with email provided
-        $user = $db->prepare('SELECT user_email FROM users WHERE user_email = ?');
+        $user = $db->prepare('SELECT user_email FROM users WHERE user_email = ? AND user_type ="Admin"');
         $user->bind_param('s', $user_email);
         $user->execute();
         $user->store_result();

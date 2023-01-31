@@ -110,3 +110,4 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
 
     $user->close();
 }
+?>
