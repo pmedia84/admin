@@ -195,7 +195,7 @@ $image->store_result();
                                         <p><strong>File Name:</strong> <?= $image_filename; ?></p>
                                         <label for="image_title"><strong>Image Title</strong></label>
                                         <!-- input -->
-                                        <input class="text-input input" type="text" name="image_title" id="image_title" placeholder="Image Title" required="" maxlength="45" value="<?= $image_title; ?>">
+                                        <input class="text-input input" type="text" name="image_title" id="image_title" placeholder="Image Title" maxlength="45" value="<?= $image_title; ?>">
                                     </div>
                                     <div class="form-input-wrapper my-2">
                                         <img src="./assets/img/gallery/<?= $image_filename ?>" alt="">
@@ -315,7 +315,7 @@ $image->store_result();
                 success: function(data, responseText) {
                     $("#response").html(data);
                     $("#response").slideDown(400);
-                    window.location.replace('image.php?action=view&image_id=' + image_id);
+                    window.location.replace('gallery');
                 }
             });
 

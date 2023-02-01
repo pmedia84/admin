@@ -147,7 +147,7 @@ if (isset($_GET['action'])) {
                     <div class='card-actions img-card-actions'>
                         <a href='image.php?action=edit&image_id=" . $home_item['image_id'] . "'><i class='fa-solid fa-pen-to-square'></i> Edit Image</a>
                         <a href='image.php?action=view&image_id=" . $home_item['image_id'] . "'><i class='fa-solid fa-eye'></i> View Image</a>
-                        <a href='image.php?action=delete&image_id=" . $home_item['image_id'] . "'><i class='fa-solid fa-trash'></i> Delete Image</a>
+                        <a href='image.php?action=delete&confirm=no&image_id=" . $home_item['image_id'] . "'><i class='fa-solid fa-trash'></i> Delete Image</a>
                     </div>
                 
 
@@ -169,7 +169,7 @@ if (isset($_GET['action'])) {
             <div class='card-actions img-card-actions'>
                 <a href='image.php?action=edit&image_id=" . $gallery_item['image_id'] . "'><i class='fa-solid fa-pen-to-square'></i> Edit Image</a>
                 <a href='image.php?action=view&image_id=" . $gallery_item['image_id'] . "'><i class='fa-solid fa-eye'></i> View Image</a>
-                <a href='image.php?action=delete&image_id=" . $gallery_item['image_id'] . "'><i class='fa-solid fa-trash'></i> Delete Image</a>
+                <a href='image.php?action=delete&confirm=no&image_id=" . $gallery_item['image_id'] . "'><i class='fa-solid fa-trash'></i> Delete Image</a>
             </div>
        
 
@@ -195,7 +195,7 @@ if (isset($_GET['action'])) {
             <div class='card-actions img-card-actions'>
             <a href='image.php?action=edit&image_id=" . $other_item['image_id'] . "'><i class='fa-solid fa-pen-to-square'></i> Edit Image</a>
             <a href='image.php?action=view&image_id=" . $other_item['image_id'] . "'><i class='fa-solid fa-eye'></i> View Image</a>
-            <a href='image.php?action=delete&image_id=" . $other_item['image_id'] . "'><i class='fa-solid fa-trash'></i> Delete Image</a>
+            <a href='image.php?action=delete&confirm=noimage_id=" . $other_item['image_id'] . "'><i class='fa-solid fa-trash'></i> Delete Image</a>
         </div>
         </div>
 

@@ -62,7 +62,7 @@ if ($cms_type == "Wedding") {
 <script>
     tinymce.init({
         selector: 'textarea#story_body',
-        height: 500,
+        height: 800,
 
         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | ',
