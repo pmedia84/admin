@@ -218,8 +218,7 @@ if ($cms_type == "Wedding") {
                     $("#loading-icon").hide(400);
                 },
                 success: function(data, responseText) {
-                    $("#response").html(data);
-                    $("#response").slideDown(400);
+
                     $("#img-upload")[0].reset();
                     url = "scripts/gallery.script.php?action=loadgallery";
                     $.ajax({ //load image gallery
@@ -233,7 +232,12 @@ if ($cms_type == "Wedding") {
 
                         }
                     });
-
+                    
+                    $("#response").html(data);
+                    $("#response").slideDown(400);
+                    if(data ==="success"){
+                        $(".modal").removeClass("modal-active");
+                    }
                 }
             });
 

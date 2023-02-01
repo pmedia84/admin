@@ -85,7 +85,7 @@ if (isset($_POST['action'])) {
                     $new_image->bind_param('ssss', $image_title, $image_description, $image_filename,  $img_place);
                     $new_image->execute();
                     $new_image->close();
-                    $response =  '<div class="form-response"><p>Your image: ' . $image_filename . ' has been uploaded successfully, you can now close this window or upload another image.</p></div>';
+                    $response =  'success';
                 } else {
                     echo "Sorry, there was an error uploading your file.";
                 }
