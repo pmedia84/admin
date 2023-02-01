@@ -33,6 +33,7 @@
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
                     <li><a class="nav-link" href="events.php">Events <i class="fa-solid fa-calendar-day"></i></a></li>
                 <?php endif; ?>
+                <li><a class="nav-link" href="our_story">Our Story <i class="fa-regular fa-heart"></i></a></li>
                 <?php if ($invite_manager_status == "On") : ?>
                     <li><a class="nav-link" href="invitations.php">Invitations <i class="fa-solid fa-champagne-glasses"></i></a></li>
                 <?php endif; ?>
@@ -51,10 +52,12 @@
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
                     <li><a class="nav-link" href="wedding_settings">Website Settings <i class="fa-solid fa-laptop"></i></a></li>
                 <?php endif; ?>
+                
             <?php endif; ?>
             <?php if ($user_type == "Developer") : ?>
                 <li><a class="nav-link" href="cms_settings.php">CMS Settings <i class="fa-solid fa-gear"></i></a></li>
             <?php endif; ?>
+
         </ul>
     </div>
 </nav>
