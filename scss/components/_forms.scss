@@ -98,7 +98,10 @@ input[type=text], input[type=password], textarea, select, input[type=file],input
         box-shadow: 0 0 2px 3px $primary-500;
         transition: box-shadow 300ms ease-out;
     }
-    
+    max-width: 80vw;
+    @media(min-width:$md){
+        max-width: 80%;
+    }
 }
 input[type=date], input[type=time], input[type=number]{
     max-width: 15ch;

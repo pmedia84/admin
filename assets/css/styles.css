@@ -230,7 +230,7 @@ a:hover{
     position: relative;
     display: grid;
     gap: 1rem;
-    padding: 1rem;
+    padding: .5rem;
 } 
 .main-dashboard {
     /*dashboard cards*/
@@ -241,7 +241,7 @@ a:hover{
 .main-cards {
     /*container for cards*/
     background-color: hsl(163, 28%, 90%);
-    padding: 1rem;
+    padding: .5rem;
     border-radius: 10px;
     display: grid;
     gap: 1rem;
@@ -262,6 +262,7 @@ margin: 0 auto;
         height: 100%;
         flex-grow: 1;
         place-self: auto;
+        padding: 1rem;
     }
     .header{
         grid-row: 1/2;
@@ -282,6 +283,7 @@ margin: 0 auto;
 .main-cards{
     grid-row: 2/4;
     grid-column: 3/4;
+    padding: 1rem;
 }
    .main-cards a{
     width: fit-content;
@@ -719,12 +721,22 @@ input[type=text], input[type=password], textarea, select, input[type=file],input
     padding: 0.25rem;
     transition: box-shadow 300ms ease-out;
     margin-block: 0.25rem;
-    
 } 
 
 input[type=text]:focus,input[type=password]:focus,textarea:focus,select:focus,input[type=file]:focus,input[type=number]:focus,input[type=date]:focus,input[type=time]:focus{
         box-shadow: 0 0 2px 3px hsl(163, 28%, 50%);
         transition: box-shadow 300ms ease-out;
+    } 
+
+input[type=text], input[type=password], textarea, select, input[type=file],input[type=number], input[type=date], input[type=time] {
+    max-width: 80vw;
+} 
+
+@media(min-width:768px){ 
+
+input[type=text], input[type=password], textarea, select, input[type=file],input[type=number], input[type=date], input[type=time]{
+        max-width: 80%
+}
     } 
 
 input[type=date], input[type=time], input[type=number]{
@@ -1113,12 +1125,20 @@ input:checked + .slider:before {
         height: 35px;
     } 
 
+/*standard card for all pages*/ 
+
 .std-card, .event-card{
     background-color: white;
-    padding: 1.5rem;
+    padding: 0.5rem;
     border-radius: 5px;
-
 } 
+
+@media(min-width:768px){ 
+
+.std-card, .event-card{
+        padding: 1.5rem
+}
+    } 
 
 .user-card{
     
