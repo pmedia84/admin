@@ -228,11 +228,8 @@ if ($cms_type == "Wedding") {
 
                         success: function(data, responseText) {
                             $("#img-gallery").html(data);
-                            
-
                         }
                     });
-                    
                     $("#response").html(data);
                     $("#response").slideDown(400);
                     if(data ==="success"){

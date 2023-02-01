@@ -1,13 +1,15 @@
 <?php
 session_start();
+
 include("./connect.php");
 
 
 $guestlist = fopen("scripts/guestlist.csv", "w") or die("Unable to open file!");
 
-$query =("SELECT  guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname,guest_list.guest_extra_invites, guest_list.guest_rsvp_code,guest_list.guest_address, guest_list.guest_postcode, invitations.guest_id, invitations.event_id, wedding_events.event_id, wedding_events.event_name FROM guest_list  
+$query =("SELECT  guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname,guest_list.guest_extra_invites, guest_list.guest_rsvp_code,guest_list.guest_address, guest_list.guest_postcode, guest_list.guest_group_id, guest_groups.guest_group_id, guest_groups.guest_group_name, invitations.guest_id, invitations.event_id, wedding_events.event_id, wedding_events.event_name FROM guest_list  
    LEFT JOIN invitations ON guest_list.guest_id = invitations.guest_id
    LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id
+   LEFT JOIN guest_groups ON guest_groups.guest_group_id=guest_list.guest_group_id
   WHERE invitations.guest_id=guest_list.guest_id
   ORDER BY wedding_events.event_id 
   ");
@@ -15,9 +17,9 @@ $query =("SELECT  guest_list.guest_id, guest_list.guest_fname, guest_list.guest_
 $fetch = $db->query($query);
 $query_fetch = $fetch->fetch_array();
 
-$note=array("NOTE: Save this file as an Excel workbook and remove this line. Guest ID and event ID are not required so these can be deleted. If you make changes to your guest list then make sure you download this again.");
+$note=array("NOTE: Save this file as an Excel workbook and remove this line. If you make changes to your guest list then make sure you download this again.");
 fputcsv($guestlist, $note);
-$headers = array('Guest ID', 'First Name', 'Surname','Additional Invites', 'RSVP Code', 'Address', 'Postcode', 'Event ID', 'Event Name');
+$headers = array('Guest ID', 'First Name', 'Surname','Additional Invites', 'RSVP Code', 'Address', 'Postcode', '','Guest Group Name', 'Event ID', 'Event Name');
 fputcsv($guestlist, $headers);
 foreach ($fetch as $line) {
   fputcsv($guestlist, $line);
@@ -53,7 +55,7 @@ if ($cms_type == "Wedding") {
 
     $wedding->execute();
     $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_email, $wedding_phone, $wedding_contact_name);
+    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_email, $wedding_phone, $wedding_contact_name);
     $wedding->fetch();
     $wedding->close();
     //set cms name
@@ -117,7 +119,7 @@ if ($cms_type == "Wedding") {
                         <h2>Download Your Invitations</h2>
                         <p>Only do this once you are happy with your guest list and you have assigned all guests to the correct event.</p>
                         <p>Your guest list is now ready to download. Click the button below.</p>
-                        <a class="btn-primary" href="scripts/guestlist.csv">Download  <i class="fa-solid fa-download"></i></a>
+                        <a class="btn-primary" href="scripts/guestlist.csv" download="Guest List <?= date('d-m-y');?>.csv">Download  <i class="fa-solid fa-download"></i></a>
                         
 
                         <div class="std-card d-none" id="invite_list">

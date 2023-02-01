@@ -1,8 +1,11 @@
-"NOTE: Save this file as an Excel workbook and remove this line. Guest ID and event ID are not required so these can be deleted. If you make changes to your guest list then make sure you download this again."
-"Guest ID","First Name",Surname,"Additional Invites","RSVP Code",Address,Postcode,"Event ID","Event Name"
-394,george,f,,,,,1,"Wedding Ceremony and Reception"
-395,savvy,f,,,,,1,"Wedding Ceremony and Reception"
-396,penelope,f,,,,,1,"Wedding Ceremony and Reception"
-392,peter,bell,,,,,1,"Wedding Ceremony and Reception"
-393,brynn,edwards,,,,,1,"Wedding Ceremony and Reception"
-352,"Amy ",Male,1,MAL15266,,,6,"Evening Party"
+"NOTE: Save this file as an Excel workbook and remove this line. If you make changes to your guest list then make sure you download this again."
+"Guest ID","First Name",Surname,"Additional Invites","RSVP Code",Address,Postcode,,"Guest Group Name","Event ID","Event Name"
+419,Amy,Besley,5,BES1122,"36a DANIELS GATE
+LONG SUTTON","PE12 9DN",44,"Amy Besley",1,"Wedding Ceremony and Reception"
+422,Bob,besley,2,BES19363,"36a DANIELS GATE
+LONG SUTTON","PE12 9DN",46,"Bob besley",1,"Wedding Ceremony and Reception"
+423,Karlppp,qq,1,QQ14588,,,47,"Karlppp qq",1,"Wedding Ceremony and Reception"
+421,Karl,besley,1,BES17450,"36a DANIELS GATE
+LONG SUTTON","PE12 9DN",45,"Karl besley",1,"Wedding Ceremony and Reception"
+353,Hilda,Smith,3,SMI17175,,,38,"Hilda Smith",6,"Evening Party"
+546,Karlppp,Doe,,,,,38,"Hilda Smith",6,"Evening Party"
