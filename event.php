@@ -167,23 +167,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     <p>There has been an error, please return to the last page and try again.</p>
                                 </div>
                             <?php endif; ?>
-
-
-
-
-
-
-
-
                         <?php endif; ?>
-
-
-
-
-
-
-
-
                         <?php if ($_GET['action'] == "delete") : //if action is delete, detect if the confirm is yes or no
                         ?>
                             <?php if ($_GET['confirm'] == "yes") : //if yes then delete the article
@@ -426,7 +410,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                         <h4>Guest List</h4>
                                         <table class="event-card-guestlist-table ">
                                             <?php
-                                            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, invitations.event_id, invitations.guest_id, invitations.invite_status, invitations.invite_rsvp_status FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id WHERE invitations.event_id='.$event_id);
+                                            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_rsvp_status, invitations.event_id, invitations.guest_id, invitations.invite_status, invitations.invite_rsvp_status FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id WHERE invitations.event_id='.$event_id);
                                             $guest_list = $db->query($guest_list_query);
                                             
                                             ?>
@@ -446,7 +430,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                                 <tr>
                                                     <td><a href="guest.php?action=view&guest_id=<?= $guest['guest_id']; ?>"><?= $guest['guest_fname'] . " " . $guest['guest_sname'] . ' ' . $plus; ?></a></td>
                                                     <td><?= $guest['invite_status']; ?></td>
-                                                    <td><?= $guest['invite_status']; ?></td>
+                                                    <td><?= $guest['guest_rsvp_status']; ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
 

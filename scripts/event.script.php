@@ -129,7 +129,7 @@ if ((array_key_exists('action', $_GET))) {
             </table>
 
             <div class="button-section my-3">
-                <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Assign Selected Guests </button>
+                <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-user-plus"></i> Assign Selected Guests </button>
             </div>
         </form>
         <script>

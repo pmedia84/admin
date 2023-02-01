@@ -146,16 +146,18 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                 //load guest information
                                 $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
                                 $guest->fetch();
-                                //load any invites the guest may have and delete them also;
-                                $remove_invites = "DELETE FROM invitations WHERE guest_id=$guest_id";
 
-
-                                if (mysqli_query($db, $remove_invites)) {
+                                //delete the user acc
+                                $remove_user="DELETE FROM users WHERE guest_id=$guest_id";
+                                if (mysqli_query($db, $remove_user)) {
                                     echo mysqli_error($db);
                                 }
-
-
-
+                                //remove any guests this user has made
+                                
+                                $remove_group_guests="DELETE FROM guest_list WHERE guest_group_id=$guest_group_id";
+                                if (mysqli_query($db, $remove_group_guests)) {
+                                    echo mysqli_error($db);
+                                }
                                 // connect to db and delete the guest
                                 $remove_guest = "DELETE FROM guest_list WHERE guest_id=$guest_id";
                                 if (mysqli_query($db, $remove_guest)) {
@@ -165,6 +167,8 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     echo '<div class="form-response error"><p>Error removing guest, please try again.</p></div>';
                                     //echo mysqli_error($db);
                                 }
+                                //delete any group members associated with this guest
+
                             ?>
                             <?php else : ?>
                                 <div class="std-card">
@@ -184,19 +188,28 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     <p>Are you sure you want to remove this guest from your guest list?</p>
                                     <p><strong>This Cannot Be Reversed</strong></p>
                                     <p><strong>Note:</strong> This will also remove any assignments they have to your events.</p>
-                                    <?php if ($guest_type == "Group Organiser") : ?>
-                                        <p><strong><?= $guest_fname; ?> is a group organiser and cannot be removed!</strong></p>
-                                        <p><strong>Remove their extra invites and try again.</strong></p>
+                                    <?php if ($guest_type == "Group Organiser" && $guest_rsvp_status =="Attending"):?>
+                                        <p><strong><?=$guest_fname;?> has stated they are attending</strong></p>
+                                        <p><strong>This will also remove their guest account and any guests they have already added.</strong></p>
+                                        
+                                        
                                         <div class="card-actions">
                                             <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Guest </a><br>
                                         </div>
-                                    <?php else : ?>
+                                   
                                         <div class="button-section">
                                             <a class="btn-primary btn-delete my-2" href="guest.php?action=delete&confirm=yes&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i>Remove Guest</a>
                                             <a class="btn-primary btn-secondary my-2" href="guest.php?action=view&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-ban"></i>Cancel</a>
                                         </div>
                                     <?php endif; ?>
-
+                                    <?php if ($guest_type =="Group Organiser" && $guest_rsvp_status =="Not Attending"):?>
+                                        <p><strong><?=$guest_fname;?> has stated they are not attending</strong></p>
+                                        <p><strong>You can now remove them from your guest list.</strong></p>
+                                        <div class="button-section">
+                                            <a class="btn-primary btn-delete my-2" href="guest.php?action=delete&confirm=yes&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i>Remove Guest</a>
+                                            <a class="btn-primary btn-secondary my-2" href="guest.php?action=view&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-ban"></i>Cancel</a>
+                                        </div>
+                                        <?php endif;?>
                                 </div>
                             <?php endif; ?>
                         <?php endif; ?>
@@ -290,7 +303,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                         ?>
                             <h2><?= $guest_fname . ' ' . $guest_sname; ?></h2>
                             <div class="std-card">
-                                <form class="form-card" id="edit_guest" action="scripts/guest.script.php" method="POST" enctype="multipart/form-data">
+                                <form class="" id="edit_guest" action="scripts/guest.script.php" method="POST" enctype="multipart/form-data">
                                     <div class="form-input-wrapper">
                                         <label for="guest_fname"><strong>First Name</strong></label>
                                         <!-- input -->
@@ -323,13 +336,17 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                             <p class="form-hint-small my-2"><?= $guest_fname; ?> has already assigned guests to their group, so you can only increase the number of invites available.</p>
                                             <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="<?= $guest_extra_invites; ?>" max="10">
                                         <?php endif; ?>
+                                        <?php if ($guest_group_status == "" && $guest_type == "Group Organiser") : ?>
+                                            <p class="form-hint-small my-2"><?= $guest_fname; ?> has already assigned guests to their group, so you can only increase the number of invites available.</p>
+                                            <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="<?= $guest_extra_invites; ?>" max="10">
+                                        <?php endif; ?>
                                         <?php if ($guest_group_status == "Unassigned") : ?>
-                                            <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
+                                            <p class="form-hint-small my-2">Assign additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
                                             <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
                                         <?php endif; ?>
 
                                         <?php if ($guest_type == "Sole") : ?>
-                                            <p class="form-hint-small my-2">Assign up to 10 additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
+                                            <p class="form-hint-small my-2">Assign additional invites for this guest, they will then add their own details of the additional guests they can bring.</p>
                                             <input class="text-input input" type="number" id="guest_extra_invites" name="guest_extra_invites" placeholder="Extra Invites" value="<?= $guest_extra_invites; ?>" min="0" max="10">
                                         <?php endif; ?>
 
