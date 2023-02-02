@@ -140,10 +140,12 @@ if (isset($_GET['action'])) {
             //define image sections as set out from checkboxes 
             echo "<div class='img-card'>
                 
-                    <div class='img-card-header-img'>
-                        <img src='assets/img/gallery/".$home_item['image_filename']."'>
-                        <h3>" . $home_item['image_title'] . "</h3>
-                    </div>
+                    
+                        <div class='img-card-header-img'>
+                            <a href='image.php?action=view&image_id=" . $home_item['image_id'] . "'><img src='assets/img/gallery/".$home_item['image_filename']."'></a>
+                            <h3>" . $home_item['image_title'] . "</h3>
+                        </div>
+                   
                     <div class='card-actions img-card-actions'>
                         <a href='image.php?action=edit&image_id=" . $home_item['image_id'] . "'><i class='fa-solid fa-pen-to-square'></i> Edit Image</a>
                         <a href='image.php?action=view&image_id=" . $home_item['image_id'] . "'><i class='fa-solid fa-eye'></i> View Image</a>
@@ -162,10 +164,12 @@ if (isset($_GET['action'])) {
         foreach ($gallery as $gallery_item) {
             echo "<div class='img-card'>
         
-            <div class='img-card-header-img'>
-            <img src='assets/img/gallery/".$gallery_item['image_filename']."'>
-                <h3>" . $gallery_item['image_title'] . "</h3>
-            </div>
+           
+                <div class='img-card-header-img'>
+                <a href='image.php?action=view&image_id=" . $gallery_item['image_id'] . "'><img src='assets/img/gallery/".$gallery_item['image_filename']."'></a>
+                    <h3>" . $gallery_item['image_title'] . "</h3>
+                </div>
+            
             <div class='card-actions img-card-actions'>
                 <a href='image.php?action=edit&image_id=" . $gallery_item['image_id'] . "'><i class='fa-solid fa-pen-to-square'></i> Edit Image</a>
                 <a href='image.php?action=view&image_id=" . $gallery_item['image_id'] . "'><i class='fa-solid fa-eye'></i> View Image</a>
@@ -186,7 +190,7 @@ if (isset($_GET['action'])) {
             echo "<div class='img-card'>
         
             <div class='img-card-header-img'>
-            <img src='assets/img/gallery/".$other_item['image_filename']."'>
+            <a href='image.php?action=view&image_id=" . $other_item['image_id'] . "'><img src='assets/img/gallery/".$other_item['image_filename']."'></a>
             </div>
             
         <div class='img-card-body'>

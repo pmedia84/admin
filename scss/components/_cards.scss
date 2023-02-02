@@ -32,6 +32,8 @@
     }
 }
 
+
+
 .user-card{
     
     margin: 0 auto;
@@ -204,6 +206,9 @@
 
 .settings-card-text{
     padding: $spacer-2;
+    img{
+        max-height: 35%;
+    }
 }
 
 /////Form card for dividing up forms

@@ -1,7 +1,16 @@
+.table-wrapper{
+    //wraps table to make it responsive
+overflow-x: auto;
+max-width: 90vw;
+@media(min-width:$md){
+    max-width: 100%;
+}
+}
 .std-table{//standard table settings
-    max-width: 95vw;
+
+    width: 100%;
     margin-bottom: $spacer-3;
-    overflow-x: auto;
+
     th{
         text-align: left;
     }
@@ -11,9 +20,7 @@
     tr:nth-child(even){
         background-color: $primary-900;
     }
-    @media(min-width: $md){
-        width: 100%;
-    }
+
 }
 
 .guest-list-actions{
@@ -25,3 +32,6 @@
     padding: $spacer-1;
     font-size: 1.25rem;
 }
+
+
+

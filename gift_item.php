@@ -146,12 +146,19 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                 $remove_item = "DELETE FROM gift_list WHERE gift_item_id=$gift_item_id";
                                 if (mysqli_query($db, $remove_item)) {
                                     //delete image on server
-                                    $file =  "assets/img/gift_list/" . $gift_item_img;
+                                    if(!$gift_item_img==""){
+                                        $file =  "assets/img/gift_list/" . $gift_item_img;
+                                        $website_asset =  $_SERVER['DOCUMENT_ROOT']. "/assets/img/gift-list/". $gift_item_img;
 
-                                    if (fopen($file, "w")) {
-                                        unlink($file);
-                                    };
-                                    echo '<div class="std-card"><div class="form-response error"><p>' . $gift_item_name . ' Has been removed from your gift list</p></div></div>';
+                                        if (fopen($file, "w")) {
+                                            unlink($file);
+                                        };
+                                        if (fopen($website_asset, "w")) {
+                                            unlink($website_asset);
+                                        };
+                                    }
+
+                                    echo '<div class="std-card"><div class="form-response error"><p>' . $gift_item_name . ' Has been removed from your gift list</p> <a href="gift_list" class="btn-primary my-3">Return To Gallery</a></div></div>';
                                 } else {
                                     echo '<div class="form-response error"><p>Error removing gift list item, please try again.</p></div>';
                                 }
@@ -162,7 +169,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     <p>There has been an error, please return to the last page and try again.</p>
                                 </div>
                             <?php endif; ?>
-                        <?php else : //if not then display the message to confirm the user wants to delete the news article
+                        <?php else : //if not then display the message to confirm the user wants to delete the image
                         ?>
                             <?php if (($gift_item->num_rows) > 0) :
                                 //load guest information
@@ -227,7 +234,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Add Item </button>
                                 </div>
                                 <div id="response" class="d-none">
-                                    <p>Article Saved <img src="./assets/img/icons/check.svg" alt=""></p>
+                              
                                 </div>
                             </form>
                         </div>
@@ -343,7 +350,11 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                 contentType: false,
                 processData: false,
                 success: function(data, responseText) {
-                    window.location.replace('gift_list.php');
+                    if(data ==="success"){
+                        window.location.replace('gift_list.php');
+                    }
+                    $("#response").html(data);
+                    $("#response").slideDown(400);
                 }
             });
         });
@@ -361,8 +372,15 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                 contentType: false,
                 processData: false,
                 success: function(data, responseText) {
-                    window.location.replace('gift_list.php');
+                    if(data ==="success"){
+                        window.location.replace('gift_list.php');
+                    }
+                    $("#response").html(data);
+                    $("#response").slideDown(400);
                 }
+                
+               
+
             });
 
         });

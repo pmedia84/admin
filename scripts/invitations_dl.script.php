@@ -17,7 +17,7 @@ if (isset($_GET['action'])) {
         $guest_list_result = $guest_list->fetch_assoc();
 
         echo
-        '<table class="std-table">
+        '<div class="table-wrapper"><table class="std-table">
             <tr>
                 <th>Name</th>
                 <th>Extra Invites</th>
@@ -43,6 +43,7 @@ if (isset($_GET['action'])) {
     ';}
 
     echo '</table>';
+    echo '</div>';
     }
 
 

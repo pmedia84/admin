@@ -16,7 +16,8 @@ if ($_POST['action'] == "edit") { //check if the action type of edit has been se
         
     } else { //if there is an image uploaded then save it to the folder
         //////////////////////sort the image upload first////////////////////////////////////////
-        $dir = "../assets/img/gift_list/";
+        $dir = $_SERVER['DOCUMENT_ROOT']. "/assets/img/gift-list/";
+        $admin_gallery = $_SERVER['DOCUMENT_ROOT']. "/admin/assets/img/gift_list/".basename($_FILES['gift_item_img']['name']);//copy to admin area also
         $file = $dir . basename($_FILES['gift_item_img']['name']);
         $imageFileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
         // Check if image file is a actual image or fake image
@@ -47,6 +48,7 @@ if ($_POST['action'] == "edit") { //check if the action type of edit has been se
             // if everything is ok, try to upload file
         } else {
             if (move_uploaded_file($_FILES["gift_item_img"]["tmp_name"], $file)) {
+                copy($file, $admin_gallery);
                 //define articles img variable
                 $image_filename = basename($_FILES['gift_item_img']['name']);
             }
@@ -80,23 +82,29 @@ if ($_POST['action'] == "edit") { //check if the action type of edit has been se
   
             imagecopyresampled($tn, $image, 0, 0, 0, 0, $width, $height, $width, $height);
             imagejpeg($tn, $save, 60);
+            copy($save, $admin_gallery);
         }
-        //remove the old image
-        $old_img = $gift_item_img_old;
-        $file_path = $dir.$old_img;
-        if(fopen($file_path,"w")){
-            unlink($file_path);
-        };
+        //remove the old image if there was one
+        if(!$gift_item_img_old ==""){
+            $old_img = $gift_item_img_old;
+            $file_path = $dir.$old_img;
+            if(fopen($file_path,"w")){
+                unlink($file_path);
+            };
+        }
+
     }
     //Update gift item
     $gift_item = $db->prepare('UPDATE gift_list SET gift_item_name=?, gift_item_desc=?, gift_item_url=?, gift_item_type=?, gift_item_img=?  WHERE gift_item_id =?');
     $gift_item->bind_param('sssssi', $gift_item_name, $gift_item_desc, $gift_item_url, $gift_item_type, $gift_item_img, $gift_item_id);
     $gift_item->execute();
     $gift_item->close();
+    $response="success";
+    echo $response;
 
     
 }
-
+//////////////////////////
 
 if ($_POST['action'] == "create") { //check if the action type of create has been set in the post request
     include("../connect.php");
@@ -114,7 +122,8 @@ if ($_POST['action'] == "create") { //check if the action type of create has bee
         $gift_item_img = "";
     } else { //if there is an image uploaded then save it to the folder
         //////////////////////sort the image upload first////////////////////////////////////////
-        $dir = $_SERVER['DOCUMENT_ROOT']. "/assets/img/gallery/";
+        $dir = $_SERVER['DOCUMENT_ROOT']. "/assets/img/gift-list/";
+        $admin_gallery = $_SERVER['DOCUMENT_ROOT']. "/admin/assets/img/gift_list/".basename($_FILES['gift_item_img']['name']);//copy to admin area also
         $file = $dir . basename($_FILES['gift_item_img']['name']);
         $imageFileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
         // Check if image file is a actual image or fake image
@@ -145,6 +154,7 @@ if ($_POST['action'] == "create") { //check if the action type of create has bee
             // if everything is ok, try to upload file
         } else {
             if (move_uploaded_file($_FILES["gift_item_img"]["tmp_name"], $file)) {
+                copy($file, $admin_gallery);
                 //define articles img variable
                 $image_filename = basename($_FILES['gift_item_img']['name']);
             }
@@ -185,4 +195,6 @@ if ($_POST['action'] == "create") { //check if the action type of create has bee
     $guest->bind_param('sssss', $gift_item_name, $gift_item_desc, $gift_item_url, $gift_item_type, $gift_item_img);
     $guest->execute();
     $guest->close();
-}
+    $response="success";
+    echo $response;
+}?>

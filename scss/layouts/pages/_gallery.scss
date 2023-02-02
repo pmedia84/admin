@@ -10,6 +10,7 @@
 
 }
 .img-card-header-img{
+
     position: relative;;
     img{
         height: 200px;
@@ -25,7 +26,9 @@
         text-align: center;
     }
 }
-
+.img-card-header-img a{
+    width: 100%;
+}
 .img-card-body-text{
     display: -webkit-box;
     -webkit-line-clamp: 2;

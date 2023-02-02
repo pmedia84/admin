@@ -6,5 +6,5 @@ $update = "UPDATE user_sessions SET session_status = 'Logged Out' WHERE session_
 $submit = $db->query($update);
 session_destroy();
 // Redirect to the login page:
-header('Location: login.php');
+header('Location: /');
 ?>

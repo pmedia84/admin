@@ -57,7 +57,7 @@
             <?php if ($user_type == "Developer") : ?>
                 <li><a class="nav-link" href="cms_settings.php">CMS Settings <i class="fa-solid fa-gear"></i></a></li>
             <?php endif; ?>
-
+            <li><a class="nav-link" href="logout.php">Logout<i class="fa-solid fa-right-from-bracket"></i></a></li>
         </ul>
     </div>
 </nav>
