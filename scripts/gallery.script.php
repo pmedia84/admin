@@ -28,10 +28,34 @@ if (isset($_POST['action'])) {
             }
             // Check if file already exists
             if (file_exists($file)) {
-                $response = '<div class="form-response error"><p>Image already exists</p></div>';
-                echo $response;
-                exit();
-                $uploadOk = 0;
+            //if the image is too big then run a compression. If not then leave the file as it is
+
+            $imagename = $_FILES['gift_item_img']['name'];
+            $source = $_FILES['new_image']['tmp_name'];
+            $target = $dir.$imagename;
+            move_uploaded_file($source, $target);
+            
+            $imagepath = $imagename;
+            $save =  $dir. $imagepath; //This is the new file you saving
+            $file =  $dir. $imagepath; //This is the original file
+  
+            list($width, $height) = getimagesize($file); 
+  
+            $tn = imagecreatetruecolor($width, $height);
+  
+            //$image = imagecreatefromjpeg($file);
+            $info = getimagesize($target);
+            if ($info['mime'] == 'image/jpeg'){
+              $image = imagecreatefromjpeg($file);
+            }elseif ($info['mime'] == 'image/gif'){
+              $image = imagecreatefromgif($file);
+            }elseif ($info['mime'] == 'image/png'){
+              $image = imagecreatefrompng($file);
+            }
+  
+            imagecopyresampled($tn, $image, 0, 0, 0, 0, $width, $height, $width, $height);
+            imagejpeg($tn, $save, 60);
+            copy($save, $admin_gallery);
             }
             // Check file size
             if ($_FILES["gallery_img"]["size"] > 1048576) {
