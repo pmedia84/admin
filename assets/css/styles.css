@@ -1129,7 +1129,7 @@ input:checked + .slider:before {
 
 .std-card, .event-card{
     background-color: white;
-    padding: 0.5rem;
+    padding: 0.25rem;
     border-radius: 5px;
 } 
 
@@ -1502,8 +1502,9 @@ input:checked + .slider:before {
 } 
 
 .std-table{/*standard table settings*/
-    width: 100%;
+    max-width: 95vw;
     margin-bottom: 1.5rem;
+    overflow-x: auto;
 } 
 
 .std-table th{
@@ -1516,6 +1517,13 @@ input:checked + .slider:before {
 
 .std-table tr:nth-child(even){
         background-color: hsl(163, 28%, 90%);
+    } 
+
+@media(min-width: 768px){ 
+
+.std-table{
+        width: 100%
+}
     } 
 
 .guest-list-actions{

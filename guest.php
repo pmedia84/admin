@@ -395,8 +395,14 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                 <p><?= $guest_rsvp_code; ?></p>
                                 <h3>Extra Invites</h3>
                                 <p><?= $guest_extra_invites; ?></p>
-                                <h3>Events</h3>
+                                <h3>RSVP Status</h3>
+                                <?php if($guest_rsvp_status ==""):?>
+                                <p>Not Responded</p>
+                                <a href="" class="btn-primary my-2">Update RSVP</a>
+                                <?php endif;?>    
+                                <?=$guest_rsvp_status;?>
                                 <?php if ($guest_invites->num_rows >= 1) : ?>
+                                    <h3>Events</h3>
                                     <?php foreach ($guest_invites as $invite) : ?>
                                         <p><a href="event.php?action=view&event_id=<?= $invite['event_id']; ?>"><?= $invite['event_name']; ?></a></p>
                                     <?php endforeach; ?>

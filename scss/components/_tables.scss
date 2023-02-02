@@ -1,6 +1,7 @@
 .std-table{//standard table settings
-    width: 100%;
+    max-width: 95vw;
     margin-bottom: $spacer-3;
+    overflow-x: auto;
     th{
         text-align: left;
     }
@@ -9,6 +10,9 @@
     }
     tr:nth-child(even){
         background-color: $primary-900;
+    }
+    @media(min-width: $md){
+        width: 100%;
     }
 }
 

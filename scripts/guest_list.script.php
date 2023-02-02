@@ -4,7 +4,7 @@ if (isset($_GET['action'])) {
         //load guest list from the db and send back to the front page
         include("../connect.php");
         //find wedding guest list
-        $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_events, guest_list.guest_rsvp_status FROM guest_list ORDER BY guest_list.guest_sname');
+        $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_events, guest_list.guest_rsvp_code, guest_list.guest_rsvp_status FROM guest_list ORDER BY guest_list.guest_sname');
         $guest_list = $db->query($guest_list_query);
         $guest_list_result = $guest_list->fetch_assoc();
         $num_guests = $guest_list->num_rows;
@@ -16,6 +16,7 @@ if (isset($_GET['action'])) {
                 <th>Name</th>
                 <th>Extra Invites</th>
                 <th>RSVP Status</th>
+                <th>RSVP Code</th>
                 <th>Manage</th>
             </tr>'; 
     foreach($guest_list as $guest){
@@ -29,8 +30,8 @@ if (isset($_GET['action'])) {
         <td><a href="guest.php?guest_id='.$guest['guest_id'].'&action=view">'.$guest['guest_fname'].' '.$guest['guest_sname'].' '.$plus.'</a></td>
         <td>'.$guest['guest_extra_invites'].'</td>
         <td>'.$guest['guest_rsvp_status'].'</td>
+        <td>'.$guest['guest_rsvp_code'].'</td>
         <td><div class="guest-list-actions">
-                <a href="guest.php?guest_id='.$guest['guest_id'].'&action=view"><i class="fa-solid fa-eye"></i></a>
                 <a href="guest.php?guest_id='.$guest['guest_id'].'&action=edit"><i class="fa-solid fa-pen-to-square"></i></a>
                 <a href="guest.php?guest_id='.$guest['guest_id'].'&action=delete&confirm=no"><i class="fa-solid fa-user-minus"></i></a>
             </div>
@@ -70,6 +71,8 @@ if (isset($_POST['action'])) {
                        <th>Name</th>
                        <th>Attending</th>
                        <th>RSVP Status</th>
+                       <th>RSVP Code</th>
+                       <th>Manage</th>
                    </tr>'; 
            foreach($guest_list as $guest){
             if($guest['guest_extra_invites']>=1){
@@ -79,9 +82,15 @@ if (isset($_POST['action'])) {
             }
                echo' <tr>
                <td><a href="guest.php?guest_id='.$guest['guest_id'].'&action=view">'.$guest['guest_fname'].' '.$guest['guest_sname'].' '.$plus.'</a></td>
-               <td>'.$guest['guest_events'].'</td>
-               <td>Not Replied</td>
-           </tr>                   
+               <td>'.$guest['guest_extra_invites'].'</td>
+               <td>'.$guest['guest_rsvp_status'].'</td>
+               <td>'.$guest['guest_rsvp_code'].'</td>
+               <td><div class="guest-list-actions">
+                       <a href="guest.php?guest_id='.$guest['guest_id'].'&action=edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                       <a href="guest.php?guest_id='.$guest['guest_id'].'&action=delete&confirm=no"><i class="fa-solid fa-user-minus"></i></a>
+                   </div>
+               </td>
+           </tr>                     
            ';}
        
            echo '</table>';
