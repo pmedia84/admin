@@ -158,7 +158,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                         };
                                     }
 
-                                    echo '<div class="std-card"><div class="form-response error"><p>' . $gift_item_name . ' Has been removed from your gift list</p> <a href="gift_list" class="btn-primary my-3">Return To Gallery</a></div></div>';
+                                    echo '<div class="std-card"><div class="form-response error"><p>' . $gift_item_name . ' Has been removed from your gift list</p> <a href="gift_list" class="btn-primary my-3">Return To Gift List </a></div></div>';
                                 } else {
                                     echo '<div class="form-response error"><p>Error removing gift list item, please try again.</p></div>';
                                 }
@@ -231,7 +231,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     <option value="item">Item</option>
                                 </select>
                                 <div class="button-section my-3">
-                                    <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Add Item </button>
+                                    <button class="btn-primary form-controls-btn loading-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Add Item <img id="loading-icon" class="loading-icon d-none" src="./assets/img/icons/loading.svg" alt=""></button>
                                 </div>
                                 <div id="response" class="d-none">
                               
@@ -371,6 +371,12 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                 data: formData,
                 contentType: false,
                 processData: false,
+                beforeSend: function() { //animate button
+                    $("#loading-icon").show(400);
+                },
+                complete: function() {
+                    $("#loading-icon").hide(400);
+                },
                 success: function(data, responseText) {
                     if(data ==="success"){
                         window.location.replace('gift_list.php');

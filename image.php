@@ -385,7 +385,7 @@ if (isset($_GET['image_id'])) {
                     $("#response").html(data);
                     $("#response").slideDown(400);
                     if (data === "success") {
-                        window.location.replace("gallery");
+                        //window.location.replace("gallery");
                     }
                     $("#img-upload")[0].reset();
 

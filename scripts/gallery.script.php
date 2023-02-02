@@ -15,7 +15,7 @@ if (isset($_POST['action'])) {
             $img_filename = "";
         } else { //if there is an image uploaded then save it to the folder
             //////////////////////sort the image upload first////////////////////////////////////////
-            $admin_gallery = $_SERVER['DOCUMENT_ROOT']. "/admin/assets/img/gallery/".basename($_FILES['gallery_img']['name']);
+            $admin_dir = $_SERVER['DOCUMENT_ROOT']. "/admin/assets/img/gallery/";
             $dir = $_SERVER['DOCUMENT_ROOT']. "/assets/img/gallery/";
             $file = $dir . basename($_FILES['gallery_img']['name']);
             $imageFileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
@@ -28,66 +28,12 @@ if (isset($_POST['action'])) {
             }
             // Check if file already exists
             if (file_exists($file)) {
-            //if the image is too big then run a compression. If not then leave the file as it is
-
-            $imagename = $_FILES['gift_item_img']['name'];
-            $source = $_FILES['new_image']['tmp_name'];
-            $target = $dir.$imagename;
-            move_uploaded_file($source, $target);
-            
-            $imagepath = $imagename;
-            $save =  $dir. $imagepath; //This is the new file you saving
-            $file =  $dir. $imagepath; //This is the original file
-  
-            list($width, $height) = getimagesize($file); 
-  
-            $tn = imagecreatetruecolor($width, $height);
-  
-            //$image = imagecreatefromjpeg($file);
-            $info = getimagesize($target);
-            if ($info['mime'] == 'image/jpeg'){
-              $image = imagecreatefromjpeg($file);
-            }elseif ($info['mime'] == 'image/gif'){
-              $image = imagecreatefromgif($file);
-            }elseif ($info['mime'] == 'image/png'){
-              $image = imagecreatefrompng($file);
-            }
-  
-            imagecopyresampled($tn, $image, 0, 0, 0, 0, $width, $height, $width, $height);
-            imagejpeg($tn, $save, 60);
-            copy($save, $admin_gallery);
-            }
-            // Check file size
-            if ($_FILES["gallery_img"]["size"] > 1048576) {
-            //if the image is too big then run a compression. If not then leave the file as it is
-
-            $imagename = $_FILES['gift_item_img']['name'];
-            $source = $_FILES['new_image']['tmp_name'];
-            $target = $dir.$imagename;
-            move_uploaded_file($source, $target);
-
-            $imagepath = $imagename;
-            $save =  $dir. $imagepath; //This is the new file you saving
-            $file =  $dir. $imagepath; //This is the original file
-
-            list($width, $height) = getimagesize($file); 
-
-            $tn = imagecreatetruecolor($width, $height);
-
-            //$image = imagecreatefromjpeg($file);
-            $info = getimagesize($target);
-            if ($info['mime'] == 'image/jpeg'){
-            $image = imagecreatefromjpeg($file);
-            }elseif ($info['mime'] == 'image/gif'){
-            $image = imagecreatefromgif($file);
-            }elseif ($info['mime'] == 'image/png'){
-            $image = imagecreatefrompng($file);
+                $response = '<div class="form-response error"><p>Image already exists</p></div>';
+                echo $response;
+                exit();
+                $uploadOk = 0;
             }
 
-            imagecopyresampled($tn, $image, 0, 0, 0, 0, $width, $height, $width, $height);
-            imagejpeg($tn, $save, 60);
-            copy($save, $admin_gallery);
-            }
             // Allow certain file formats
             if (
                 $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
@@ -105,7 +51,7 @@ if (isset($_POST['action'])) {
                 // if everything is ok, try to upload file
             } else {
                 if (move_uploaded_file($_FILES["gallery_img"]["tmp_name"], $file)) {
-                    copy($file, $admin_gallery);
+                    
                     $response = '<div class="form-response"><p>success, your image has been added to your gallery.</p></div>';
                     //define articles img variable
                     $image_filename = basename($_FILES['gallery_img']['name']);
@@ -134,6 +80,36 @@ if (isset($_POST['action'])) {
                     $new_image->execute();
                     $new_image->close();
                     $response =  'success';
+                    $image_id = $db->insert_id;
+
+                    //change uploaded image to a webp image
+                        //convert the file uploaded to a webp file
+    $cur_image_file = $image_filename; //current image to be converted to webp. find in the admin folder
+    $new_filename = "gallery-item-img-" . $image_id . ".webp";
+    //create the images for jpeg gif or png
+    $info = getimagesize($dir . $cur_image_file);
+    if ($info['mime'] == 'image/jpeg') {
+        $image = imagecreatefromjpeg($dir . $cur_image_file);
+    } elseif ($info['mime'] == 'image/gif') {
+        $image = imagecreatefromgif($dir . $cur_image_file);
+    } elseif ($info['mime'] == 'image/png') {
+        $image = imagecreatefrompng($dir . $cur_image_file);
+    }
+    imagepalettetotruecolor($image);
+    imagealphablending($image, true);
+    imagesavealpha($image, true);
+    //imagejpeg($new, $new_img, 50);
+    imagewebp($image, $dir . $new_filename, 60);
+    //delete the old image
+    if (fopen($dir . $cur_image_file, "w")) {
+        unlink($dir . $cur_image_file);
+    };
+    copy($dir . $new_filename, $admin_dir . $new_filename);
+    //Update gift item
+    $gift_item = $db->prepare('UPDATE images SET image_filename=?  WHERE image_id =?');
+    $gift_item->bind_param('si', $new_filename, $image_id);
+    $gift_item->execute();
+    $gift_item->close();
                 } else {
                     echo "Sorry, there was an error uploading your file.";
                 }

@@ -56,7 +56,7 @@ if ($cms_type == "Wedding") {
 
 <!-- / -->
 <!-- Page Title -->
-<title>Mi-Admin | Guest List</title>
+<title>Mi-Admin | Gift List</title>
 <!-- /Page Title -->
 </head>
 
