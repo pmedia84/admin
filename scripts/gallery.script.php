@@ -59,10 +59,34 @@ if (isset($_POST['action'])) {
             }
             // Check file size
             if ($_FILES["gallery_img"]["size"] > 1048576) {
-                $response = '<div class="form-response error"><p>Image size is too large.</p><a href=""news_createarticle.php>Try Again</a></div>';
-                $upload = 0;
-                echo $response;
-                exit();
+            //if the image is too big then run a compression. If not then leave the file as it is
+
+            $imagename = $_FILES['gift_item_img']['name'];
+            $source = $_FILES['new_image']['tmp_name'];
+            $target = $dir.$imagename;
+            move_uploaded_file($source, $target);
+
+            $imagepath = $imagename;
+            $save =  $dir. $imagepath; //This is the new file you saving
+            $file =  $dir. $imagepath; //This is the original file
+
+            list($width, $height) = getimagesize($file); 
+
+            $tn = imagecreatetruecolor($width, $height);
+
+            //$image = imagecreatefromjpeg($file);
+            $info = getimagesize($target);
+            if ($info['mime'] == 'image/jpeg'){
+            $image = imagecreatefromjpeg($file);
+            }elseif ($info['mime'] == 'image/gif'){
+            $image = imagecreatefromgif($file);
+            }elseif ($info['mime'] == 'image/png'){
+            $image = imagecreatefrompng($file);
+            }
+
+            imagecopyresampled($tn, $image, 0, 0, 0, 0, $width, $height, $width, $height);
+            imagejpeg($tn, $save, 60);
+            copy($save, $admin_gallery);
             }
             // Allow certain file formats
             if (
