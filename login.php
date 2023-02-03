@@ -97,6 +97,7 @@ if($cms_type =="Wedding"){
 
                 <div class="button-section my-3">
                     <button class="btn-primary" type="submit">Login</button>
+                    <a href="resetpw">Forgot Password</a>
                 </div>
                 <div id="response" class="d-none">
                 </div>
