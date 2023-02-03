@@ -118,16 +118,16 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
             </div>
             <div class="main-cards">
                 <?php if ($_GET['action'] == "edit") : ?>
-                    <h1>Edit Gift List Item</h1>
+                    <h1><i class="fa-solid fa-gifts"></i> Edit Gift List Item</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "view") : ?>
-                    <h1>View Gift List Item</h1>
+                    <h1><i class="fa-solid fa-gifts"></i> View Gift List Item</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "delete") : ?>
-                    <h1>Remove Item </h1>
+                    <h1><i class="fa-solid fa-gifts"></i> Remove Item </h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "create") : ?>
-                    <h1>Add An Item</h1>
+                    <h1><i class="fa-solid fa-gifts"></i> Add An Item</h1>
                 <?php endif; ?>
 
 

@@ -100,6 +100,10 @@ $user_amt = $user_num->num_rows;
 $guest_num = ('SELECT guest_id FROM guest_list');
 $guest_num = $db->query($guest_num);
 $guest_amt = $guest_num->num_rows;
+//find the amount of guests
+$invite_num = ('SELECT invite_id FROM invitations');
+$invite_num = $db->query($invite_num);
+$invite_num = $invite_num->num_rows;
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -124,8 +128,9 @@ $guest_amt = $guest_num->num_rows;
         <?php include("./inc/nav.inc.php"); ?>
         <!-- /nav bar -->
         <section class="body">
-            <div class="breadcrumbs"><span>Home / </span></div>
+            <div class="breadcrumbs"><span><i class="fa-solid fa-house"></i> Home / </span></div>
             <div class="main-dashboard">
+            <?php if ($news_status == "On") : ?>
                 <div class="dashboard-card">
                     <div class="dashboard-card-header">
                         <span><?= $article_amt; ?></span>
@@ -134,10 +139,11 @@ $guest_amt = $guest_num->num_rows;
                     <h2>News Posts</h2>
                     <a href="news.php">Manage</a>
                 </div>
+            <?php endif;?>
                 <div class="dashboard-card">
                     <div class="dashboard-card-header">
                         <span><?= $image_amt; ?></span>
-                        <img src="assets/img/icons/image.svg" alt="">
+                        <i class="fa-solid fa-images"></i>
                     </div>
                     <h2>Photo Gallery</h2>
                     <a href="gallery.php">Manage</a>
@@ -153,20 +159,33 @@ $guest_amt = $guest_num->num_rows;
                     </div>
                 <?php endif; ?>
                 <?php if ($cms_type == "Wedding") : ?>
-                    <div class="dashboard-card">
+                    <?php if ($invite_manager_status == "On") : ?>
+                        <div class="dashboard-card">
                         <div class="dashboard-card-header">
                             <span><?= $guest_amt; ?></span>
-                            <img src="assets/img/icons/users.svg" alt="">
+                            <i class="fa-solid fa-people-group"></i>
                         </div>
                         <h2>Guest List</h2>
                         <a href="guest_list.php">Manage</a>
+                    </div>
+                        <?php endif;?>
+
+                        <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <span><?= $invite_num; ?></span>
+                            <i class="fa-solid fa-champagne-glasses"></i>
+                        </div>
+                        <h2>Invitations</h2>
+                        <a href="invitations">Manage</a>
                     </div>
                 <?php endif; ?>
             </div>
 
 
         </section>
+        <?php if ($news_status == "On") : ?>
 
+           
         <div class="main-cards">
             <h2>Published Posts</h2>
             <?php foreach ($news as $article) :
@@ -199,7 +218,7 @@ $guest_amt = $guest_num->num_rows;
 
 
         </div>
-
+        <?php endif;?>
 
     </main>
     <!-- /Main Body Of Page -->

@@ -83,7 +83,7 @@ if ($cms_type == "Wedding") {
             <div class="main-cards">
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
                     <?php if ($cms_type == "Wedding") : ?>
-                        <h1>Your Gift List</h1>
+                        <h1><i class="fa-solid fa-gifts"></i> Your Gift List</h1>
                         <p>Keep this information up to date as you plan for big day. Your invites will be sent out from this information.</p>
                         <a href="gift_item.php?action=create" class="btn-primary">Add Item <i class="fa-solid fa-gift"></i></a>
 

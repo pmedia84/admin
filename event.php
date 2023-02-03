@@ -104,16 +104,16 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
             </div>
             <div class="main-cards">
                 <?php if ($_GET['action'] == "edit") : ?>
-                    <h1>Edit Event</h1>
+                    <h1><i class="fa-solid fa-calendar-day"></i> Edit Event</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "view") : ?>
-                    <h1>View Event</h1>
+                    <h1><i class="fa-solid fa-calendar-day"></i> View Event</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "delete") : ?>
-                    <h1>Delete Event</h1>
+                    <h1><i class="fa-solid fa-calendar-day"></i> Delete Event</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "assign") : ?>
-                    <h1>Assign Guests To Your Event</h1>
+                    <h1><i class="fa-solid fa-calendar-day"></i> Assign Guests To Your Event</h1>
                     <p>Add and remove guests from your event.</p>
                 <?php endif; ?>
 
@@ -436,7 +436,13 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
 
 
                                         </table>
-                                        <a class="btn-primary" href="event.php?action=assign&event_id=<?= $event_id; ?>">Assign Guests <i class="fa-solid fa-user-plus"></i></a>
+                                        <?php if($guest_list->num_rows >0):?>
+                                            <a class="btn-primary" href="event.php?action=assign&event_id=<?= $event_id; ?>">Edit Guest list <i class="fa-solid fa-user-pen"></i></a>
+                                        <?php else:?>
+                                            <a class="btn-primary" href="event.php?action=assign&event_id=<?= $event_id; ?>">Assign Guests <i class="fa-solid fa-user-plus"></i></a>
+                                            <?php endif;?>  
+                                          
+                                        
                                     </div>
                                     <div class="card-actions">
                                         <a class="my-2" href="event.php?action=edit&event_id=<?= $event_id; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Event </a>

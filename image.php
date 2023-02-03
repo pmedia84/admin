@@ -113,13 +113,13 @@ if (isset($_GET['image_id'])) {
             </div>
             <div class="main-cards">
                 <?php if ($_GET['action'] == "edit") : ?>
-                    <h1>Edit Image</h1>
+                    <h1><i class="fa-solid fa-image"></i> Edit Image</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "view") : ?>
-                    <h1>View Image</h1>
+                    <h1><i class="fa-solid fa-image"></i> View Image</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "delete") : ?>
-                    <h1>Delete Image</h1>
+                    <h1><i class="fa-solid fa-image"></i> Delete Image</h1>
                 <?php endif; ?>
 
 
@@ -242,7 +242,7 @@ if (isset($_GET['image_id'])) {
                     <?php if ($_GET['action'] == "create") : ?>
 
                         <div class="std-card">
-                            <h1>Upload New Image</h1>
+                            <h1><i class="fa-solid fa-image"></i> Upload New Image</h1>
                             <form action="scripts/gallery.script.php" id="img-upload" method="POST" enctype="multipart/form-data">
                                 <div class="form-input-wrapper">
                                     <label for="image_title">Image Title</label>

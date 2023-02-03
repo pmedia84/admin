@@ -116,7 +116,7 @@ if ($cms_type == "Wedding") {
 
 
                     <?php if ($cms_type == "Wedding") : ?>
-                        <h2>Download Your Invitations</h2>
+                        <h2><i class="fa-solid fa-champagne-glasses"></i> Download Your Invitations</h2>
                         <p>Only do this once you are happy with your guest list and you have assigned all guests to the correct event.</p>
                         <p>Your guest list is now ready to download. Click the button below.</p>
                         <a class="btn-primary" href="scripts/guestlist.csv" download="Guest List <?= date('d-m-y');?>.csv">Download  <i class="fa-solid fa-download"></i></a>

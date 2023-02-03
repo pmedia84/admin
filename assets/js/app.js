@@ -1,6 +1,6 @@
 //nav
 $(".nav-btn").click(function() {
-    $(".nav-bar").fadeToggle(500);
+    $(".nav-bar").slideDown(500);
 });
 
 $("#nav-btn-close").click(function() {

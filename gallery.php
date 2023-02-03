@@ -94,7 +94,7 @@ if ($cms_type == "Wedding") {
             </div>
             <div class="main-cards loading">
 
-                <h1>Image Gallery</h1>
+                <h1><i class="fa-solid fa-images"></i> Image Gallery</h1>
 
                 <?php if ($user_type == "Admin" || $user_type=="Developer") : ?>
                     <a class="btn-primary" href="image?action=create"><i class="fa-solid fa-upload"></i>Upload Image </a>

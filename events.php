@@ -112,11 +112,7 @@ if ($cms_type == "Wedding") {
         <section class="body">
 
 
-            <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / <?php if ($cms_type == "Business") {
-                                                                                                echo "Settings";
-                                                                                            } else {
-                                                                                                echo "Wedding Details";
-                                                                                            } ?></div>
+            <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / Wedding Day Events</div>
             <div class="main-cards">
 
 
@@ -124,7 +120,7 @@ if ($cms_type == "Wedding") {
 
 
                     <?php if ($cms_type == "Wedding") : ?>
-                        <h2>Your Wedding Day Events</h2>
+                        <h2><i class="fa-solid fa-calendar-day"></i> Your Wedding Day Events</h2>
                         <p>Keep this information up to date as you plan for big day. Information from this page will be displayed on your website.</p>
                        
                         <a class="btn-primary" href="event.php?action=create">Create An Event <i class="fa-solid fa-plus"></i></a>
@@ -156,7 +152,7 @@ if ($cms_type == "Wedding") {
                             <div class="card-actions">
                                 <a class="my-2" href="event.php?action=view&event_id=<?= $event['event_id']; ?>"><i class="fa-solid fa-eye"></i> View Event</a>
                                 <a class="my-2" href="event.php?action=edit&event_id=<?= $event['event_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Event </a>
-                                <a class="my-2" href="event.php?action=assign&event_id=<?= $event['event_id'];?>"><i class="fa-solid fa-user-plus"></i> Assign Guests </a>
+                                <a class="my-2" href="event.php?action=assign&event_id=<?= $event['event_id'];?>"><i class="fa-solid fa-user-plus"></i> Edit Guest List </a>
                             </div>
                             </div>
                         <?php endforeach; ?>

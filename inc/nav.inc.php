@@ -1,7 +1,7 @@
 <nav class="nav-bar">
     <div class="nav-container">
         <div class="close">
-            <button class="btn btn-close nav-btn-close" id="nav-btn-close"><i class="fa-solid fa-xmark"></i></button>
+            <button class="nav-btn-close" id="nav-btn-close"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <ul class="nav-links">
             <?php if ($cms_type == "Business") : ?>
@@ -44,7 +44,7 @@
                     <li><a class="nav-link" href="gift_list.php">Gift List <i class="fa-solid fa-gifts"></i></a></li>
                 <?php endif; ?>
                 <?php if ($image_gallery_status == "On") : ?>
-                    <li><a class="nav-link" href="gallery.php">Image Gallery <i class="fa-solid fa-image"></i></a></li>
+                    <li><a class="nav-link" href="gallery.php">Image Gallery <i class="fa-solid fa-images"></i></a></li>
                 <?php endif; ?>
                 <?php if ($news_status == "On") : ?>
                     <li><a class="nav-link" href="news.php">News <i class="fa-solid fa-newspaper"></i></a></li>

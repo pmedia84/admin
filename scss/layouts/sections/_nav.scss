@@ -7,10 +7,23 @@
     left: 0;
     top: 0;
     right: 0;
-    bottom: 0;
+
     z-index: 100;
 }
 
+.nav-btn-close{
+    height: 35px;
+    width: 35px;
+    display: grid;
+    background-color: transparent;
+    border: none;
+    place-items: center;
+    color: $primary;
+    cursor: pointer;
+    svg{
+        height: 100%;
+    }
+}
 .nav-links {
     //nav bar links
     display: flex;

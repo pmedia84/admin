@@ -93,7 +93,7 @@ if ($cms_type == "Wedding") {
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / Our Story</div>
             <div class="main-cards cms-settings-cards">
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-                    <h1>Our Story</h1>
+                    <h1><i class="fa-regular fa-heart"></i> Our Story</h1>
                     <p>Edit or create your story for your wedding website.</p>
                     <?php
                     //connect to db and load story

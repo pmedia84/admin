@@ -79,7 +79,7 @@
         $guest_extra_invites= mysqli_real_escape_string($db, $_POST['guest_extra_invites']);
         //create and RSVP CODE
         $code = rand(1000,20000);
-        $code_name = mb_substr($_POST['guest_sname'],0,3);
+        $code_name = mb_substr($_POST['guest_sname'],0,2);
         $code_name = strtoupper($code_name);
         $guest_rsvp_code = $code_name . $code; // Generate random RSVP Code
         if($_POST['guest_extra_invites']>=1){

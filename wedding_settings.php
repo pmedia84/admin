@@ -75,7 +75,7 @@ $guest_home_img_res = $guest_home_img->fetch_assoc();
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / Website Settings</div>
             <div class="main-cards cms-settings-cards">
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-                    <h1>Website Settings</h1>
+                    <h1><i class="fa-solid fa-laptop"></i> Website Settings</h1>
                     <p>Manage your setting for your website and your guest area.</p>
                     <p>You can turn on RSVP and Guest area features from here too</p>
                     <?php

@@ -76,11 +76,7 @@ if ($cms_type == "Wedding") {
         <section class="body">
 
 
-            <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / <?php if ($cms_type == "Business") {
-                                                                                                echo "Settings";
-                                                                                            } else {
-                                                                                                echo "Guest List";
-                                                                                            } ?></div>
+            <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> /  Guest List</div>
             <div class="main-cards">
 
 
@@ -88,7 +84,7 @@ if ($cms_type == "Wedding") {
 
 
                     <?php if ($cms_type == "Wedding") : ?>
-                        <h2>Your Guest List</h2>
+                        <h2><i class="fa-solid fa-people-group"></i> Your Guest List</h2>
                         <p>Keep this information up to date as you plan for big day. Your invites will be sent out from this information.</p>
                         <a href="guest.php?action=create" class="btn-primary">Add Guest <i class="fa-solid fa-user-plus"></i></a>
                         <div class="search-controls">

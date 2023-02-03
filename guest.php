@@ -123,16 +123,16 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
             </div>
             <div class="main-cards">
                 <?php if ($_GET['action'] == "edit") : ?>
-                    <h1>Edit Guest</h1>
+                    <h1><i class="fa-solid fa-user"></i> Edit Guest</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "view") : ?>
-                    <h1>View Guest</h1>
+                    <h1><i class="fa-solid fa-user"></i> View Guest</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "delete") : ?>
-                    <h1>Remove Guest</h1>
+                    <h1><i class="fa-solid fa-user"></i> Remove Guest</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "create") : ?>
-                    <h1>Add Guest</h1>
+                    <h1><i class="fa-solid fa-user"></i> Add Guest</h1>
                 <?php endif; ?>
 
 
@@ -153,7 +153,6 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     echo mysqli_error($db);
                                 }
                                 //remove any guests this user has made
-                                
                                 $remove_group_guests="DELETE FROM guest_list WHERE guest_group_id=$guest_group_id";
                                 if (mysqli_query($db, $remove_group_guests)) {
                                     echo mysqli_error($db);
@@ -162,7 +161,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                 $remove_guest = "DELETE FROM guest_list WHERE guest_id=$guest_id";
                                 if (mysqli_query($db, $remove_guest)) {
 
-                                    echo '<div class="std-card"><div class="form-response error"><p>' . $guest_fname . ' ' . $guest_sname . ' Has been removed from your guest list</p></div></div>';
+                                    echo '<div class="std-card"><div class="form-response error"><p>' . $guest_fname . ' ' . $guest_sname . ' Has been removed from your guest list</p> <a href="guest_list" class="btn-primary my-2">Return To Guest List</a></div></div>';
                                 } else {
                                     echo '<div class="form-response error"><p>Error removing guest, please try again.</p></div>';
                                     //echo mysqli_error($db);
@@ -188,28 +187,13 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     <p>Are you sure you want to remove this guest from your guest list?</p>
                                     <p><strong>This Cannot Be Reversed</strong></p>
                                     <p><strong>Note:</strong> This will also remove any assignments they have to your events.</p>
-                                    <?php if ($guest_type == "Group Organiser" && $guest_rsvp_status =="Attending"):?>
-                                        <p><strong><?=$guest_fname;?> has stated they are attending</strong></p>
-                                        <p><strong>This will also remove their guest account and any guests they have already added.</strong></p>
-                                        
-                                        
-                                        <div class="card-actions">
-                                            <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Guest </a><br>
-                                        </div>
-                                   
+                                    <p><strong>Note:</strong> Removing this guest will also remove any extra guests they may have added, as well as their access to your guest area.</p>
+                                    <h3>RSVP Status</h3>
+                                    <p><?php if($guest_rsvp_status==""):?>Not Responded<?php else:echo $guest_rsvp_status;endif;?></p>
                                         <div class="button-section">
                                             <a class="btn-primary btn-delete my-2" href="guest.php?action=delete&confirm=yes&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i>Remove Guest</a>
                                             <a class="btn-primary btn-secondary my-2" href="guest.php?action=view&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-ban"></i>Cancel</a>
                                         </div>
-                                    <?php endif; ?>
-                                    <?php if ($guest_type =="Group Organiser" && $guest_rsvp_status =="Not Attending"):?>
-                                        <p><strong><?=$guest_fname;?> has stated they are not attending</strong></p>
-                                        <p><strong>You can now remove them from your guest list.</strong></p>
-                                        <div class="button-section">
-                                            <a class="btn-primary btn-delete my-2" href="guest.php?action=delete&confirm=yes&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i>Remove Guest</a>
-                                            <a class="btn-primary btn-secondary my-2" href="guest.php?action=view&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-ban"></i>Cancel</a>
-                                        </div>
-                                        <?php endif;?>
                                 </div>
                             <?php endif; ?>
                         <?php endif; ?>
@@ -302,6 +286,9 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                             }
                         ?>
                             <h2><?= $guest_fname . ' ' . $guest_sname; ?></h2>
+                            <div class="card-actions my-2">
+                                    <a class="my-2" href="guest_list?"><i class="fa-solid fa-left-long"></i> Return To Guest List </a>
+                                </div>
                             <div class="std-card">
                                 <form class="" id="edit_guest" action="scripts/guest.script.php" method="POST" enctype="multipart/form-data">
                                     <div class="form-input-wrapper">
@@ -383,6 +370,9 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
 
                         ?>
                             <h2><?= $guest_fname . ' ' . $guest_sname; ?></h2>
+                            <div class="card-actions my-2">
+                                    <a class="my-2" href="guest_list?"><i class="fa-solid fa-left-long"></i> Return To Guest List </a>
+                                </div>
                             <div class="std-card">
                                 <h3>Contact Details</h3>
                                 <p><strong>eMail: </strong><a href="mailto:<?= $guest_email; ?>"><?= $guest_email; ?></a></p>
