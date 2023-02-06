@@ -88,6 +88,31 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
 <!-- Page Title -->
 <title>Mi-Admin | Manage Gift List Item</title>
 <!-- /Page Title -->
+<!-- Tiny MCE -->
+<script src="https://cdn.tiny.cloud/1/7h48z80zyia9jc41kx9pqhh00e1e2f4pw9kdcmhisk0cm35w/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- / -->
+<!-- Tiny MCE Plugin -->
+<script>
+    tinymce.init({
+        selector: 'textarea#gift_item_desc',
+        height: 500,
+
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | ',
+        tinycomments_mode: 'embedded',
+
+        tinycomments_author: 'Author name',
+        mergetags_list: [{
+                value: 'First.Name',
+                title: 'First Name'
+            },
+            {
+                value: 'Email',
+                title: 'Email'
+            },
+        ]
+    });
+</script>
 </head>
 
 
@@ -248,7 +273,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                             //load guest information
                             $gift_item->bind_result($gift_item_id, $gift_item_name, $gift_item_desc, $gift_item_url, $gift_item_type, $gift_item_img);
                             $gift_item->fetch();
-
+                            $gift_item_desc = html_entity_decode($gift_item_desc);
                         ?>
                             <h2><?php if ($gift_item_name == "") {
                                     echo "Gift Message";
@@ -335,6 +360,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
     <script>
         //script for editing a guest
         $("#edit_gift_item").submit(function(event) {
+            tinyMCE.triggerSave();
             event.preventDefault();
             //declare form variables and collect GET request information
             gift_item_id = '<?php echo $gift_item_id; ?>';
@@ -362,6 +388,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
     <script>
         //script for adding a guest
         $("#add_gift_item").submit(function(event) {
+            tinyMCE.triggerSave();
             event.preventDefault();
             var formData = new FormData($("#add_gift_item").get(0));
             formData.append("action", "create");

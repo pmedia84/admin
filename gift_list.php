@@ -85,18 +85,19 @@ if ($cms_type == "Wedding") {
 
                         <?php if ($gift_list->num_rows > 0) : ?>
                             <div class="grid-row-2col">
-                                <?php foreach ($gift_list as $gift_item) : ?>
+                                <?php foreach ($gift_list as $gift_item) :
+                                    $gift_item_desc = html_entity_decode($gift_item['gift_item_desc']); ?>
                                     <div class="std-card">
                                         <div class="std-card-body">
                                             <?php if ($gift_item['gift_item_name'] == "") : ?>
                                                 <h1>Gift List Message</h1>
-                                                <p><?= $gift_item['gift_item_desc']; ?></p>
+                                                <p><?= $gift_item_desc; ?></p>
                                                 <p><strong>Image:</strong></p>
                                                 <img class="gift-item-thumb" src="assets/img/gift_list/<?=$gift_item['gift_item_img'];?>" alt="">
                                             <?php endif; ?>
                                             <?php if ($gift_item['gift_item_name'] > "") : ?>
                                                 <h1><?= $gift_item['gift_item_name']; ?></h1>
-                                                <p><?= $gift_item['gift_item_desc']; ?></p>
+                                                <p><?= $gift_item_desc?></p>
                                                 <p><strong>URL: </strong><a href="http://<?= $gift_item['gift_item_url']; ?>" target="_blank"><?= $gift_item['gift_item_url']; ?></a></p>
                                                 <p><strong>Image:</strong></p>
                                                 <img class="gift-item-thumb" src="assets/img/gift_list/<?=$gift_item['gift_item_img'];?>" alt="">

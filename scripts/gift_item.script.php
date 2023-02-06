@@ -4,7 +4,7 @@ if ($_POST['action'] == "edit") { //check if the action type of edit has been se
     //determine variables
     $gift_item_id = $_POST['gift_item_id'];
     $gift_item_name = mysqli_real_escape_string($db, $_POST['gift_item_name']);
-    $gift_item_desc = mysqli_real_escape_string($db, $_POST['gift_item_desc']);
+    $gift_item_desc = htmlentities($_POST['gift_item_desc']);
     $gift_item_url = mysqli_real_escape_string($db, $_POST['gift_item_url']);
     $gift_item_type = $_POST['gift_item_type'];
     $gift_item_img = $_FILES['gift_item_img']['name'];
@@ -106,7 +106,7 @@ if ($_POST['action'] == "create") { //check if the action type of create has bee
     include("../connect.php");
     //determine variables
     $gift_item_name = mysqli_real_escape_string($db, $_POST['gift_item_name']);
-    $gift_item_desc = mysqli_real_escape_string($db, $_POST['gift_item_desc']);
+    $gift_item_desc = htmlentities($_POST['gift_item_desc']);
     $gift_item_url = mysqli_real_escape_string($db, $_POST['gift_item_url']);
     $gift_item_type = $_POST['gift_item_type'];
     $gift_item_img = $_FILES['gift_item_img']['name'];
