@@ -75,7 +75,7 @@ if ($cms_type == "Wedding") {
         <div class="body">
 
 
-            <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / Gift List></div>
+            <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / Gift List</div>
             <div class="main-cards">
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
                     <?php if ($cms_type == "Wedding") : ?>

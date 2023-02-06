@@ -308,15 +308,16 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     <label for="gift_item_type"><strong>Select Item Type</strong></label>
                                     <p class="form-hint-small">This can be a specific item, or can be displayed as a message to your guests on your gift list page.</p>
                                     <select name="gift_item_type" id="gift_item_type" required="">
-                                        <?php if ($gift_item_type = "message") : ?>
+                                        <?php if ($gift_item_type == "message") : ?>
                                             <option value="message" selected>Message</option>
-                                        <?php else : ?>
-                                            <option value="message">Message</option>
-                                        <?php endif; ?>
-                                        <?php if ($gift_item_type = "item") : ?>
-                                            <option value="item" selected>Item</option>
-                                        <?php else : ?>
                                             <option value="item">Item</option>
+                                            
+                                            
+                                        <?php endif; ?>
+                                        <?php if ($gift_item_type == "item") : ?>
+                                            <option value="item" selected>Item</option>
+                                       
+                                            <option value="message">Message</option>
                                         <?php endif; ?>
 
 
