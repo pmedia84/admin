@@ -211,8 +211,10 @@
 .settings-card-text{
     padding: $spacer-2;
     img{
-        max-height: 35%;
-    }
+        width: auto;
+        max-height: 500px;
+        border-radius: 5px;
+     }
 }
 
 /////Form card for dividing up forms

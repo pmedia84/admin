@@ -1392,8 +1392,10 @@ input:checked + .slider:before {
 } 
 
 .settings-card-text img{
-        max-height: 35%;
-    } 
+        width: auto;
+        max-height: 500px;
+        border-radius: 5px;
+     } 
 
 /*///Form card for dividing up forms*/ 
 
