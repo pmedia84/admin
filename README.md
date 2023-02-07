@@ -9,4 +9,4 @@ Guest list groups implemented
 
 - Uploading of multiple images
 - update a guest's RSVP
-
+- Mark all invites as sent
