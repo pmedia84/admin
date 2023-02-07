@@ -367,12 +367,8 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     <address class="my-2"><?= $event_address; ?></address>
                                     <?php
                                     echo '<iframe frameborder="0" width="100%" height="250px" src="https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=' . str_replace(",", "", str_replace(" ", "+", $event_address)) . '&z=14&output=embed"></iframe>'; ?>
-
                                     <h4>Event Notes</h4>
                                     <p><?= $event_notes; ?></p>
-
-                                    
-
                                     <div class="event-card-guestlist">
                                         <?php
                                         //load all invites details
@@ -430,7 +426,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                                 <tr>
                                                     <td><a href="guest.php?action=view&guest_id=<?= $guest['guest_id']; ?>"><?= $guest['guest_fname'] . " " . $guest['guest_sname'] . ' ' . $plus; ?></a></td>
                                                     <td><?= $guest['invite_status']; ?></td>
-                                                    <td><?= $guest['guest_rsvp_status']; ?></td>
+                                                    <td><?= $guest['invite_rsvp_status']; ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
 

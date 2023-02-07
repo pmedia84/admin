@@ -9,10 +9,10 @@
         $guest_address= htmlspecialchars($_POST['guest_address']);
         $guest_postcode= mysqli_real_escape_string($db, $_POST['guest_postcode']);
         $guest_group_id = $_POST['guest_group_id'];
-        
+        $event_id = $_POST['event_id'];
         //Update guest
-        $guest = $db->prepare('UPDATE guest_list SET guest_fname=?, guest_sname=?, guest_email=?, guest_address=?, guest_postcode=?,guest_extra_invites=?  WHERE guest_id =?');
-        $guest->bind_param('sssssii',$guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_extra_invites, $lead_guest_id);
+        $guest = $db->prepare('UPDATE guest_list SET guest_fname=?, guest_sname=?, guest_email=?, guest_address=?, guest_postcode=?  WHERE guest_id =?');
+        $guest->bind_param('sssssi',$guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode,  $lead_guest_id);
         $guest->execute();
         $guest->close();
 
@@ -56,11 +56,12 @@
         }
         $new_guest->close();
         if(isset($_POST['event_id'])){
+            
             $invite_rsvp_status = "Not Replied";
             /////Add to invites table for each guest 
             $set_invites = $db->prepare('INSERT INTO invitations (guest_id, event_id, invite_rsvp_status, guest_group_id) VALUES (?,?,?,?)');
             foreach ($guest_array as $guest) {
-                $set_invites->bind_param('iiis', $guest, $event_id, $new_group_id, $invite_rsvp_status);
+                $set_invites->bind_param('iiis', $guest, $event_id, $invite_rsvp_status, $new_group_id);
                 $set_invites->execute();
             }
     
@@ -78,7 +79,7 @@
 
 
         }
-        //update the guest group with any guests that have been added and if this guest was a sole invite before
+        //update the guest group with any guests that have been added and if this guest is a group organiser
         if(isset($_POST['guest_group']) && $_POST['guest_group_id'] >0 ){
             
             //guest array for all new added guests at the time of making the guest
@@ -103,8 +104,8 @@
                 $invite_rsvp_status = "Not Replied";
                 /////Add to invites table for each guest 
                 $set_invites = $db->prepare('INSERT INTO invitations (guest_id, event_id, guest_group_id, invite_rsvp_status) VALUES (?,?,?,?)');
-                foreach ($guest_array as $guest) {
-                    $set_invites->bind_param('iiis', $guest, $event_id, $new_group_id);
+                foreach ($guest_array as $guest_id) {
+                    $set_invites->bind_param('iiis', $guest_id, $event_id, $guest_group_id, $invite_rsvp_status);
                     $set_invites->execute();
                 }
         
@@ -154,6 +155,7 @@
         if(isset($_POST['guest_group'])){
             $guest_type= "Group Organiser";
         }
+        $guest_rsvp_status = "Not Replied";
         //insert lead guest
         $guest = $db->prepare('INSERT INTO guest_list (guest_fname, guest_sname, guest_email, guest_address, guest_postcode, guest_rsvp_code, guest_extra_invites, guest_type) VALUES (?,?,?,?,?,?,?,?)');
         $guest->bind_param('ssssssis',$guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_extra_invites, $guest_type);

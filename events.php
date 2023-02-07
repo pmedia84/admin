@@ -121,7 +121,7 @@ if ($cms_type == "Wedding") {
 
                     <?php if ($cms_type == "Wedding") : ?>
                         <h2><i class="fa-solid fa-calendar-day"></i> Your Wedding Day Events</h2>
-                        <p>Keep this information up to date as you plan for big day. Information from this page will be displayed on your website.</p>
+                        <p>Keep this information up to date as you plan for your big day. Information from this page will be displayed on your website.</p>
                        
                         <a class="btn-primary" href="event.php?action=create">Create An Event <i class="fa-solid fa-plus"></i></a>
                         <?php foreach ($wedding_events as $event) :

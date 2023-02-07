@@ -226,47 +226,52 @@ if ((array_key_exists('action', $_GET))) {
 if (array_key_exists('action', $_POST)) {
     if ($_POST['action'] == "assign") {
         include("..//connect.php");
+        //set up invite rsvp status as not replied for all invites
+        $invite_rsvp_status = "Not replied";
         //declare event_id
         $event_id = $_POST['event_id'];
-        //insert into guest group tables
-        $invite = $db->prepare('INSERT INTO invitations (guest_id, event_id, guest_group_id) VALUES (?,?,?)');
-        $sole_invite = $db->prepare('INSERT INTO invitations (guest_id, event_id) VALUES (?,?)');
+        //prepare the invite script
+        $invite = $db->prepare('INSERT INTO invitations (guest_id, event_id, invite_rsvp_status, guest_group_id) VALUES (?,?,?,?)');
+        $sole_invite = $db->prepare('INSERT INTO invitations (guest_id, event_id, invite_rsvp_status) VALUES (?,?,?)');
         //group members
-        $group_invites = $db->prepare('INSERT INTO invitations (guest_id, event_id, guest_group_id) VALUES (?,?,?)');
-        //find guest group id
+        $group_invites = $db->prepare('INSERT INTO invitations (guest_id, event_id, invite_rsvp_status,  guest_group_id) VALUES (?,?,?,?)');
+        //process each guest ID that has been sent across and give them an invitation to this event
+        //find their group id
         foreach ($_POST['guest_id'] as $guest_id) {
             $group_id = $db->query("SELECT guest_group_id FROM guest_list WHERE guest_id =".$guest_id."");
             $res = $group_id->fetch_array();
             $group_id= $res['guest_group_id'];
             
-            $invite->bind_param('iii', $guest_id, $event_id, $group_id );
+            $invite->bind_param('iisi', $guest_id, $event_id,  $invite_rsvp_status, $group_id );
             $invite->execute();
-
-
         }
         $invite->close();
-            
-            foreach($_POST['guest_id'] as $id){
-                $group_id = $db->query("SELECT guest_group_id FROM guest_list WHERE guest_id =".$id."");
-                $res = $group_id->fetch_array();
-                $group_id= $res['guest_group_id'];
-             
-                if(!$group_id==NULL){
-                // find the group members and add them to the same invite list
-                $members = $db->query("SELECT guest_id, guest_group_id FROM guest_list WHERE guest_group_id =".$group_id." AND guest_type='Member'");
-                $res2 = $members->fetch_array();
-                foreach($members as $result){
-                    $group_invites->bind_param('iii', $result['guest_id'], $event_id, $result['guest_group_id'] );
-                    $group_invites->execute();
-                }
-                $group_invites->close();
-                }  else{
-                    $sole_invite->bind_param('ii', $id, $event_id );
-                    $sole_invite->execute();
-                }
+        //find the guest group each guest being added belongs to and add their group members if they have any, if not then add them as a sole invite
+        foreach ($_POST['guest_id'] as $id) {
+            $group_id = $db->query("SELECT guest_group_id FROM guest_list WHERE guest_id =" . $id . "");
+            $res = $group_id->fetch_array();
+            $group_id = $res['guest_group_id'];
 
+            //if the group id is not null then find all group members associated with each group organiser being added.
+            if ($group_id == NULL || $group_id == 0) {
+                $sole_invite->bind_param('iis', $id, $event_id, $invite_rsvp_status);
+                $sole_invite->execute();
+                $sole_invite->close();
+                // if null then add the one guest
+            } else {
+                // find the group members and add them to the same invite list
+                $members = $db->query("SELECT guest_id, guest_group_id FROM guest_list WHERE guest_group_id =" . $group_id . " AND guest_type='Member'");
+                if ($members->num_rows > 0) {
+                    $res2 = $members->fetch_array();
+                    foreach ($members as $result) {
+                        $group_invites->bind_param('iisi', $result['guest_id'], $event_id, $invite_rsvp_status, $result['guest_group_id']);
+                        $group_invites->execute();
+                    }
+                    $group_invites->close();
+                }
             }
-            $sole_invite->close();
+        }
+        
     }
 
     if ($_POST['action'] == "remove_guest") {

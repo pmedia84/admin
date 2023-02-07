@@ -580,11 +580,13 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
             guest_id = '<?php echo $guest_id; ?>';
             guest_group_id = '<?php echo $guest_group_id; ?>';
             guest_type = '<?php echo $guest_type; ?>';
+            event_id = '<?php echo $invite['event_id']; ?>';
             var formData = new FormData($("#edit_guest").get(0));
             formData.append("action", "edit");
             formData.append("guest_id", guest_id);
             formData.append("guest_group_id", guest_group_id);
             formData.append("guest_type", guest_type);
+            formData.append("event_id", event_id);
             $.ajax({ //start ajax post
                 type: "POST",
                 url: "scripts/guest.script.php",
@@ -593,7 +595,7 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
                 processData: false,
                 success: function(data, responseText) {
                     if(data === "success"){
-                    window.location.replace('guest.php?action=view&guest_id=' + guest_id);
+                    //window.location.replace('guest.php?action=view&guest_id=' + guest_id);
                     }
                 }
             });
