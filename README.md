@@ -7,6 +7,6 @@ Guest list groups implemented
 
 ### Future changes
 
--Uploading of multiple images
--update a guest's RSVP
+- Uploading of multiple images
+- update a guest's RSVP
 
