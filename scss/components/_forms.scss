@@ -2,12 +2,6 @@
 .form-row{
 display: flex;
 flex-direction: column;
-
-
-@media(min-width:$lg){
-    flex-direction: row;
-    align-items:flex-end;
-}
 }
 
 .form-input-col{
@@ -21,7 +15,16 @@ flex-direction: column;
         
     }
 }
-
+@media(min-width:$lg){
+    .form-row{
+        flex-direction: row;
+        align-items:flex-end;
+    }
+    .form-input-col{
+        display: flex;
+        flex-direction: column;
+    }
+}
 
 //////
 
