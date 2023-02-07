@@ -24,11 +24,12 @@ max-width: 90vw;
 }
 
 .guest-list-actions{
-    width: 100%;
+    width: 50%;
     max-width: 100px;
-    margin: 0 auto;
+ 
     display: flex;
-    justify-content: space-between;
+    justify-content:left;
+    gap: $spacer-3;
     padding: $spacer-1;
     font-size: 1.25rem;
 }

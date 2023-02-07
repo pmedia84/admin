@@ -45,6 +45,10 @@ a.btn-primary{
         transition: box-shadow 300ms ease-out;
     }
 }
+.btn-remove-guest{
+    height: 100%;
+    margin-block: .25rem;
+}
 
 .close{//wrapper for close button
     display: flex;
@@ -71,4 +75,5 @@ a.btn-primary{
 .disabled{
     //disabled button
     opacity: .5;
+    pointer-events: none;
 }

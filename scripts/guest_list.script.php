@@ -4,7 +4,7 @@ if (isset($_GET['action'])) {
         //load guest list from the db and send back to the front page
         include("../connect.php");
         //find wedding guest list
-        $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_events, guest_list.guest_rsvp_code, guest_list.guest_rsvp_status FROM guest_list ORDER BY guest_list.guest_sname');
+        $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_events, guest_list.guest_rsvp_code, guest_list.guest_rsvp_status FROM guest_list ORDER BY guest_list.guest_group_id DESC');
         $guest_list = $db->query($guest_list_query);
         $guest_list_result = $guest_list->fetch_assoc();
         $num_guests = $guest_list->num_rows;
@@ -54,7 +54,7 @@ if (isset($_POST['action'])) {
                //load guest list from the db and send back to the front page
                
                //find wedding guest list
-               $guest_list_query = ('SELECT * FROM guest_list WHERE guest_fname LIKE "%'.$search.'%" OR guest_sname LIKE "%'.$search.'%"  ORDER BY guest_sname');
+               $guest_list_query = ('SELECT * FROM guest_list WHERE guest_fname LIKE "%'.$search.'%" OR guest_sname LIKE "%'.$search.'%"  ORDER BY guest_list.guest_group_id DESC');
                $guest_list = $db->query($guest_list_query);
                $guest_list_result = $guest_list->fetch_assoc();
                $num_guests = $guest_list->num_rows;
@@ -69,7 +69,7 @@ if (isset($_POST['action'])) {
                '<table class="std-table">
                    <tr>
                        <th>Name</th>
-                       <th>Attending</th>
+                       <th>Extra Invites</th>
                        <th>RSVP Status</th>
                        <th>RSVP Code</th>
                        <th>Manage</th>

@@ -89,6 +89,8 @@ if ($cms_type == "Wedding") {
                     <?php if ($cms_type == "Wedding") : ?>
                         <h2><i class="fa-solid fa-champagne-glasses"></i> Your Invitations</h2>
                         <p>This is your invite list, this list is automatically populated when you assign guests to events.</p>
+                        <p>You can also keep up to date with guests that you have not had a response from.</p>
+                        <p>This list will only show the main guest.</p>
                         <a class="btn-primary" href="invitations_dl.php">Download Invitations <i class="fa-solid fa-download"></i></a>
                             <form id="invite_search" action="./scripts/guest_list.script.php" method="POST">
                             <div class="search-controls">
@@ -113,7 +115,7 @@ if ($cms_type == "Wedding") {
                                     <label for="user_email">Filter By RSVP Status</label>
                                     <select class="form-select" name="rsvp_status" id="rsvp_status">
                                             <option value="">Show All Status</option>
-                                            <option value="">Not Replied</option>
+                                            <option value="Not Replied">Not Replied</option>
                                             <option value="Attending">Attending</option>
                                             <option value="Not Attending">Not Attending</option>
                                     </select>

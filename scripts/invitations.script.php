@@ -9,7 +9,7 @@ if (isset($_GET['action'])) {
         $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname,guest_list.guest_extra_invites, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name FROM guest_list  
                                 LEFT JOIN invitations ON guest_list.guest_id = invitations.guest_id
                                 LEFT JOIN wedding_events ON invitations.event_id = wedding_events.event_id
-                                WHERE invitations.guest_id=guest_list.guest_id
+                                WHERE invitations.guest_id=guest_list.guest_id AND guest_list.guest_type="Group Organiser" OR guest_list.guest_type="Sole"
                                 ORDER BY wedding_events.event_name');
         $guest_list = $db->query($guest_list_query);
         $guest_list_result = $guest_list->fetch_assoc();
@@ -78,7 +78,7 @@ if (isset($_POST['action'])) {
                 echo '<p>Sorry, no invites found with those details</p>';
                }
                if($num_guests >0){
-                echo '<p>'.$num_guests.' Invites found matching '.$search.'</p>';
+                echo '<p>'.$num_guests.' Invites found.</p>';
                }
 
                echo

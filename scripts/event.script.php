@@ -38,7 +38,7 @@ if ((array_key_exists('action', $_GET))) {
         <p>Note that the figures below also include guests that can bring others with them.</p>
         <div class="event-card-invites">
             <div class="event-card-invites-textbox">
-                <p>Invites Available </p><span><?= $event_capacity - $total_inv - $guests_allocated; ?></span>
+                <p>Invites Available </p><span><?= $event_capacity  - $guests_allocated; ?></span>
             </div>
             <div class="event-card-invites-textbox">
                 <?php
@@ -47,7 +47,7 @@ if ((array_key_exists('action', $_GET))) {
             </div>
 
             <div class="event-card-invites-textbox">
-                <p>Guests Allocated </p><span><?= $total_inv + $guests_allocated; ?></span>
+                <p>Guests Allocated </p><span><?=$guests_allocated; ?></span>
             </div>
         </div>
 
@@ -56,7 +56,7 @@ if ((array_key_exists('action', $_GET))) {
         <p>You can only remove guests that are group organisers or sole invites.</p>
         <table class="event-card-guestlist-table ">
             <?php
-            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_type, guest_list.guest_group_id, invitations.event_id, invitations.guest_id, invitations.invite_status FROM guest_list  LEFT JOIN invitations ON invitations.guest_id = guest_list.guest_id WHERE event_id=' . $event_id . ' ORDER BY guest_list.guest_type');
+            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_type, guest_list.guest_group_id, invitations.event_id, invitations.guest_id, invitations.invite_status FROM guest_list  LEFT JOIN invitations ON invitations.guest_id = guest_list.guest_id WHERE event_id=' . $event_id . ' ORDER BY guest_list.guest_group_id, guest_list.guest_fname ASC');
             $guest_list = $db->query($guest_list_query);
 
             ?>
@@ -74,7 +74,7 @@ if ((array_key_exists('action', $_GET))) {
 
             ?>
                 <tr>
-                    <td><a href="guest.php?action=view&guest_id=<?= $guest['guest_id']; ?>"><?= $guest['guest_fname'] . " " . $guest['guest_sname'] . ' ' . $plus; ?></a></td>
+                    <td><a <?php if($guest['guest_type']=="Member"):?> class="text-muted"<?php endif;?> href="guest.php?action=view&guest_id=<?= $guest['guest_id']; ?>"><?= $guest['guest_fname'] . " " . $guest['guest_sname'] . ' ' . $plus; ?></a></td>
                     <td><?php if ($guest['guest_type'] == "Group Organiser" || $guest['guest_type'] == "Sole") : ?>
                             <label class="checkbox-form-control">
                                 <button class="btn-primary btn-secondary remove_guest" data-guestid="<?= $guest['guest_id']; ?>" data-guesttype="<?= $guest['guest_type']; ?>" data-guestgroupid="<?= $guest['guest_group_id']; ?>"><i class="fa-solid fa-user-minus"></i></button>
@@ -92,6 +92,7 @@ if ((array_key_exists('action', $_GET))) {
 
         </table>
         <h3>Guests Available To Assign</h3>
+        <p>This will also assign any additional guests you may have added.</p>
         <label class="checkbox-form-control" for="check_all">
             <input type="checkbox" id="check_all" />
             Assign All Available Guests
@@ -228,12 +229,44 @@ if (array_key_exists('action', $_POST)) {
         //declare event_id
         $event_id = $_POST['event_id'];
         //insert into guest group tables
-        $invite = $db->prepare('INSERT INTO invitations (guest_id, event_id) VALUES (?,?)');
+        $invite = $db->prepare('INSERT INTO invitations (guest_id, event_id, guest_group_id) VALUES (?,?,?)');
+        $sole_invite = $db->prepare('INSERT INTO invitations (guest_id, event_id) VALUES (?,?)');
+        //group members
+        $group_invites = $db->prepare('INSERT INTO invitations (guest_id, event_id, guest_group_id) VALUES (?,?,?)');
+        //find guest group id
         foreach ($_POST['guest_id'] as $guest_id) {
-            $invite->bind_param('ii', $guest_id, $event_id);
+            $group_id = $db->query("SELECT guest_group_id FROM guest_list WHERE guest_id =".$guest_id."");
+            $res = $group_id->fetch_array();
+            $group_id= $res['guest_group_id'];
+            
+            $invite->bind_param('iii', $guest_id, $event_id, $group_id );
             $invite->execute();
+
+
         }
         $invite->close();
+            
+            foreach($_POST['guest_id'] as $id){
+                $group_id = $db->query("SELECT guest_group_id FROM guest_list WHERE guest_id =".$id."");
+                $res = $group_id->fetch_array();
+                $group_id= $res['guest_group_id'];
+             
+                if(!$group_id==NULL){
+                // find the group members and add them to the same invite list
+                $members = $db->query("SELECT guest_id, guest_group_id FROM guest_list WHERE guest_group_id =".$group_id." AND guest_type='Member'");
+                $res2 = $members->fetch_array();
+                foreach($members as $result){
+                    $group_invites->bind_param('iii', $result['guest_id'], $event_id, $result['guest_group_id'] );
+                    $group_invites->execute();
+                }
+                $group_invites->close();
+                }  else{
+                    $sole_invite->bind_param('ii', $id, $event_id );
+                    $sole_invite->execute();
+                }
+
+            }
+            $sole_invite->close();
     }
 
     if ($_POST['action'] == "remove_guest") {
@@ -241,12 +274,19 @@ if (array_key_exists('action', $_POST)) {
         //declare event_id and guest_id
         $event_id = $_POST['event_id'];
         $guest_id = $_POST['guest_id'];
+        $guest_group_id = $_POST['guest_group_id'];
         //remove from invitation table
         $invite = $db->prepare('DELETE FROM  invitations  WHERE guest_id=? AND event_id=?');
         $invite->bind_param('ii', $guest_id, $event_id);
         $invite->execute();
         $invite->close();
-        //remove any group members if this guest is a group organiser
+        //remove any group members if this guest is a group organiser 
+        if($_POST['guest_type']=="Group Organiser"){
+            $guest_group_members = $db->prepare('DELETE FROM  invitations  WHERE guest_group_id=? AND event_id=?');
+            $guest_group_members->bind_param('ii', $guest_group_id, $event_id);
+            $guest_group_members->execute();
+            $guest_group_members->close();
+        }
     }
     if ($_POST['action'] == "edit_event") {
         include("..//connect.php");
@@ -282,4 +322,3 @@ if (array_key_exists('action', $_POST)) {
         $new_event->close();
     }
 }
-?>

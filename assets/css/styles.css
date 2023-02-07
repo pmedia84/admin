@@ -89,6 +89,9 @@ body{
 .text-alert{
     color: hsl(0, 95%, 67%);
 }
+.text-muted{
+    opacity: .4;
+}
 body{
     background-image: 
     radial-gradient(circle, 
@@ -590,6 +593,11 @@ a.btn-primary{
         transition: box-shadow 300ms ease-out;
     } 
 
+.btn-remove-guest{
+    height: 100%;
+    margin-block: .25rem;
+} 
+
 .close{/*wrapper for close button*/
     display: flex;
     justify-content: flex-end;
@@ -621,12 +629,26 @@ a.btn-primary{
 .disabled{
     /*disabled button*/
     opacity: .5;
+    pointer-events: none;
 } 
 
 /*Form Grid, cols provide 2 columns 50% on larger screens*/ 
 
 .form-row{
-    gap: 0.5rem;
+display: flex;
+flex-direction: column;
+} 
+
+@media(min-width:992px){ 
+
+.form-row{
+    flex-direction: row;
+    align-items:flex-end
+}
+} 
+
+.form-input-col{
+    display: flex;
     flex-direction: column;
 } 
 
@@ -1379,6 +1401,7 @@ input:checked + .slider:before {
     background-color: #fff;
     padding: 1.5rem;
     margin-block: 1.5rem;
+    border-radius: 5px;
 } 
 
 /*/alert cards*/ 
@@ -1387,6 +1410,11 @@ input:checked + .slider:before {
     position: absolute;
     right: 2vw;
     bottom: 2vh;
+} 
+
+.guest-group-member{
+    border-bottom: 1px solid hsl(163, 28%, 32%);
+    
 } 
 
 /*Form response for displaying server messages*/ 
@@ -1560,11 +1588,12 @@ max-width: 90vw;
     } 
 
 .guest-list-actions{
-    width: 100%;
+    width: 50%;
     max-width: 100px;
-    margin: 0 auto;
+ 
     display: flex;
-    justify-content: space-between;
+    justify-content:left;
+    gap: 1.5rem;
     padding: 0.25rem;
     font-size: 1.25rem;
 }
