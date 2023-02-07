@@ -15,31 +15,8 @@ include("inc/settings.php");
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
 //wedding is the name of people
-//business name
 $cms_name = "";
 $user_id = $_SESSION['user_id'];
-if ($cms_type == "Business") {
-    //look for the business set up and load information
-    //find business details.
-    $business = $db->prepare('SELECT * FROM business');
-
-    $business->execute();
-    $business->store_result();
-    $business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
-    $business->fetch();
-    $business->close();
-    //set cms name
-    $cms_name = $business_name;
-    //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id=' . $user_id);
-
-    $business_users->execute();
-    $business_users->bind_result($user_id, $user_name, $business_id, $user_type);
-    $business_users->fetch();
-    $business_users->close();
-    echo $business_id;
-}
-
 //run checks to make sure a wedding has been set up correctly
 if ($cms_type == "Wedding") {
     //look for the Wedding set up and load information
