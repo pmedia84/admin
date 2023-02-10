@@ -203,9 +203,9 @@ if (isset($_GET['image_id'])) {
                                         <img src="./assets/img/gallery/<?= $image_filename ?>" alt="">
                                     </div>
                                     <div class="form-input-wrapper my-2">
-                                        <label for="image_description"><strong>Image Description</strong></label>
+                                        <label for="image_description"><strong>Image Caption</strong></label>
                                         <p class="form-hint-small">This is not essential, but can be useful.</p>
-                                        <input class="text-input input" type="text" id="image_description" name="image_description" placeholder="Image Description" value="<?= $image_description; ?>">
+                                        <input class="text-input input" type="text" id="image_description" name="image_description" placeholder="Image Caption" value="<?= $image_description; ?>">
                                     </div>
                                     <div class="my-2">
 
