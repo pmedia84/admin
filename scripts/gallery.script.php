@@ -68,10 +68,7 @@ if (isset($_POST['action'])) {
                     }
 
 
-                    // $img_placement_name = "";
-                    // foreach ($img_placement as $img1){
-                    //     $img_placement_name .= $img1.",";
-                    // }
+
 
 
                     //insert new image into table
@@ -98,7 +95,6 @@ if (isset($_POST['action'])) {
     imagepalettetotruecolor($image);
     imagealphablending($image, true);
     imagesavealpha($image, true);
-    //imagejpeg($new, $new_img, 50);
     imagewebp($image, $dir . $new_filename, 60);
     //delete the old image
     if (fopen($dir . $cur_image_file, "w")) {
@@ -138,6 +134,7 @@ if (isset($_POST['action'])) {
     }
 
     echo $response;
+    exit();
 }
 ///////Load image gallery from GET request
 if (isset($_GET['action'])) {
