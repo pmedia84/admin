@@ -47,7 +47,7 @@ if ($cms_type == "Wedding") {
 
     $wedding->execute();
     $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_email, $wedding_phone, $wedding_contact_name);
+    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time,   $wedding_email, $wedding_phone, $wedding_contact_name);
     $wedding->fetch();
     $wedding->close();
     //set cms name
@@ -71,6 +71,8 @@ if (isset($_GET['image_id'])) {
 
     $image->execute();
     $image->store_result();
+}else{
+    $image_id="";
 }
 
 
@@ -84,7 +86,7 @@ if (isset($_GET['image_id'])) {
 
 <!-- / -->
 <!-- Page Title -->
-<title>Mi-Admin | Create News Article</title>
+<title>Mi-Admin | Manage Image Gallery</title>
 <!-- /Page Title -->
 </head>
 
@@ -201,9 +203,9 @@ if (isset($_GET['image_id'])) {
                                         <img src="./assets/img/gallery/<?= $image_filename ?>" alt="">
                                     </div>
                                     <div class="form-input-wrapper my-2">
-                                        <label for="image_description"><strong>Image Description</strong></label>
+                                        <label for="image_description"><strong>Image Caption</strong></label>
                                         <p class="form-hint-small">This is not essential, but can be useful.</p>
-                                        <input class="text-input input" type="text" id="image_description" name="image_description" placeholder="Image Description" value="<?= $image_description; ?>">
+                                        <input class="text-input input" type="text" id="image_description" name="image_description" placeholder="Image Caption" value="<?= $image_description; ?>">
                                     </div>
                                     <div class="my-2">
 
@@ -243,7 +245,7 @@ if (isset($_GET['image_id'])) {
 
                         <div class="std-card">
                             <h1><i class="fa-solid fa-image"></i> Upload New Image</h1>
-                            <form action="scripts/gallery.script.php" id="img-upload" method="POST" enctype="multipart/form-data">
+                            <form action="scripts/gallery.scriptnew.php" id="img-upload" method="POST" enctype="multipart/form-data">
                                 <div class="form-input-wrapper">
                                     <label for="image_title">Image Title</label>
                                     <!-- input -->
@@ -259,7 +261,7 @@ if (isset($_GET['image_id'])) {
                                     <label for="gallery_img">Upload Image</label>
                                     <p class="form-hint-small">This can be in a JPG, JPEG or PNG format. And no larger than 1MB.</p>
                                     <!-- input -->
-                                    <input type="file" name="gallery_img" id="gallery_img" accept="image/*">
+                                    <input type="file" name="gallery_img" id="gallery_img" accept="image/*" multiple>
                                 </div>
 
                                 <h3>Image Placement</h3>
@@ -278,6 +280,7 @@ if (isset($_GET['image_id'])) {
                                     <button class="btn-primary form-controls-btn loading-btn" type="submit"><span id="loading-btn-text" class="loading-btn-text"><i class="fa-solid fa-upload"></i>Upload Image</span> <img id="loading-icon" class="loading-icon d-none" src="./assets/img/icons/loading.svg" alt=""></button>
                                     <a class="btn-primary btn-secondary" href="gallery" type="button"><i class="fa-solid fa-ban"></i>Cancel</a>
                                 </div>
+                                <div id="response" class="d-none"></div>
                             </form>
                         </div>
 
@@ -371,7 +374,7 @@ if (isset($_GET['image_id'])) {
 
             $.ajax({ //start ajax post
                 type: "POST",
-                url: "scripts/gallery.script.php",
+                url: "scripts/gallery.scriptnew.php",
                 data: formData,
                 contentType: false,
                 processData: false,
@@ -384,8 +387,11 @@ if (isset($_GET['image_id'])) {
                 success: function(data, responseText) {
                     $("#response").html(data);
                     $("#response").slideDown(400);
-                    if (data === "success") {
-                        //window.location.replace("gallery");
+                    if (data === "0") {
+                        window.location.replace("gallery");
+                    }else{
+                        $("#response").html(data);
+                        $("#response").slideDown(400);
                     }
                     $("#img-upload")[0].reset();
 
