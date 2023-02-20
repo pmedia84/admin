@@ -28,7 +28,7 @@ if ($cms_type == "Wedding") {
 
     $wedding->execute();
     $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_email, $wedding_phone, $wedding_contact_name);
+    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time, $wedding_email, $wedding_phone, $wedding_contact_name);
     $wedding->fetch();
     $wedding->close();
     //set cms name
@@ -69,13 +69,60 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
 <meta name="description" content="Parrot Media - Client Admin Area">
 <meta name="title" content="Manage your website content">
 <!-- /Meta Tags -->
-
+<!-- Tiny MCE -->
+<script src="https://cdn.tiny.cloud/1/7h48z80zyia9jc41kx9pqhh00e1e2f4pw9kdcmhisk0cm35w/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- / -->
 <!-- / -->
 <!-- Page Title -->
 <title>Mi-Admin | Manage Your Event</title>
 <!-- /Page Title -->
 </head>
+<?php if (isset($_GET['action'] )&& $_GET['action']=="edit"):?>
+    <script>
+    tinymce.init({
+        selector: 'textarea#event_notes',
+        height: 450,
 
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | ',
+        tinycomments_mode: 'embedded',
+
+        tinycomments_author: 'Author name',
+        mergetags_list: [{
+                value: 'First.Name',
+                title: 'First Name'
+            },
+            {
+                value: 'Email',
+                title: 'Email'
+            },
+        ]
+    });
+</script>
+<?php endif;?>    
+<?php if (isset($_GET['action'] ) && $_GET['action']=="create"):?>
+    <script>
+    tinymce.init({
+        selector: 'textarea#event_notes',
+        height: 450,
+
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | ',
+        tinycomments_mode: 'embedded',
+
+        tinycomments_author: 'Author name',
+        mergetags_list: [{
+                value: 'First.Name',
+                title: 'First Name'
+            },
+            {
+                value: 'Email',
+                title: 'Email'
+            },
+        ]
+    });
+</script>
+<?php endif;?>  
 
 <body>
     <!-- Main Body Of Page -->
@@ -368,7 +415,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     <?php
                                     echo '<iframe frameborder="0" width="100%" height="250px" src="https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=' . str_replace(",", "", str_replace(" ", "+", $event_address)) . '&z=14&output=embed"></iframe>'; ?>
                                     <h4>Event Notes</h4>
-                                    <p><?= $event_notes; ?></p>
+                                    <p><?php echo html_entity_decode($event_notes); ?></p>
                                     <div class="event-card-guestlist">
                                         <?php
                                         //load all invites details
@@ -495,6 +542,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
     <Script>
         //update event
         $("#edit_event").submit(function(event) {
+            tinyMCE.triggerSave();
             event.preventDefault();
             var formData = new FormData($("#edit_event").get(0));
             var event_id = <?php echo $event_id; ?>;
@@ -516,6 +564,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
         <script>
         //add event
         $("#add_event").submit(function(event) {
+            tinyMCE.triggerSave();
             event.preventDefault();
             var formData = new FormData($("#add_event").get(0));
             formData.append("action", "add_event");

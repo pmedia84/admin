@@ -302,7 +302,7 @@ if (array_key_exists('action', $_POST)) {
         $event_address= htmlspecialchars($_POST['event_address']);
         $event_date = mysqli_real_escape_string($db, $_POST['event_date']);
         $event_time = mysqli_real_escape_string($db, $_POST['event_time']);
-        $event_notes = mysqli_real_escape_string($db, $_POST['event_notes']);
+        $event_notes = htmlentities($_POST['event_notes']);
         $event_capacity = mysqli_real_escape_string($db, $_POST['event_capacity']);
         //insert into guest group tables
         $event = $db->prepare('UPDATE wedding_events SET event_name=?, event_location=?, event_address=?, event_date=?, event_time=?, event_notes=?, event_capacity=?  WHERE event_id =?');
@@ -318,7 +318,7 @@ if (array_key_exists('action', $_POST)) {
         $event_address= htmlspecialchars($_POST['event_address']);
         $event_date = mysqli_real_escape_string($db, $_POST['event_date']);
         $event_time = mysqli_real_escape_string($db, $_POST['event_time']);
-        $event_notes = mysqli_real_escape_string($db, $_POST['event_notes']);
+        $event_notes = htmlentities($_POST['event_notes']);
         $event_capacity = mysqli_real_escape_string($db, $_POST['event_capacity']);
         //insert into events table
         $new_event = $db->prepare('INSERT INTO wedding_events (event_name, event_location, event_address, event_date, event_time, event_notes, event_capacity ) VALUES (?,?,?,?,?,?,?)');
