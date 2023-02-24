@@ -19,7 +19,7 @@ $cms_type = $cms_type;
 //email settings for contact forms
 //Settings for all form scripts
 
-include("../email_settings.php");
+include($_SERVER['DOCUMENT_ROOT']."/email_settings.php");
 
 ////////////////Modules Available\\\\\\\\\\\\\\\\\\\\
 //connect to modules table and load available modules

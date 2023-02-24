@@ -572,7 +572,7 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
                 processData: false,
                 success: function(data, responseText) {
                     if(data === "success"){
-                    //window.location.replace('guest.php?action=view&guest_id=' + guest_id);
+                    window.location.replace('guest.php?action=view&guest_id=' + guest_id);
                     }
                 }
             });

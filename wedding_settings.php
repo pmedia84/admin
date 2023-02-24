@@ -79,7 +79,8 @@ $guest_home_img_res = $guest_home_img->fetch_assoc();
                     $modules_query = ('SELECT * FROM wedding_modules');
                     $modules = $db->query($modules_query);
                     ?>
-                    <h2>Modules</h2>
+                    
+                    <h2>Features</h2>
                     <form action="wedding_settings.script.php" method="POST" enctype="multipart/form-data" id="cms_modules">
                         <?php foreach ($modules as $module) : ?>
                             <div class="settings-card">
