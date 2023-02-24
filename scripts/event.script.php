@@ -251,12 +251,12 @@ if (array_key_exists('action', $_POST)) {
             $group_id = $db->query("SELECT guest_group_id FROM guest_list WHERE guest_id =" . $id . "");
             $res = $group_id->fetch_array();
             $group_id = $res['guest_group_id'];
-
+           
             //if the group id is not null then find all group members associated with each group organiser being added.
             if ($group_id == NULL || $group_id == 0) {
                 $sole_invite->bind_param('iis', $id, $event_id, $invite_rsvp_status);
                 $sole_invite->execute();
-                $sole_invite->close();
+                
                 // if null then add the one guest
             } else {
                 // find the group members and add them to the same invite list
@@ -267,11 +267,13 @@ if (array_key_exists('action', $_POST)) {
                         $group_invites->bind_param('iisi', $result['guest_id'], $event_id, $invite_rsvp_status, $result['guest_group_id']);
                         $group_invites->execute();
                     }
-                    $group_invites->close();
+                    
                 }
+                
             }
         }
-        
+        $group_invites->close();
+        $sole_invite->close();
     }
 
     if ($_POST['action'] == "remove_guest") {
