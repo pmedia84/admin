@@ -69,7 +69,7 @@ $guest_home_img_res = $guest_home_img->fetch_assoc();
         <!-- /nav bar -->
         <div class="body">
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / Website Settings</div>
-            <div class="main-cards cms-settings-cards">
+            <div class="main-cards cms-settings-cards my-2">
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
                     <h1><i class="fa-solid fa-laptop"></i> Website Settings</h1>
                     <p>Manage your setting for your website and your guest area.</p>
