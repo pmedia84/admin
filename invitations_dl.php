@@ -50,7 +50,7 @@ if ($cms_type == "Wedding") {
 
     $wedding->execute();
     $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_email, $wedding_phone, $wedding_contact_name);
+    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time, $wedding_email, $wedding_phone, $wedding_contact_name);
     $wedding->fetch();
     $wedding->close();
     //set cms name
@@ -85,8 +85,6 @@ if ($cms_type == "Wedding") {
 </head>
 
 <body>
-
-
     <!-- Main Body Of Page -->
     <main class="main col-2">
 
@@ -120,9 +118,6 @@ if ($cms_type == "Wedding") {
                         <div class="std-card d-none" id="invite_list">
 
                         </div>
-
-
-
                     <?php endif; ?>
                 <?php else : ?>
                     <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>

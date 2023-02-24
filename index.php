@@ -148,16 +148,7 @@ $invite_num = $invite_num->num_rows;
                     <h2>Photo Gallery</h2>
                     <a href="gallery.php">Manage</a>
                 </div>
-                    <?php if ($user_type == "Admin") : ?>
-                    <div class="dashboard-card">
-                        <div class="dashboard-card-header">
-                            <span><?= $user_amt; ?></span>
-                            <img src="assets/img/icons/users.svg" alt="">
-                        </div>
-                        <h2>Users</h2>
-                        <a href="users.php">Manage</a>
-                    </div>
-                <?php endif; ?>
+
                 <?php if ($cms_type == "Wedding") : ?>
                     <?php if ($invite_manager_status == "On") : ?>
                         <div class="dashboard-card">
