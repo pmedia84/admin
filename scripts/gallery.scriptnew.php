@@ -17,6 +17,11 @@ if(empty($_FILES)){
     echo $response;
     exit();
 }
+print_r($_FILES['gallery_img']);
+foreach($_FILES['gallery_img']['name'] as $file){
+    
+    echo $file;
+}
 //check for error codes
 if ($_FILES['gallery_img']['error'] !== UPLOAD_ERR_OK) {
 

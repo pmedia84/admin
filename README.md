@@ -7,6 +7,6 @@ All file changes are reflected in the repo, for client customization this is all
 - Prevent guests removing group members via a setting in the website admin panel
 ### Future changes
 
-- Uploading of multiple images in teh image gallery
+- Uploading of multiple images in the image gallery
 - update a guest's RSVP
 - Mark all invites as sent

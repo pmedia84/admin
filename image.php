@@ -245,7 +245,7 @@ if (isset($_GET['image_id'])) {
 
                         <div class="std-card">
                             <h1><i class="fa-solid fa-image"></i> Upload New Image</h1>
-                            <form action="scripts/gallery.scriptnew.php" id="img-upload" method="POST" enctype="multipart/form-data">
+                            <form action="scripts/gallery-multiple.php" id="img-upload" method="POST" enctype="multipart/form-data">
                                 <div class="form-input-wrapper">
                                     <label for="image_title">Image Title</label>
                                     <!-- input -->
@@ -261,7 +261,7 @@ if (isset($_GET['image_id'])) {
                                     <label for="gallery_img">Upload Image</label>
                                     <p class="form-hint-small">This can be in a JPG, JPEG or PNG format. And no larger than 1MB.</p>
                                     <!-- input -->
-                                    <input type="file" name="gallery_img" id="gallery_img" accept="image/*" multiple>
+                                    <input type="file" name="gallery_img[]" id="gallery_img" accept="image/*" multiple>
                                 </div>
 
                                 <h3>Image Placement</h3>
@@ -374,7 +374,7 @@ if (isset($_GET['image_id'])) {
 
             $.ajax({ //start ajax post
                 type: "POST",
-                url: "scripts/gallery.scriptnew.php",
+                url: "scripts/gallery-multiple.php",
                 data: formData,
                 contentType: false,
                 processData: false,

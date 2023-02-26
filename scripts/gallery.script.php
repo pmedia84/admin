@@ -130,7 +130,7 @@ if (isset($_POST['action'])) {
         $update_image->bind_param('sssi', $image_title, $image_description, $img_placement, $image_id);
         $update_image->execute();
         $update_image->close();
-        $response = '<div class="form-response"><p>Article saved.</p></div>';
+        $response = '';
     }
 
     echo $response;
