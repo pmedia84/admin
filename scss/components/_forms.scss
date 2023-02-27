@@ -96,7 +96,6 @@ flex-direction: column;
     }
 }
 /////////////////////Form Input settings///////////////////////////
-
 input{
     outline: none;
 }
@@ -125,7 +124,6 @@ textarea{
     min-height: 250px;
     margin-bottom: 1rem;
     padding:.375rem .75rem;
-    resize: auto;
     border-radius: 5px;
     @media (min-width:768px) {
       min-height: 0;

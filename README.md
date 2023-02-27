@@ -5,6 +5,8 @@ All file changes are reflected in the repo, for client customization this is all
 
 - Guest list groups implemented. Users can now add and remove extra guests from the main guest when creating teh main guest as well as when they are edited.
 - Prevent guests removing group members via a setting in the website admin panel
+- Meal choices now planned
+
 ### Future changes
 
 - Uploading of multiple images in the image gallery
