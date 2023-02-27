@@ -236,3 +236,26 @@
     border-bottom: 1px solid $primary;
     
 }
+.response-card{
+    
+    position: absolute;
+    right: 25px;
+    top: 40%;
+    padding-block: $spacer-3;
+    border: 1px solid $primary;
+    border-left: 5px solid $primary;
+    border-radius: 5px;
+    background-color: #fff;
+    display: flex;
+    gap: $spacer-3;
+
+}
+.response-card-icon{
+    padding-inline: $spacer-2;
+    svg path{
+        fill: $primary;
+    }
+}
+.response-card-body{
+    padding-inline-end: $spacer-2;
+}

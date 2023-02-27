@@ -4,7 +4,7 @@ if (isset($_POST['action'])) {
     if ($_POST['action'] == "newimg") { //if add new img action exists then upload the image
         $response = "";
         //db connection
-      
+
         //check that an image has been uploaded
         if ($_FILES['gallery_img']['name'] == null) {
             //header image name is blank if no file uploaded
@@ -15,8 +15,8 @@ if (isset($_POST['action'])) {
             $img_filename = "";
         } else { //if there is an image uploaded then save it to the folder
             //////////////////////sort the image upload first////////////////////////////////////////
-            $admin_dir = $_SERVER['DOCUMENT_ROOT']. "/admin/assets/img/gallery/";
-            $dir = $_SERVER['DOCUMENT_ROOT']. "/assets/img/gallery/";
+            $admin_dir = $_SERVER['DOCUMENT_ROOT'] . "/admin/assets/img/gallery/";
+            $dir = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/gallery/";
             $file = $dir . basename($_FILES['gallery_img']['name']);
             $imageFileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
             // Check if image file is a actual image or fake image
@@ -51,7 +51,7 @@ if (isset($_POST['action'])) {
                 // if everything is ok, try to upload file
             } else {
                 if (move_uploaded_file($_FILES["gallery_img"]["tmp_name"], $file)) {
-                    
+
                     $response = '<div class="form-response"><p>success, your image has been added to your gallery.</p></div>';
                     //define articles img variable
                     $image_filename = basename($_FILES['gallery_img']['name']);
@@ -80,32 +80,32 @@ if (isset($_POST['action'])) {
                     $image_id = $db->insert_id;
 
                     //change uploaded image to a webp image
-                        //convert the file uploaded to a webp file
-    $cur_image_file = $image_filename; //current image to be converted to webp. find in the admin folder
-    $new_filename = "gallery-item-img-" . $image_id . ".webp";
-    //create the images for jpeg gif or png
-    $info = getimagesize($dir . $cur_image_file);
-    if ($info['mime'] == 'image/jpeg') {
-        $image = imagecreatefromjpeg($dir . $cur_image_file);
-    } elseif ($info['mime'] == 'image/gif') {
-        $image = imagecreatefromgif($dir . $cur_image_file);
-    } elseif ($info['mime'] == 'image/png') {
-        $image = imagecreatefrompng($dir . $cur_image_file);
-    }
-    imagepalettetotruecolor($image);
-    imagealphablending($image, true);
-    imagesavealpha($image, true);
-    imagewebp($image, $dir . $new_filename, 60);
-    //delete the old image
-    if (fopen($dir . $cur_image_file, "w")) {
-        unlink($dir . $cur_image_file);
-    };
-    copy($dir . $new_filename, $admin_dir . $new_filename);
-    //Update gift item
-    $gift_item = $db->prepare('UPDATE images SET image_filename=?  WHERE image_id =?');
-    $gift_item->bind_param('si', $new_filename, $image_id);
-    $gift_item->execute();
-    $gift_item->close();
+                    //convert the file uploaded to a webp file
+                    $cur_image_file = $image_filename; //current image to be converted to webp. find in the admin folder
+                    $new_filename = "gallery-item-img-" . $image_id . ".webp";
+                    //create the images for jpeg gif or png
+                    $info = getimagesize($dir . $cur_image_file);
+                    if ($info['mime'] == 'image/jpeg') {
+                        $image = imagecreatefromjpeg($dir . $cur_image_file);
+                    } elseif ($info['mime'] == 'image/gif') {
+                        $image = imagecreatefromgif($dir . $cur_image_file);
+                    } elseif ($info['mime'] == 'image/png') {
+                        $image = imagecreatefrompng($dir . $cur_image_file);
+                    }
+                    imagepalettetotruecolor($image);
+                    imagealphablending($image, true);
+                    imagesavealpha($image, true);
+                    imagewebp($image, $dir . $new_filename, 60);
+                    //delete the old image
+                    if (fopen($dir . $cur_image_file, "w")) {
+                        unlink($dir . $cur_image_file);
+                    };
+                    copy($dir . $new_filename, $admin_dir . $new_filename);
+                    //Update gift item
+                    $gift_item = $db->prepare('UPDATE images SET image_filename=?  WHERE image_id =?');
+                    $gift_item->bind_param('si', $new_filename, $image_id);
+                    $gift_item->execute();
+                    $gift_item->close();
                 } else {
                     echo "Sorry, there was an error uploading your file.";
                 }
@@ -124,7 +124,7 @@ if (isset($_POST['action'])) {
         } else { //else set store in db as an array
             $img_placement = implode(",", $_POST['img_placement']);
         }
-        
+
         //Update image
         $update_image = $db->prepare('UPDATE images SET image_title=?, image_description=?, image_placement=?  WHERE image_id =?');
         $update_image->bind_param('sssi', $image_title, $image_description, $img_placement, $image_id);
@@ -144,7 +144,7 @@ if (isset($_GET['action'])) {
         //find image details
 
 
-       
+
         $home_query = ('SELECT * FROM images WHERE image_placement LIKE "%Home%"');
         $home = $db->query($home_query);
 
@@ -163,7 +163,7 @@ if (isset($_GET['action'])) {
                 
                     
                         <div class='img-card-header-img'>
-                            <a href='image.php?action=view&image_id=" . $home_item['image_id'] . "'><img src='assets/img/gallery/".$home_item['image_filename']."'></a>
+                            <a href='image.php?action=view&image_id=" . $home_item['image_id'] . "'><img src='assets/img/gallery/" . $home_item['image_filename'] . "'></a>
                             <h3>" . $home_item['image_title'] . "</h3>
                         </div>
                    
@@ -187,7 +187,7 @@ if (isset($_GET['action'])) {
         
            
                 <div class='img-card-header-img'>
-                <a href='image.php?action=view&image_id=" . $gallery_item['image_id'] . "'><img src='assets/img/gallery/".$gallery_item['image_filename']."'></a>
+                <a href='image.php?action=view&image_id=" . $gallery_item['image_id'] . "'><img src='assets/img/gallery/" . $gallery_item['image_filename'] . "'></a>
                     <h3>" . $gallery_item['image_title'] . "</h3>
                 </div>
             
@@ -211,7 +211,7 @@ if (isset($_GET['action'])) {
             echo "<div class='img-card'>
         
             <div class='img-card-header-img'>
-            <a href='image.php?action=view&image_id=" . $other_item['image_id'] . "'><img src='assets/img/gallery/".$other_item['image_filename']."'></a>
+            <a href='image.php?action=view&image_id=" . $other_item['image_id'] . "'><img src='assets/img/gallery/" . $other_item['image_filename'] . "'></a>
             </div>
             
         <div class='img-card-body'>

@@ -575,7 +575,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                 contentType: false,
                 processData: false,
                 success: function(data, responseText) {
-                //window.location.replace('events.php');
+                window.location.replace('events.php');
 
                 }
             });
