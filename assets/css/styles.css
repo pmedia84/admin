@@ -762,6 +762,28 @@ flex-direction: column;
     }
 } 
 
+.form-input-row{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+} 
+
+.form-input-row button{
+        height: 33.33px;
+        width: 33.33px;
+        display: grid;
+        place-items: center;
+    } 
+
+.form-input-row button svg{
+            height: 100%;
+            margin: 0;
+        } 
+
+.form-input-row button svg path{
+                fill: #FFF;
+            } 
+
 /*////*/ 
 
 /*Quote request form*/ 
@@ -1355,6 +1377,9 @@ input:checked + .slider:before {
     margin-block: 1.5rem;
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
+    
+    
 } 
 
 .news-item-status{
@@ -1547,6 +1572,85 @@ input:checked + .slider:before {
     padding-inline-end: 0.5rem;
 } 
 
+.menu-card, .menu{
+    /*for menu builder page*/
+    border: 1px solid #3b685c;
+    padding: 1.5rem;
+    border-radius: 5px;
+} 
+
+.menu-body .card-actions{
+    margin-inline: auto;
+} 
+
+@media(min-width:768px){
+    .menu-body .card-actions{
+        width: 95%;
+        max-width: 600px;
+    }
+} 
+
+@media(min-width: 576px){
+    .menu-body .card-actions{
+        flex-direction: row;
+        justify-content: space-between;
+    }
+} 
+
+.menu h2{
+        font-size: 1.5rem;
+    } 
+
+.menu h3{
+        font-size: 1.25rem;
+    } 
+
+.menu h4{
+        font-size: 1rem;
+    } 
+
+.menu h2, .menu h3, .menu p, .menu h4{
+        text-align: center;
+    } 
+
+.menu-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-inline: auto;
+    gap: 0.25rem;
+} 
+
+.menu-item svg path{
+        fill: hsl(163, 28%, 80%);
+
+    } 
+
+.menu-item:hover svg path{
+        fill: #3b685c;
+    } 
+
+.menu-item-actions{
+    display: flex;
+    gap: 0.5rem;
+} 
+
+.menu-item-actions .btn-delete{
+        width: 33.33px;
+        display: grid;
+        place-items: center;
+    } 
+
+.menu-item-actions .btn-delete svg{
+            height: 100%;
+            margin: 0;
+        } 
+
+.menu-item-actions .btn-delete svg path{
+                fill: #FFF;
+            } 
+
 /*Form response for displaying server messages*/ 
 
 .modal{/*modal outer with background, covers whole screen*/
@@ -1571,30 +1675,30 @@ input:checked + .slider:before {
     border-radius: 10px;
     background-color: #fff;
     padding: 1.5rem;
-    width: 75%;
+    width: 95%;
     max-width: 580px;
+    overflow-y: scroll;
+    display: grid;
+    place-items: center;
+} 
+
+.modal-content{
+    height: 100%;
+    width: 100%;
+} 
+
+.modal-btns{
+    width: 100%;
 } 
 
 .modal-close{/*header section with close button set to the right*/
-    background-color: rgb(240, 240, 240);
     padding: 0.5rem 1rem 0.5rem 1rem;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     width: 100%;
-    border-bottom: 1px solid #3b685c;
     border-top-left-radius: inherit;
     border-top-right-radius: inherit;
-} 
-
-.modal-button-section{/*footer with a confirm button*/
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    border-top: 1px solid #3b685c;
-    background-color: rgb(240, 240, 240);
-    border-bottom-left-radius: inherit;
-    border-bottom-right-radius: inherit;
-
-    width: 100%;
 } 
 
 /*active classes to display modal when triggered*/ 

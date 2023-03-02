@@ -25,7 +25,24 @@ flex-direction: column;
         flex-direction: column;
     }
 }
-
+.form-input-row{
+    display: flex;
+    align-items: center;
+    gap: $spacer-2;
+    button{
+        height: 33.33px;
+        width: 33.33px;
+        display: grid;
+        place-items: center;
+        svg{
+            height: 100%;
+            margin: 0;
+            path{
+                fill: #FFF;
+            }
+        }
+    }
+}
 //////
 
 //Quote request form

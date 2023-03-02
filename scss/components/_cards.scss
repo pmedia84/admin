@@ -95,7 +95,12 @@
     margin-block: $spacer-3;
     display: flex;
     flex-direction: column;
+    gap: $spacer-2;
+    
+    
 }
+
+
 
 .news-item-status{
     font-size: 1.5rem;
@@ -258,4 +263,73 @@
 }
 .response-card-body{
     padding-inline-end: $spacer-2;
+}
+
+.menu-card, .menu{
+    //for menu builder page
+    border: 1px solid $primary;
+    padding: $spacer-3;
+    border-radius: 5px;
+}
+.menu-body .card-actions{
+    margin-inline: auto;
+}
+@media(min-width:$md){
+    .menu-body .card-actions{
+        width: 95%;
+        max-width: 600px;
+    }
+}
+@media(min-width: $sm){
+    .menu-body .card-actions{
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+.menu{
+    h2{
+        font-size: $fs-150;
+    }
+    h3{
+        font-size: $fs-125;
+    }
+    h4{
+        font-size: $fs-100;
+    }
+    h2, h3, p, h4{
+        text-align: center;
+    }
+}
+.menu-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-inline: auto;
+    gap: $spacer-1;
+    svg path{
+        fill: $primary-800;
+
+    }
+
+    &:hover svg path{
+        fill: $primary;
+    }
+}
+
+.menu-item-actions{
+    display: flex;
+    gap: $spacer-2;
+    .btn-delete{
+        width: 33.33px;
+        display: grid;
+        place-items: center;
+        svg{
+            height: 100%;
+            margin: 0;
+            path{
+                fill: #FFF;
+            }
+        }
+    }
 }

@@ -66,4 +66,8 @@ foreach ($modules as $module) {
     if ($module['module_name'] == "Gift List") {
         $gift_list_status = $module['module_status'];
     }
+    //Gift List 
+    if ($module['module_name'] == "Menu Builder") {
+        $menu_builder_status = $module['module_status'];
+    }
 }
