@@ -131,7 +131,7 @@ if ($cms_type == "Wedding") {
                     </form>
                 </div>
 
-                <?php if ($user_type == "Admin") : ?>
+                <?php if ($user_type == "Admin" ||$user_type=="Developer") : ?>
                     <a class="btn-primary" id="upload_image" href="price_listitem.php?action=add"><i class="fa-solid fa-square-plus"></i>Create Service </a>
                     <div class="std-card" id="price_list">
 

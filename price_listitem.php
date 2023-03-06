@@ -6,9 +6,9 @@ if (!$_SESSION['loggedin'] == TRUE) {
     
     header("Location: login.php?location=".$location);
 }
+include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
-include("connect.php");
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
 //wedding is the name of people
@@ -130,7 +130,7 @@ if ($_GET['action'] == "delete") {
                     <p class="font-emphasis">This page is best viewed on a large screen</p>
 
                 <?php endif; ?>
-                <?php if ($user_type == "Admin") : //detect if user is an admin or not 
+                <?php if ($user_type == "Admin" ||$user_type=="Developer") : //detect if user is an admin or not 
                 ?>
 
                     <?php if ($_GET['action'] == "add") : ?>
