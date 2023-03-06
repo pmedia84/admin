@@ -50,10 +50,10 @@ if ($cms_type == "Business") {
 
 
 
-    //find social media info
-    $socials_query = ('SELECT business_socials.business_socials_id, business_socials.socials_type_id, business_socials.business_socials_url, business_socials.business_id, business_socials_types.socials_type_id, business_socials_types.socials_type_name   FROM business_socials  NATURAL LEFT JOIN business_socials_types WHERE  business_socials.business_id =' . $business_id);
-    $socials = $db->query($socials_query);
-    $social_result = $socials->fetch_assoc();
+    // //find social media info
+    // $socials_query = ('SELECT business_socials.business_socials_id, business_socials.socials_type_id, business_socials.business_socials_url, business_socials.business_id, business_socials_types.socials_type_id, business_socials_types.socials_type_name   FROM business_socials  NATURAL LEFT JOIN business_socials_types WHERE  business_socials.business_id =' . $business_id);
+    // $socials = $db->query($socials_query);
+    // $social_result = $socials->fetch_assoc();
 }
 
 //run checks to make sure a wedding has been set up correctly

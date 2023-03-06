@@ -83,7 +83,9 @@ $guest_home_img_res = $guest_home_img->fetch_assoc();
                     <h2>Features</h2>
                     <form action="wedding_settings.script.php" method="POST" enctype="multipart/form-data" id="cms_modules">
                         <?php foreach ($modules as $module) : ?>
-                            <div class="settings-card">
+                            <?php if($module['wedding_module_name'] =="Meal Choices") :?>
+                                <?php if($meal_choices_status=="On"):?>
+                                <div class="settings-card">
                                 <div class="settings-card-text">
                                     <h3><?= $module['wedding_module_name']; ?></h3>
                                     <p><?= $module['wedding_module_desc']; ?></p>
@@ -93,6 +95,19 @@ $guest_home_img_res = $guest_home_img->fetch_assoc();
                                     <span class="slider round"></span>
                                 </label>
                             </div>
+                            <?php endif;?>
+                            <?php else:?>
+                                <div class="settings-card">
+                                <div class="settings-card-text">
+                                    <h3><?= $module['wedding_module_name']; ?></h3>
+                                    <p><?= $module['wedding_module_desc']; ?></p>
+                                </div>
+                                <label class="switch">
+                                    <input class="switch-check" type="checkbox" value="<?= $module['wedding_module_id']; ?>" <?php if ($module['wedding_module_status'] == "On") : ?>checked<?php endif; ?>>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <?php endif;?>
                         <?php endforeach; ?>
                     </form>
             </div>

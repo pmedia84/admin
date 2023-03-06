@@ -220,14 +220,12 @@ if ((array_key_exists('action', $_GET))) {
         </script>
     <?php endif; ?>
 <?php endif; ?>
-
 <?php
-
 if (array_key_exists('action', $_POST)) {
     if ($_POST['action'] == "assign") {
         include("..//connect.php");
         //set up invite rsvp status as not replied for all invites
-        $invite_rsvp_status = "Not replied";
+        $invite_rsvp_status = "Not Replied";
         //declare event_id
         $event_id = $_POST['event_id'];
         //prepare the invite script

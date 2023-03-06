@@ -34,5 +34,30 @@ max-width: 90vw;
     font-size: 1.25rem;
 }
 
+.meal-choices{
+    
+    width: 100%;
+    margin-bottom: $spacer-3;
+    border-collapse: collapse;
+    th{
+        text-align: left;
+        background-color: $primary-900;
+        padding: $spacer-2;
+        &:first-of-type{
+            border-top-left-radius: 5px;
+        }
+        &:last-of-type{
+            border-top-right-radius: 5px;
+        }
+    }
+    td{
+       padding: $spacer-2
+    }
 
+}
+.guest-name-col{
+    background-color: $primary-950;
+    border-bottom: 2px double $primary;
+    
+}
 

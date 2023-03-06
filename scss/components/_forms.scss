@@ -259,9 +259,6 @@ input[type=radio]:checked{
     outline: 2px solid #999;
 }
 
-
-
-
 /* Create the indicator (the dot/circle - hidden when not checked) */
 .radio-checkmark:after {
     content: "";
@@ -441,4 +438,3 @@ input[type=radio]:checked{
         justify-content: space-between;
     }
 }
-

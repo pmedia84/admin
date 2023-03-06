@@ -1651,6 +1651,27 @@ input:checked + .slider:before {
                 fill: #FFF;
             } 
 
+/*/meal choices cards*/ 
+
+.choice-stats-card{
+    background-color: hsl(163, 28%, 95%);
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 25px;
+    gap: 1.5rem;
+    border: 1px solid hsl(163, 28%, 80%);
+    border-radius: 5px;
+} 
+
+.choice-stats-card p{
+        font-size: 1.25rem;
+        font-weight: 300;
+    } 
+
+.choice-stats-card span{
+        font-size: 1.5rem;
+    } 
+
 /*Form response for displaying server messages*/ 
 
 .modal{/*modal outer with background, covers whole screen*/
@@ -1830,6 +1851,38 @@ max-width: 90vw;
     gap: 1.5rem;
     padding: 0.25rem;
     font-size: 1.25rem;
+} 
+
+.meal-choices{
+    
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-collapse: collapse;
+
+} 
+
+.meal-choices th{
+        text-align: left;
+        background-color: hsl(163, 28%, 90%);
+        padding: 0.5rem;
+    } 
+
+.meal-choices th:first-of-type{
+            border-top-left-radius: 5px;
+        } 
+
+.meal-choices th:last-of-type{
+            border-top-right-radius: 5px;
+        } 
+
+.meal-choices td{
+       padding: 0.5rem
+    } 
+
+.guest-name-col{
+    background-color: hsl(163, 28%, 95%);
+    border-bottom: 2px double #3b685c;
+    
 }
 /*spacing utilities*/
 /*m = margin*/

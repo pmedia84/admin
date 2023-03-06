@@ -333,3 +333,21 @@
         }
     }
 }
+
+///meal choices cards
+.choice-stats-card{
+    background-color: $primary-950;
+    padding: $spacer-2;
+    display: grid;
+    grid-template-columns: 1fr 25px;
+    gap: $spacer-3;
+    border: 1px solid $primary-800;
+    border-radius: 5px;
+    p{
+        font-size: $fs-125;
+        font-weight: 300;
+    }
+    span{
+        font-size: $fs-150;
+    }
+}

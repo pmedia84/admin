@@ -36,6 +36,9 @@
                 <?php if ($menu_builder_status == "On") : ?>
                     <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "menu")){echo"link-active";}?>" href="menu">Menu Builder <i class="fa-solid fa-bowl-food"></i></a></li>
                 <?php endif; ?>
+                <?php if ($meal_choices_status == "On") : ?>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "meal_choices")){echo"link-active";}?>" href="meal_choices">Guest Meal Choices <i class="fa-solid fa-utensils"></i></a></li>
+                <?php endif; ?>
                 <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "our_story")){echo"link-active";}?>" href="our_story">Our Story <i class="fa-regular fa-heart"></i></a></li>
                 <?php if ($invite_manager_status == "On") : ?>
                     <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "invit")){echo"link-active";}?>" href="invitations">Invitations <i class="fa-solid fa-champagne-glasses"></i></a></li>
