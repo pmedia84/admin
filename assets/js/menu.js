@@ -18,7 +18,7 @@ $("#course-editor").on("click", "#courses-save", function (e) {
         processData: false,
         success: function (data, responseText) {
             ///need script to catch errors
-            //$("#gallery-body").load("scripts/gallery.scriptnew.php?action=load_gallery");
+            $("#course-modal").removeClass("modal-active");
         }
     });
 

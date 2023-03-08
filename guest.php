@@ -319,6 +319,7 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
                                     <?php endif;?>
                                     <?php if($guest_type=="Member"):?>
                                         <h2>Group Member</h2>
+                                        <p><?=$guest_fname;?> is a group member, you won't be able to assign extra invites to them. If you want to do that you will need to remove them and create them as a new guest with extra invites.</p>
                                     <?php endif;?>    
                                     <div class="form-input-wrapper">
                                         <label for="guest_fname"><strong>First Name</strong></label>
@@ -377,6 +378,7 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
                                         </table>
                                     </div>
                                 <?php endif; ?>
+                                <?php if ($guest_type=="Group Organiser"):?>
                                 <div class="form-card">
                                     <h2>Additional Guests</h2>
                                     <p>You can assign this guest extra invites here, if you know who they will be bringing with them.</p>
@@ -384,6 +386,7 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
                                     <div id="guest-group-row"></div>
                                     <button class="btn-primary btn-secondary my-2" type="button" id="add-member"><i class="fa-solid fa-user-plus"></i> Add Guests</button>
                                 </div>
+                                <?php endif;?>
                                 <div class="form-card">
                                     <h2>Events</h2>
                                     <?php if ($guest_invites->num_rows >= 1) : ?>
