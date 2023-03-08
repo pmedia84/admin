@@ -7,9 +7,9 @@ if (!$_SESSION['loggedin'] == TRUE) {
     header("Location: login.php?location=".$location);
 }
 
+include("./connect.php");
 include("./inc/head.inc.php");
 include("./inc/settings.php");
-include("./connect.php");
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
 //wedding is the name of people
@@ -117,7 +117,7 @@ if ($cms_type == "Wedding") {
             <div class="main-cards">
 
 
-                <?php if ($user_type == "Admin") : ?>
+                <?php if ($user_type == "Admin" || $user_type=="Developer") : ?>
                     <?php if ($cms_type == "Business") : ?>
                         <h2>Settings</h2>
                         <div class="std-card">

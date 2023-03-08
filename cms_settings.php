@@ -115,11 +115,7 @@ if ($cms_type == "Wedding") {
 
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / CMS Settings</div>
             <div class="main-cards cms-settings-cards">
-
-
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-
-
 
                     <h1>CMS Settings</h1>
                     <p>Manage modules and features that are available to the end user.</p>
