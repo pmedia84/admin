@@ -59,6 +59,9 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
 }
 $guest_group_id = ""; //empty variable for pages that don't use the GET request
 
+if ($meal_choices_status == "On") {
+    $meal_choices_q = $db->query('SELECT menu_items.menu_item_id, menu_items.menu_item_name, menu_items.course_id, meal_choices.menu_item_id, meal_choices.choice_order_id, meal_choice_order.choice_order_id, meal_choice_order.guest_id, menu_courses.course_name, menu_courses.course_id  FROM menu_items LEFT JOIN meal_choices ON meal_choices.menu_item_id=menu_items.menu_item_id LEFT JOIN meal_choice_order ON meal_choices.choice_order_id=meal_choice_order.choice_order_id LEFT JOIN menu_courses ON menu_courses.course_id=menu_items.course_id WHERE meal_choice_order.guest_id=' . $guest_id);
+}
 
 ?>
 <!-- Meta Tags For Each Page -->
@@ -124,10 +127,10 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
                                 $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
                                 $guest->fetch();
                                 $guest->close();
-                                
-                                if($guest_type=="Member"){
-                                    $guest_group_manager = $db->query("SELECT guest_group_organiser FROM guest_groups WHERE guest_group_id=".$guest_group_id);
-                                    $guest_group_manager_res = $guest_group_manager->fetch_assoc();   
+
+                                if ($guest_type == "Member") {
+                                    $guest_group_manager = $db->query("SELECT guest_group_organiser FROM guest_groups WHERE guest_group_id=" . $guest_group_id);
+                                    $guest_group_manager_res = $guest_group_manager->fetch_assoc();
                                     $guest_org_id = $guest_group_manager_res['guest_group_organiser'];
                                 }
 
@@ -148,17 +151,16 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
                                 $remove_guest = "DELETE FROM guest_list WHERE guest_id=$guest_id";
                                 if (mysqli_query($db, $remove_guest)) {
                                     // find the new extra invites amount an update the lead guest
-                                    if($guest_type == "Member"){
-                                        $guest_group = $db->query("SELECT guest_id FROM guest_list WHERE guest_group_id=".$guest_group_id." AND guest_type='Member'");
-                                    
+                                    if ($guest_type == "Member") {
+                                        $guest_group = $db->query("SELECT guest_id FROM guest_list WHERE guest_group_id=" . $guest_group_id . " AND guest_type='Member'");
+
                                         $guest_extra_invites_num = $guest_group->num_rows;
-                                        $guest_extra_inv_num->bind_param('ii',$guest_extra_invites_num, $guest_org_id);
+                                        $guest_extra_inv_num->bind_param('ii', $guest_extra_invites_num, $guest_org_id);
                                         $guest_extra_inv_num->execute();
                                         $guest_extra_inv_num->close();
                                     }
 
                                     echo '<div class="std-card"><div class="form-response error"><p>' . $guest_fname . ' ' . $guest_sname . ' Has been removed from your guest list</p> <a href="guest_list" class="btn-primary my-2">Return To Guest List</a></div></div>';
-                                    
                                 } else {
                                     echo '<div class="form-response error"><p>Error removing guest, please try again.</p></div>';
                                     //echo mysqli_error($db);
@@ -311,16 +313,16 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
 
                             <form id="edit_guest" action="scripts/guest.script.php" method="POST" enctype="multipart/form-data">
                                 <div class="form-card">
-                                    <?php if($guest_type=="Group Organiser"):?>
+                                    <?php if ($guest_type == "Group Organiser") : ?>
                                         <h2>Main Guest</h2>
-                                    <?php endif;?>    
-                                    <?php if($guest_type=="Sole"):?>
+                                    <?php endif; ?>
+                                    <?php if ($guest_type == "Sole") : ?>
                                         <h2>Guest</h2>
-                                    <?php endif;?>
-                                    <?php if($guest_type=="Member"):?>
+                                    <?php endif; ?>
+                                    <?php if ($guest_type == "Member") : ?>
                                         <h2>Group Member</h2>
-                                        <p><?=$guest_fname;?> is a group member, you won't be able to assign extra invites to them. If you want to do that you will need to remove them and create them as a new guest with extra invites.</p>
-                                    <?php endif;?>    
+                                        <p><?= $guest_fname; ?> is a group member, you won't be able to assign extra invites to them. If you want to do that you will need to remove them and create them as a new guest with extra invites.</p>
+                                    <?php endif; ?>
                                     <div class="form-input-wrapper">
                                         <label for="guest_fname"><strong>First Name</strong></label>
                                         <!-- input -->
@@ -378,15 +380,15 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
                                         </table>
                                     </div>
                                 <?php endif; ?>
-                                <?php if ($guest_type=="Group Organiser"):?>
-                                <div class="form-card">
-                                    <h2>Additional Guests</h2>
-                                    <p>You can assign this guest extra invites here, if you know who they will be bringing with them.</p>
-                                    <p>If you are unsure of their name, tick the box below each guest and they will be added as a plus one.</p>
-                                    <div id="guest-group-row"></div>
-                                    <button class="btn-primary btn-secondary my-2" type="button" id="add-member"><i class="fa-solid fa-user-plus"></i> Add Guests</button>
-                                </div>
-                                <?php endif;?>
+                                <?php if ($guest_type == "Group Organiser") : ?>
+                                    <div class="form-card">
+                                        <h2>Additional Guests</h2>
+                                        <p>You can assign this guest extra invites here, if you know who they will be bringing with them.</p>
+                                        <p>If you are unsure of their name, tick the box below each guest and they will be added as a plus one.</p>
+                                        <div id="guest-group-row"></div>
+                                        <button class="btn-primary btn-secondary my-2" type="button" id="add-member"><i class="fa-solid fa-user-plus"></i> Add Guests</button>
+                                    </div>
+                                <?php endif; ?>
                                 <div class="form-card">
                                     <h2>Events</h2>
                                     <?php if ($guest_invites->num_rows >= 1) : ?>
@@ -478,7 +480,7 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
 
                             ?>
                                 <div class="std-card">
-                                    <h3>Group</h3>
+                                    <h3>Guest Group</h3>
                                     <p>The guest group that <?= $guest_fname; ?> is organising.</p>
 
                                     <table class="std-table">
@@ -517,6 +519,21 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
                                 <div class="std-card">
                                     <h3>Guest Group</h3>
                                     <p><?= $guest_fname; ?> is not associated with a group, they are a sole invite. If you want them to bring guests, you can assign them invites by editing their details. </p>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($meal_choices_status == "On") : ?>
+                                <div class="std-card">
+                                    <h2>Meal Choices</h2>
+                                    <?php if ($meal_choices_q->num_rows > 0) : ?>
+
+                                        <div class="menu my-3">
+                                            <?php foreach ($meal_choices_q as $choice) : ?>
+                                                <h3><?= $choice['course_name']; ?></h3>
+                                                <p><?= $choice['menu_item_name']; ?></p>
+                                                <hr>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             <?php endif; ?>
                         <?php else : ?>
@@ -574,8 +591,8 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
                 contentType: false,
                 processData: false,
                 success: function(data, responseText) {
-                    if(data === "success"){
-                    window.location.replace('guest.php?action=view&guest_id=' + guest_id);
+                    if (data === "success") {
+                        window.location.replace('guest.php?action=view&guest_id=' + guest_id);
                     }
                 }
             });
@@ -594,10 +611,10 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
                 contentType: false,
                 processData: false,
                 success: function(data, responseText) {
-                    if(data === "success"){
+                    if (data === "success") {
                         window.location.replace('guest_list.php');
                     }
-                    
+
                 }
             });
 
