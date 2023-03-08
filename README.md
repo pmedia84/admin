@@ -1,14 +1,17 @@
 # Parrot media Admin CMS for client websites and wedding sites
-All file changes are reflected in the repo, for client customization this is all done via the database files and settings.
 
-## Version 1.5
+
+## Version 1.5.1
 
 - Guest list groups implemented. Users can now add and remove extra guests from the main guest when creating teh main guest as well as when they are edited.
 - Prevent guests removing group members via a setting in the website admin panel
-- Meal choices now planned
+- Meal choices now a feature that can be turned on
+- - Downloading meal choices to send to venues
+- Uploading of multiple images in the image gallery
+
+
 
 ### Future changes
 
-- Uploading of multiple images in the image gallery
 - update a guest's RSVP
-- Mark all invites as sent
+
