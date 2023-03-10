@@ -172,10 +172,11 @@ if (isset($_POST['action']) && $_POST['action'] == "upload") {
 }
 ?>
 
-<?php if (isset($_GET['action']) && $_GET['action'] == "load_gallery") : 
-    $gallery_query = $db->query('SELECT * FROM images');
-    ?>
-    
+<?php if (isset($_GET['action']) && $_GET['action'] == "load_gallery") :
+    $gallery_query = $db->query('SELECT images.image_id,  images.image_title, images.image_description, images.image_filename, images.image_upload_date, images.image_placement, images.guest_id, guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname FROM images LEFT JOIN guest_list ON guest_list.guest_id=images.guest_id');
+    include("../inc/settings.php");
+?>
+
     <form action="scripts/gallery.scriptnew.php" id="gallery" method="POST">
         <div class="form-controls gallery-controls">
             <button class="btn-primary form-controls-btn" data-action="delete" id="delete-btn"><i class="fa-solid fa-trash"></i>Delete Selected Images </button>
@@ -200,7 +201,7 @@ if (isset($_POST['action']) && $_POST['action'] == "upload") {
             </div>
         </div>
         <p class="text-center my-2">To change a caption, tap or click on caption itself.</p>
-        <div class="gallery-card">
+        <div class="gallery-card table-wrapper">
             <table class="gallery-table">
                 <tbody>
                     <tr>
@@ -208,6 +209,9 @@ if (isset($_POST['action']) && $_POST['action'] == "upload") {
                         <th class="image-details">Image</th>
                         <th>Caption</th>
                         <th>Image Placement</th>
+                        <?php if ($guest_image_gallery == "On") : ?>
+                            <th>Guest Contributor</th>
+                        <?php endif; ?>
                     </tr>
                     <?php foreach ($gallery_query as $img) : ?>
                         <tr>
@@ -215,6 +219,76 @@ if (isset($_POST['action']) && $_POST['action'] == "upload") {
                             <td class="gallery-thumb"><a href=""><img src="/admin/assets/img/gallery/<?= $img['image_filename']; ?>" alt=""><?= $img['image_filename']; ?></a></td>
                             <td class="caption" contenteditable="true" data-imgid="<?= $img['image_id']; ?>" data-action="edit_caption"><?= $img['image_description']; ?></td>
                             <td><?= $img['image_placement']; ?></td>
+                            <?php if ($guest_image_gallery == "On") : ?>
+                                <td><a href="guest?action=view&guest_id=<?= $img['guest_id']; ?>"><?= $img['guest_fname'] . ' ' . $img['guest_sname']; ?></a></td>
+                            <?php endif; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </form>
+<?php endif; ?>
+<?php if (isset($_GET['term'])) :
+    include("../inc/settings.php");
+    $term = $_GET['term'];
+    if ($term == "guest") {
+        $gallery_query = $db->query('SELECT images.image_id,  images.image_title, images.image_description, images.image_filename, images.image_upload_date, images.image_placement, images.guest_id, guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname FROM images LEFT JOIN guest_list ON guest_list.guest_id=images.guest_id WHERE images.guest_id >""');
+    } if($term=="") {
+        $gallery_query = $db->query('SELECT images.image_id,  images.image_title, images.image_description, images.image_filename, images.image_upload_date, images.image_placement, images.guest_id, guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname FROM images LEFT JOIN guest_list ON guest_list.guest_id=images.guest_id');
+    } if($term=="ours"){
+        $gallery_query = $db->query('SELECT images.image_id,  images.image_title, images.image_description, images.image_filename, images.image_upload_date, images.image_placement, images.guest_id, guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname FROM images LEFT JOIN guest_list ON guest_list.guest_id=images.guest_id WHERE images.guest_id IS NULL');
+    }
+
+
+
+?>
+
+    <form action="scripts/gallery.scriptnew.php" id="gallery" method="POST">
+        <div class="form-controls gallery-controls">
+            <button class="btn-primary form-controls-btn" data-action="delete" id="delete-btn"><i class="fa-solid fa-trash"></i>Delete Selected Images </button>
+            <button class="btn-primary" type="button" id="upload-show"><i class="fa-solid fa-upload"></i>Upload Images </button>
+            <div class="form-input-wrapper">
+                <label for="placement">Image Placement</label>
+                <select name="placement" id="placement" data-action="placement">
+                    <option value="">Select</option>
+                    <option value="Home">Home Page</option>
+                    <option value="Gallery">Gallery</option>
+                </select>
+            </div>
+        </div>
+        <div class="d-none  my-2" id="upload-card">
+            <div class="form-input-wrapper gallery-card">
+                <div class="close"><button class="btn-close" type="button" id="close-upload"><i class="fa-solid fa-xmark"></i></button></div>
+                <label for="gallery_img">Upload Images</label>
+                <p class="form-hint-small">This can be in a JPG, JPEG or PNG format</p>
+                <!-- input -->
+                <input type="file" name="gallery_img[]" id="gallery_img" accept="image/*" multiple>
+                <div class="button-section"><button class="btn-primary my-2 form-controls-btn loading-btn" type="button" id="upload-btn" data-action="upload"><span id="loading-btn-text" class="loading-btn-text"><i class="fa-solid fa-upload"></i>Upload Image</span> <img id="loading-icon" class="loading-icon d-none" src="./assets/img/icons/loading.svg" alt=""></button></div>
+            </div>
+        </div>
+        <p class="text-center my-2">To change a caption, tap or click on caption itself.</p>
+        <div class="gallery-card table-wrapper">
+            <table class="gallery-table">
+                <tbody>
+                    <tr>
+                        <th><input type="checkbox" name="" id="check_all"></th>
+                        <th class="image-details">Image</th>
+                        <th>Caption</th>
+                        <th>Image Placement</th>
+                        <?php if ($guest_image_gallery == "On") : ?>
+                            <th>Guest Contributor</th>
+                        <?php endif; ?>
+                    </tr>
+                    <?php foreach ($gallery_query as $img) : ?>
+                        <tr>
+                            <td class="gallery-select"><input class="gallery-select" data-select="false" type="checkbox" name="image_id[]" id="" value="<?= $img['image_id']; ?>"></td>
+                            <td class="gallery-thumb"><a href=""><img src="/admin/assets/img/gallery/<?= $img['image_filename']; ?>" alt=""><?= $img['image_filename']; ?></a></td>
+                            <td class="caption" contenteditable="true" data-imgid="<?= $img['image_id']; ?>" data-action="edit_caption"><?= $img['image_description']; ?></td>
+                            <td><?= $img['image_placement']; ?></td>
+                            <?php if ($guest_image_gallery == "On") : ?>
+                                <td><a href="guest?action=view&guest_id=<?= $img['guest_id']; ?>"><?= $img['guest_fname'] . ' ' . $img['guest_sname']; ?></a></td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

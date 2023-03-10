@@ -143,8 +143,6 @@ if (isset($_GET['action'])) {
         //find images for each section 
         //find image details
 
-
-
         $home_query = ('SELECT * FROM images WHERE image_placement LIKE "%Home%"');
         $home = $db->query($home_query);
 

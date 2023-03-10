@@ -110,3 +110,10 @@ $("#gallery-body").on("click", "#upload-show", function(){
 $("#gallery-body").on("click", "#close-upload", function(){
     $("#upload-card").slideUp(400);
 })
+
+//filter select - allows users to filter out images and just show guest images
+$("#term").on("change", function(){
+    let action = $(this).data("action");
+    let term = $(this).val();
+    $("#gallery-body").load("scripts/gallery.scriptnew.php?action="+action+"&term="+term+"");
+})

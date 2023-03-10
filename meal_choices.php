@@ -2,15 +2,23 @@
 session_start();
 
 include("./connect.php");
-//handle deleting menu, only process if confirm is yes, re direct to menu page
-if (isset($_GET['confirm']) && $_GET['confirm'] == "yes") {
 
-    $delete_menu = "DELETE FROM menu WHERE menu_id=" . $_GET['menu_id'];
-    if (mysqli_query($db, $delete_menu)) {
-        header("Location: menu");
-        exit();
-    }
+$guestlist = fopen("scripts/choices ".date('d-m-y').".csv", "w") or die("Unable to open file!");
+
+$query =("SELECT meal_choices.menu_item_id, meal_choices.choice_order_id, menu_items.menu_item_name, menu_items.course_id, menu_courses.course_name, menu_courses.course_id, meal_choice_order.choice_order_id, meal_choice_order.guest_id, guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname FROM meal_choices LEFT JOIN menu_items ON menu_items.menu_item_id=meal_choices.menu_item_id LEFT JOIN menu_courses ON menu_courses.course_id=menu_items.course_id LEFT JOIN meal_choice_order ON meal_choice_order.choice_order_id=meal_choices.choice_order_id LEFT JOIN guest_list ON guest_list.guest_id=meal_choice_order.guest_id ORDER BY guest_list.guest_id, menu_courses.course_id 
+  ");
+
+$fetch = $db->query($query);
+$query_fetch = $fetch->fetch_array();
+
+$note=array("NOTE: Save this file as an Excel workbook and remove this line. If you make changes to your guest list then make sure you download this again.");
+fputcsv($guestlist, $note);
+$headers = array('Guest ID', 'First Name', 'Surname','Additional Invites', 'RSVP Code', 'Address', 'Postcode', '','Guest Group Name', 'Event ID', 'Event Name');
+fputcsv($guestlist, $headers);
+foreach ($fetch as $line) {
+  fputcsv($guestlist, $line);
 }
+fclose($guestlist);
 $location = $_SERVER['REQUEST_URI'];
 $location = urlencode($_SERVER['REQUEST_URI']);
 if (!$_SESSION['loggedin'] == TRUE) {
@@ -87,7 +95,7 @@ $choices_query = $db->query('SELECT meal_choice_order.choice_order_id, meal_choi
                             break;
                     }
                 } else {
-                    echo "Menu Builder";
+                    echo "Guest Meal Choices";
                 }
 
                 ?>
@@ -105,8 +113,8 @@ $choices_query = $db->query('SELECT meal_choice_order.choice_order_id, meal_choi
 
                     ?>
                         <div class="std-card form-controls my-2">
-                            <a href="" class="btn-primary"><i class="fa-solid fa-file-csv"></i> Download Meal Choices</a>
-                            <a href="" class="btn-primary"><i class="fa-solid fa-file-pdf"></i> Print Meal Choices</a>
+                            <a href="scripts/choices_dl" class="btn-primary"><i class="fa-solid fa-file-excel"></i> Download Meal Choices</a>
+                            <a href="scripts/print_meal_options" download="Meal Options <?=date('d-m-y');?>" class="btn-primary"><i class="fa-solid fa-file-pdf"></i> Print Meal Choices</a>
                         </div>
                         <div class="std-card">
                             <h2 class="my-2">Meal Choice Totals</h2>
@@ -161,7 +169,6 @@ $choices_query = $db->query('SELECT meal_choice_order.choice_order_id, meal_choi
     <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
-    <script src="assets/js/meal_choices.js"></script>
 
 </body>
 

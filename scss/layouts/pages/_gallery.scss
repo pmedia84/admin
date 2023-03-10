@@ -72,21 +72,21 @@
     img{
         width: unset !important;
     }
+
+
 }
 
 ////new styles for gallery page
 /// ////gallery table
 .gallery-table {
-
-    width: 100%;
     margin-bottom: $spacer-3;
-
+    width: 100%;
     th {
         text-align: left;
     }
 
     .image-details {
-        width: 300px;
+        width: auto;
     }
     .caption{
         border-inline: 1px solid $primary-900;
@@ -131,6 +131,8 @@
     a {
         display: flex;
         align-items: center;
+        flex-direction: column;
+
     }
 
     img {

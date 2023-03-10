@@ -116,7 +116,7 @@ flex-direction: column;
 input{
     outline: none;
 }
-input[type=text], input[type=password], textarea, select, input[type=file],input[type=number], input[type=date], input[type=time]{
+input[type=text], input[type=password], textarea, input[type=file],input[type=number], input[type=date], input[type=time]{
     
     border: 1px solid $primary;
     border-radius: 5px;
@@ -354,12 +354,20 @@ input[type=radio]:checked{
 ///////////////Form controls //////////
 .form-controls{
     padding: 1rem;
-
+    display: flex;
+    gap: $spacer-1;
+    align-items: center;
+    flex-direction: column;
     border: 1px solid $primary-500;
     border-radius: 2.5px;
 
 }
-
+@media(min-width: $md){
+    .form-controls{
+        gap: $spacer-3;
+        flex-direction: row;
+    }
+}
 .form-controls-btn{
     display: flex;
     justify-content: space-between;

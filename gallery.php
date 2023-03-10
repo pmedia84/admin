@@ -64,7 +64,7 @@ if ($cms_type == "Wedding") {
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 //load images
-$gallery_query = $db->query('SELECT * FROM images');
+$gallery_query = $db->query('SELECT images.image_id,  images.image_title, images.image_description, images.image_filename, images.image_upload_date, images.image_placement, images.guest_id, guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname FROM images LEFT JOIN guest_list ON guest_list.guest_id=images.guest_id');
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -94,6 +94,16 @@ $gallery_query = $db->query('SELECT * FROM images');
             <div class="main-cards">
                 <h1><i class="fa-solid fa-images"></i> Image Gallery</h1>
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
+                    <div class="form-controls">
+                    <div class="form-input-wrapper">
+                                    <label for="placement">Filter Images</label>
+                                    <select name="term" id="term" data-action="term">
+                                        <option value="">Show All</option>
+                                        <option value="guest">Guest Images</option>
+                                        <option value="ours">Our Images</option>
+                                    </select>
+                                </div>
+                    </div>
                     <div class="gallery-body" id="gallery-body">
                         <form action="scripts/gallery.scriptnew.php" id="gallery" method="POST">
                             <div class="form-controls gallery-controls">
@@ -119,7 +129,7 @@ $gallery_query = $db->query('SELECT * FROM images');
                                 </div>
                             </div>
                             <p class="text-center my-2">To change a caption, tap or click on caption itself.</p>
-                            <div class="gallery-card">
+                            <div class="gallery-card table-wrapper">
                                 <table class="gallery-table">
                                     <tbody>
                                         <tr>
@@ -127,6 +137,9 @@ $gallery_query = $db->query('SELECT * FROM images');
                                             <th class="image-details">Image</th>
                                             <th>Caption</th>
                                             <th>Image Placement</th>
+                                            <?php if ($guest_image_gallery == "On") : ?>
+                                                <th>Guest Contributor</th>
+                                            <?php endif; ?>
                                         </tr>
                                         <?php foreach ($gallery_query as $img) : ?>
                                             <tr>
@@ -134,6 +147,9 @@ $gallery_query = $db->query('SELECT * FROM images');
                                                 <td class="gallery-thumb"><a href=""><img src="/admin/assets/img/gallery/<?= $img['image_filename']; ?>" alt=""><?= $img['image_filename']; ?></a></td>
                                                 <td class="caption" contenteditable="true" data-imgid="<?= $img['image_id']; ?>" data-action="edit_caption"><?= $img['image_description']; ?></td>
                                                 <td><?= $img['image_placement']; ?></td>
+                                                <?php if ($guest_image_gallery == "On") : ?>
+                                                    <td><a href="guest?action=view&guest_id=<?= $img['guest_id']; ?>"><?= $img['guest_fname'] . ' ' . $img['guest_sname']; ?></a></td>
+                                                <?php endif; ?>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -149,7 +165,7 @@ $gallery_query = $db->query('SELECT * FROM images');
         <div class="d-none" id="response-card-wrapper">
             <div class="response-card">
                 <div class="response-card-icon">
-                <i class="fa-solid fa-circle-info"></i>
+                    <i class="fa-solid fa-circle-info"></i>
                 </div>
                 <div class="response-card-body">
                     <p>Images Uploaded Successfully</p>

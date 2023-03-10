@@ -113,7 +113,7 @@ body{
 }
     }
 a{
-    color: #3b685c;
+    color: rgb(59, 104, 92);
     display: inline-block;
 }
 a:hover{
@@ -138,7 +138,7 @@ a:hover{
     background-color: transparent;
     border: none;
     place-items: center;
-    color: #3b685c;
+    color: rgb(59, 104, 92);
     cursor: pointer;
 } 
 .nav-btn-close svg{
@@ -166,7 +166,7 @@ a:hover{
         background-color: hsl(163, 28%, 80%);
         border-radius: 5px;
         text-decoration: none;
-        color: #3b685c;
+        color: rgb(59, 104, 92);
     } 
 .nav-links .nav-link img {
             height: 25px
@@ -195,7 +195,7 @@ a:hover{
 } 
 .header {
     /*header panel with welcome message and header actions*/
-    color: #3b685c;
+    color: rgb(59, 104, 92);
     padding: 0 1rem 0 1rem;
     margin-block: 0.5rem;
 } 
@@ -216,7 +216,7 @@ a:hover{
 } 
 .header-actions-navbtn svg,.header-actions-btn-logout svg{
         height: 35px;
-        fill: #3b685c;
+        fill: rgb(59, 104, 92);
     } 
 .header-actions-btn-user, .header-actions-btn-logout {
     display: flex;
@@ -225,7 +225,7 @@ a:hover{
     font-size: 35px;
 } 
 .header-actions-btn-user svg{
-        fill: #3b685c;
+        fill: rgb(59, 104, 92);
     } 
 .header-actions-business-name {
     display: none;
@@ -355,7 +355,7 @@ a:hover{
     } 
 /*///Image gallery*/ 
 .img-card {
-    border: 1px solid #3b685c;
+    border: 1px solid rgb(59, 104, 92);
     background-color: #fff;
     border-radius: 5px;
     padding: 0.5rem;
@@ -413,6 +413,8 @@ a:hover{
     border-radius: 10px;
     background-color: #fff;
     padding: 0.5rem;
+
+
 } 
 .gallery-card img{
         width: unset !important;
@@ -420,21 +422,20 @@ a:hover{
 /*//new styles for gallery page*/ 
 /*/ ////gallery table*/ 
 .gallery-table {
-
-    width: 100%;
     margin-bottom: 1.5rem;
+    width: 100%;
 } 
 .gallery-table th {
         text-align: left;
     } 
 .gallery-table .image-details {
-        width: 300px;
+        width: auto;
     } 
 .gallery-table .caption{
         border-inline: 1px solid hsl(163, 28%, 90%);
     } 
 .gallery-table td {
-        border-bottom: 1px solid #3b685c;
+        border-bottom: 1px solid rgb(59, 104, 92);
     } 
 .gallery-table {
 
@@ -465,6 +466,8 @@ a:hover{
 .gallery-thumb a {
         display: flex;
         align-items: center;
+        flex-direction: column;
+
     } 
 .gallery-thumb img {
         height: 70px;
@@ -674,7 +677,7 @@ grid-column: 2/3;
 
 .btn-secondary{
     background-color: white;
-    color: #3b685c;
+    color: rgb(59, 104, 92);
 } 
 
 a.btn-primary{
@@ -794,7 +797,7 @@ flex-direction: column;
  } 
 
 .quote-request h2, .quote-request h3{
-     color: #3b685c;
+     color: rgb(59, 104, 92);
     } 
 
 .quote-request label{
@@ -877,27 +880,27 @@ input{
     outline: none;
 } 
 
-input[type=text], input[type=password], textarea, select, input[type=file],input[type=number], input[type=date], input[type=time]{
+input[type=text], input[type=password], textarea, input[type=file],input[type=number], input[type=date], input[type=time]{
     
-    border: 1px solid #3b685c;
+    border: 1px solid rgb(59, 104, 92);
     border-radius: 5px;
     padding: 0.25rem;
     transition: box-shadow 300ms ease-out;
     margin-block: 0.25rem;
 } 
 
-input[type=text]:focus,input[type=password]:focus,textarea:focus,select:focus,input[type=file]:focus,input[type=number]:focus,input[type=date]:focus,input[type=time]:focus{
+input[type=text]:focus,input[type=password]:focus,textarea:focus,input[type=file]:focus,input[type=number]:focus,input[type=date]:focus,input[type=time]:focus{
         box-shadow: 0 0 2px 3px hsl(163, 28%, 50%);
         transition: box-shadow 300ms ease-out;
     } 
 
-input[type=text], input[type=password], textarea, select, input[type=file],input[type=number], input[type=date], input[type=time] {
+input[type=text], input[type=password], textarea, input[type=file],input[type=number], input[type=date], input[type=time] {
     max-width: 80vw;
 } 
 
 @media(min-width:768px){ 
 
-input[type=text], input[type=password], textarea, select, input[type=file],input[type=number], input[type=date], input[type=time]{
+input[type=text], input[type=password], textarea, input[type=file],input[type=number], input[type=date], input[type=time]{
         max-width: 80%
 }
     } 
@@ -931,7 +934,7 @@ select{
     background-color: #fff;
     -webkit-appearance: none;
             appearance: none;
-    border: 1px solid #3b685c;
+    border: 1px solid rgb(59, 104, 92);
     border-radius: 0.25rem;
     background-image: url("../img/icons/down.svg");
     background-repeat: no-repeat;
@@ -941,7 +944,7 @@ select{
 
 select:focus{
       outline: none;
-      box-shadow: 0 0 2pt 1pt #3b685c;
+      box-shadow: 0 0 2pt 1pt rgb(59, 104, 92);
         transition: box-shadow 250ms ease;
     } 
 
@@ -998,7 +1001,7 @@ input[type="checkbox"]{/*basic styling*/
     color: currentColor;
     width: 1.15em;
     height: 1.15em;
-    border: 1px solid #3b685c;
+    border: 1px solid rgb(59, 104, 92);
     border-radius: 5px;
     transform: translateY(-0.075em);
     display: grid;
@@ -1015,7 +1018,7 @@ input[type="checkbox"]::before{
     height: .65em;
     transform: scale(0);
     transition: 200ms transform ease-in-out;
-    box-shadow: inset 1em 1em #3b685c;
+    box-shadow: inset 1em 1em rgb(59, 104, 92);
     transform-origin: bottom left;
     -webkit-clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
             clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
@@ -1026,7 +1029,7 @@ input[type="checkbox"]:checked::before{
 } 
 
 input[type="checkbox"]:focus {
-    outline: max(2px, 0.15em) solid #3b685c;
+    outline: max(2px, 0.15em) solid rgb(59, 104, 92);
     outline-offset: max(2px, 0.15em);
   } 
 
@@ -1039,7 +1042,7 @@ input[type="checkbox"]:focus {
 input[type=radio]{
     -webkit-appearance: none;
             appearance: none;
-    border: 3px solid #3b685c;
+    border: 3px solid rgb(59, 104, 92);
     width: 1.375rem;
     height: 1.375rem;
     border-radius: 100%;
@@ -1054,7 +1057,7 @@ input[type=radio]:focus{
     } 
 
 input[type=radio]:checked{
-    background-color: #3b685c;
+    background-color: rgb(59, 104, 92);
     border: 3px solid #FFF;
     outline: 2px solid #999;
 } 
@@ -1161,10 +1164,20 @@ input:checked + .slider:before {
 
 .form-controls{
     padding: 1rem;
-
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+    flex-direction: column;
     border: 1px solid hsl(163, 28%, 50%);
     border-radius: 2.5px;
 
+} 
+
+@media(min-width: 768px){
+    .form-controls{
+        gap: 1.5rem;
+        flex-direction: row;
+    }
 } 
 
 .form-controls-btn{
@@ -1289,7 +1302,7 @@ input:checked + .slider:before {
     } 
 
 .dashboard-card-header svg path{
-            fill: #3b685c;
+            fill: rgb(59, 104, 92);
         } 
 
 /*standard card for all pages*/ 
@@ -1336,7 +1349,7 @@ input:checked + .slider:before {
     } 
 
 .news-card{/*news card*/
-    border: 1px solid #3b685c;
+    border: 1px solid rgb(59, 104, 92);
     background-color: #fff;
     border-radius: 5px;
     padding: 0.5rem;
@@ -1478,7 +1491,7 @@ input:checked + .slider:before {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    border-bottom:1px solid #3b685c;
+    border-bottom:1px solid rgb(59, 104, 92);
 } 
 
 .event-card-guestlist-table{
@@ -1491,7 +1504,7 @@ input:checked + .slider:before {
     } 
 
 .event-card-guestlist-table td{
-        border-bottom: 1px solid #3b685c;
+        border-bottom: 1px solid rgb(59, 104, 92);
     } 
 
 .event-card-guestlist-table tr:nth-child(even){
@@ -1541,7 +1554,7 @@ input:checked + .slider:before {
 } 
 
 .guest-group-member{
-    border-bottom: 1px solid #3b685c;
+    border-bottom: 1px solid rgb(59, 104, 92);
     
 } 
 
@@ -1551,8 +1564,8 @@ input:checked + .slider:before {
     right: 25px;
     top: 40%;
     padding-block: 1.5rem;
-    border: 1px solid #3b685c;
-    border-left: 5px solid #3b685c;
+    border: 1px solid rgb(59, 104, 92);
+    border-left: 5px solid rgb(59, 104, 92);
     border-radius: 5px;
     background-color: #fff;
     display: flex;
@@ -1565,7 +1578,7 @@ input:checked + .slider:before {
 } 
 
 .response-card-icon svg path{
-        fill: #3b685c;
+        fill: rgb(59, 104, 92);
     } 
 
 .response-card-body{
@@ -1574,7 +1587,7 @@ input:checked + .slider:before {
 
 .menu-card, .menu{
     /*for menu builder page*/
-    border: 1px solid #3b685c;
+    border: 1px solid rgb(59, 104, 92);
     padding: 1.5rem;
     border-radius: 5px;
 } 
@@ -1628,7 +1641,7 @@ input:checked + .slider:before {
     } 
 
 .menu-item:hover svg path{
-        fill: #3b685c;
+        fill: rgb(59, 104, 92);
     } 
 
 .menu-item-actions{
@@ -1692,7 +1705,7 @@ input:checked + .slider:before {
 /*Defines the body of the modal, centered on screen with a close icon to dismiss*/ 
 
 .modal-body{
-    border: 1px solid #3b685c;
+    border: 1px solid rgb(59, 104, 92);
     border-radius: 10px;
     background-color: #fff;
     padding: 1.5rem;
@@ -1835,7 +1848,7 @@ max-width: 90vw;
     } 
 
 .std-table td{
-        border-bottom: 1px solid #3b685c;
+        border-bottom: 1px solid rgb(59, 104, 92);
     } 
 
 .std-table tr:nth-child(even){
@@ -1881,7 +1894,7 @@ max-width: 90vw;
 
 .guest-name-col{
     background-color: hsl(163, 28%, 95%);
-    border-bottom: 2px double #3b685c;
+    border-bottom: 2px double rgb(59, 104, 92);
     
 }
 /*spacing utilities*/
@@ -1925,7 +1938,7 @@ max-width: 90vw;
 /*colour utilities*/
 .bg-primary-col{
     /*change bg to primary colour*/
-    background-color: #3b685c;
+    background-color: rgb(59, 104, 92);
 }
 .bg-secondary-col{
     /*change bg to secondary col*/
@@ -1945,7 +1958,7 @@ max-width: 90vw;
 /*Font colours*/
 /*Change default font to primary colour*/
 .text-color-primary{
-    color: #3b685c;
+    color: rgb(59, 104, 92);
 }
 /*Change font colour to white*/
 .text-color-white{
