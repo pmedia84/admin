@@ -75,7 +75,7 @@ foreach ($modules as $module) {
         $meal_choices_status = $module['module_status'];
         
     }
-    //Meal Choices
+    //Image Gallery - allow guests to contribute
     if ($module['module_name'] == "Guest Image Gallery") {
         $guest_image_gallery = $module['module_status'];
         
