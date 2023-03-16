@@ -37,30 +37,12 @@ if ($cms_type == "Business") {
     $business_users->close();
 }
 
-//run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
-    //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
 
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-    $wedding->close();
-    //set cms name
-    $cms_name = $wedding_name;
-    //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id=' . $user_id);
-
-    $business_users->execute();
-    $business_users->bind_result($user_id, $user_name, $business_id, $user_type);
-    $business_users->fetch();
-    $business_users->close();
-}
 
 
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//load all service names for the search bar
+$service_names_q=$db->query('SELECT service_name FROM services');
 
 
 ?>
@@ -107,7 +89,12 @@ if ($cms_type == "Wedding") {
                         <div class="form-input-wrapper my-3">
                             <div class="search-input">
 
-                                <input type="text" id="search" name="search" placeholder="Search For A Service ...">
+                                <input type="search" id="search" name="search" list="services" placeholder="Search For A Service ...">
+                                <datalist id="services">
+                                    <?php foreach($service_names_q as $service_name):?>
+                                        <option value="<?php echo html_entity_decode($service_name['service_name']) ;?>"></option>
+                                        <?php endforeach;?>
+                                </datalist>
                                 <button class="btn-primary form-controls-btn loading-btn" type="submit"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></button>
 
                             </div>
@@ -117,14 +104,14 @@ if ($cms_type == "Wedding") {
 
                         <div class="form-input-wrapper">
                             <label for="search">Filter By Category</label>
-                            <select class="form-select" name="search" id="search_filter">
-                                <option value="" selected>Select a category...</option>
+                            <select class="form-select" name="service_cat_id" id="search_filter">
+                                <option value="" selected>Show All</option>
                                 <?php
                                 $categories_query = ('SELECT * FROM services_categories');
                                 $categories = $db->query($categories_query);
                                 ?>
                                 <?php foreach ($categories as $category) : ?>
-                                    <option value="<?= $category['service_cat_name']; ?>"><?= $category['service_cat_name']; ?></option>
+                                    <option value="<?= $category['service_cat_id']; ?>"><?= $category['service_cat_name']; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -133,10 +120,7 @@ if ($cms_type == "Wedding") {
 
                 <?php if ($user_type == "Admin" ||$user_type=="Developer") : ?>
                     <a class="btn-primary" id="upload_image" href="price_listitem.php?action=add"><i class="fa-solid fa-square-plus"></i>Create Service </a>
-                    <div class="std-card" id="price_list">
-
-
-
+                    <div class="std-card price-list" id="price_list">
 
                     </div>
                 <?php else : ?>
@@ -145,9 +129,7 @@ if ($cms_type == "Wedding") {
             </div>
         </section>
     </main>
-    <div class="loader">
-        <img class="loader-spinner" src="./assets/img/icons/loading.svg" alt="">
-    </div>
+
 
     </div>
     <!-- /Main Body Of Page -->
@@ -155,73 +137,8 @@ if ($cms_type == "Wedding") {
     <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
-    <script>
-        $("document").ready(function() {
-            url = "scripts/price_list.script.php?action=load-price-list";
-            $.ajax({ //load price list
-                type: "GET",
-                url: url,
-                encode: true,
-                complete: function() { //remove loader
-                    $(".loader").fadeOut(400);
-                },
-                success: function(data, responseText) {
-                    $("#price_list").html(data);
+<script src="assets/js/price_list.js"></script>
 
-                }
-            });
-        })
-    </script>
-    <script>
-        //script for searching for loading price list
-        $("#price_list_search").on('keyup submit', function(event) {
-            event.preventDefault();
-            var formData = new FormData($("#price_list_search").get(0));
-            formData.append("action", "price_list_search");
-            $.ajax({ //start ajax post
-                type: "POST",
-                url: "scripts/price_list.script.php",
-                data: formData,
-                contentType: false,
-                processData: false,
-                beforeSend: function() { //remove loader
-                    $(".loader").fadeIn(400);
-                },
-                complete: function() { //remove loader
-                    $(".loader").fadeOut(400);
-                },
-
-                success: function(data, responseText) {
-                    $("#price_list").html(data);
-                }
-            });
-
-        });
-
-        //script for searching for loading price list
-        $("#category_search_filter").on('change', function(event) {
-            event.preventDefault();
-            var formData = new FormData($("#category_search_filter").get(0));
-            formData.append("action", "price_list_filter");
-            $.ajax({ //start ajax post
-                type: "POST",
-                url: "scripts/price_list.script.php",
-                data: formData,
-                contentType: false,
-                processData: false,
-                beforeSend: function() { //remove loader
-                    $(".loader").fadeIn(400);
-                },
-                complete: function() { //remove loader
-                    $(".loader").fadeOut(400);
-                },
-                success: function(data, responseText) {
-                    $("#price_list").html(data);
-                }
-            });
-
-        });
-    </script>
 </body>
 
 </html>

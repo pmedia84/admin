@@ -1,205 +1,196 @@
-<?php
- include("../connect.php");
-//loading page script
-if (isset($_GET['action'])) {
-    if ($_GET['action'] == "load-price-list") {
-        //define category variables
-        
-        //load table with categories
-        $categories = "SELECT * FROM services_categories";
-        $categories_result =mysqli_query($db, $categories);
-        if(mysqli_num_rows($categories_result)>0){
-            foreach($categories_result as $category){
-                echo '<h2>'.$category['service_cat_name'].'</h2>';
-        //find service
-        $services = "SELECT * FROM services WHERE service_category ='{$category['service_cat_name']}'";
-        $services_result = mysqli_query($db, $services);
-        if(mysqli_num_rows($services_result)>0){
-            foreach($services_result as $service){
-                
-                echo 
+<?php if (isset($_GET['action']) && $_GET['action'] == "load-price-list") :
+    ///loads price list on first page load
+    include("../connect.php");
+    //define category variables
 
-                    '
-                    <div class="price-list-item my-3">
-                        <h3>'.$service['service_name'].' <span>&#163;'.$service['service_price'].'</h3>
-                        <p>'.$service['service_description'].'</p>
-                        <div class="price-list-item-controls my-2">
-                            <a class="btn-primary" href="price_listitem.php?service_id='.$service['service_id'].'&action=edit"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                            <a class="btn-primary btn-secondary" href="price_listitem.php?service_id='.$service['service_id'].'&action=delete&confirm=no"><i class="fa-solid fa-trash"></i></i>Delete</a>
+    //load table with categories
+    $service_num = $db->query('SELECT COUNT(service_cat_id) AS num_services FROM services');
+    $service_num_r = mysqli_fetch_assoc($service_num);
+    $cat_q = "SELECT * FROM services_categories";
+    $cat_r = mysqli_query($db, $cat_q);
+?>
+    <h2>Services <span class="notification"><?= $service_num_r['num_services']; ?></span></h2>
+    <?php if ($cat_r->num_rows > 0) : foreach ($cat_r as $cat) :
+            $service_q = $db->query('SELECT * FROM services WHERE service_cat_id=' . $cat['service_cat_id']);
+    ?>
+
+            <h3 class="my-2"><?= $cat['service_cat_name']; ?></h3>
+            <div class="grid-row-3col">
+
+                <?php foreach ($service_q as $service) : ?>
+                    <div class="service-card">
+                        <div class="service-card-banner" data-promo="<?= $service['service_promo']; ?>">
+                            <span><?php if ($service['service_promo'] == "Yes") : ?>Promo<?php endif; ?></span>
+                        </div>
+                        <div class="service-card-body">
+                            <h4 class="service-card-heading"><?= html_entity_decode($service['service_name']); ?></h4>
+                            <p><?= html_entity_decode($service['service_description']); ?></p>
+                            <p class="service-card-price">&#163;<?= $service['service_price']; ?></p>
+                            <div class="service-card-featured" data-featured="<?= $service['service_featured']; ?>">
+                                <span><?php if ($service['service_featured'] == "Yes") : ?>Featured Service<?php endif; ?></span>
+                            </div>
+                            <div class="service-card-actions my-2">
+                                <a href="price_listitem?action=edit&service_id=<?= $service['service_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                <a href="price_listitem?action=delete&confirm=no&service_id=<?=$service['service_id'];?>"><i class="fa-solid fa-trash"></i> Delete</a>
+                            </div>
                         </div>
                     </div>
-                    
-                    ';
-            }   
-        }
-            }
-        }
-
-
-}
-}
-
-
-//price list controls from POST request search box
-if (isset($_POST['action'])) {
-    
-    if($_POST['action']=="price_list_search") {
-        if($_POST['search']==""){
-                    //load table with categories
-        $categories = "SELECT * FROM services_categories";
-        $categories_result =mysqli_query($db, $categories);
-        if(mysqli_num_rows($categories_result)>0){
-            foreach($categories_result as $category){
-        //find service
-        $services = "SELECT * FROM services WHERE service_category ='{$category['service_cat_name']}'";
-        $services_result = mysqli_query($db, $services);
-        if(mysqli_num_rows($services_result)>0){
-            foreach($services_result as $service){
-                echo '<h2>'.$category['service_cat_name'].'</h2>';
-                echo 
-
-                    '
-                    <div class="price-list-item my-3">
-                        <h3>'.$service['service_name'].' <span>&#163;'.$service['service_price'].'</h3>
-                        <p>'.$service['service_description'].'</p>
-                        <div class="price-list-item-controls my-2">
-                            <a class="btn-primary" href="price_listitem.php?service_id='.$service['service_id'].'&action=edit"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                            <a class="btn-primary btn-secondary" href="price_listitem.php?service_id='.$service['service_id'].'&action=delete"><i class="fa-solid fa-trash"></i></i>Delete</a>
-                        </div>
-                    </div>
-                    
-                    ';
-            }   
-        }
-            }
-        }
-        }else{
-        //define category
-        $search= mysqli_real_escape_string($db, $_POST['search']);
-        //find services details
-        $services = "SELECT * FROM services WHERE service_category LIKE '%".$search."%' OR service_name LIKE '%".$search."%'OR service_description LIKE '%".$search."%' ";
-        $services_result =mysqli_query($db, $services);
-        $result_num = mysqli_num_rows($services_result);
-        if(mysqli_num_rows($services_result)>0){
-            $result_num = mysqli_num_rows($services_result);
-            if($result_num>0){
-                echo '<p>'.$result_num.' Service\'s found matching '.$search.'</p>';
-            }
-            if($result_num<=0){
-                echo '<p>'.$result_num.' Service\'s found matching '.$search.'</p>';
-            }
-            foreach($services_result as $service){
-                echo 
-                    '
-                    <div class="price-list-item my-3">
-                        <h3>'.$service['service_name'].' <span>&#163;'.$service['service_price'].'</h3>
-                        <p>'.$service['service_description'].'</p>
-                        <div class="price-list-item-controls my-2">
-                            <a class="btn-primary" href="price_listitem.php?service_id='.$service['service_id'].'&action=edit"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                            <a class="btn-primary btn-secondary" href="price_listitem.php?service_id='.$service['service_id'].'&action=delete"><i class="fa-solid fa-trash"></i></i>Delete</a>
-                        </div>
-                    </div>
-                    
-                    ';
-            }   
-        }else{
-            echo '<p>'.$result_num.' Service\'s found matching '.$search.'</p>';
-        }
-        }
-
-    }
-}
-
-//price list controls from POST request Filter Select
-if (isset($_POST['action'])) {
-    
-    if($_POST['action']=="price_list_filter") {
-        if($_POST['search']==""){
-                    //load table with categories
-        $categories = "SELECT * FROM services_categories";
-        $categories_result =mysqli_query($db, $categories);
-        if(mysqli_num_rows($categories_result)>0){
-            foreach($categories_result as $category){
-        //find service
-        $services = "SELECT * FROM services WHERE service_category ='{$category['service_cat_name']}'";
-        $services_result = mysqli_query($db, $services);
-        if(mysqli_num_rows($services_result)>0){
-            foreach($services_result as $service){
-                echo '<h2>'.$category['service_cat_name'].'</h2>';
-                echo 
-
-                    '
-                    <div class="price-list-item my-3">
-                        <h3>'.$service['service_name'].' <span>&#163;'.$service['service_price'].'</h3>
-                        <p>'.$service['service_description'].'</p>
-                        <div class="price-list-item-controls my-2">
-                            <a class="btn-primary" href="price_listitem.php?service_id='.$service['service_id'].'&action=edit"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                            <a class="btn-primary btn-secondary" href="price_listitem.php?service_id='.$service['service_id'].'&action=delete"><i class="fa-solid fa-trash"></i></i>Delete</a>
-                        </div>
-                    </div>
-                    
-                    ';
-            }   
-        }
-            }
-        }
-        }else{
-        //define category
-        $search= mysqli_real_escape_string($db, $_POST['search']);
-        //find services details
-        $services = "SELECT * FROM services WHERE service_category LIKE '%".$search."%' OR service_name LIKE '%".$search."%' ";
-        $services_result =mysqli_query($db, $services);
-        $result_num = mysqli_num_rows($services_result);
-        if(mysqli_num_rows($services_result)>0){
-            $result_num = mysqli_num_rows($services_result);
-            if($result_num>0){
-                echo '<p>'.$result_num.' Service\'s found in '.$search.'</p>';
-            }
-            if($result_num<=0){
-                echo '<p>'.$result_num.' Service\'s found in '.$search.'</p>';
-            }
-            foreach($services_result as $service){
-                echo 
-                    '
-                    <div class="price-list-item my-3">
-                        <h3>'.$service['service_name'].' <span>&#163;'.$service['service_price'].'</h3>
-                        <p>'.$service['service_description'].'</p>
-                        <div class="price-list-item-controls my-2">
-                            <a class="btn-primary" href="price_listitem.php?service_id='.$service['service_id'].'&action=edit"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
-                            <a class="btn-primary btn-secondary" href="price_listitem.php?service_id='.$service['service_id'].'&action=delete"><i class="fa-solid fa-trash"></i></i>Delete</a>
-                        </div>
-                    </div>
-                    
-                    ';
-            }   
-        }else{
-            echo '<p>'.$result_num.' Service\'s found in '.$search.'</p>';
-        }
-        }
-
-    }
-
-    if($_POST['action']=="edit"){
-        //define variables
-        $service_id = $_POST['service_id'];
-        $service_name = mysqli_real_escape_string($db, $_POST['service_name']);
-        $service_description = mysqli_real_escape_string($db, $_POST['service_description']);
-        $service_price = mysqli_real_escape_string($db, $_POST['service_price']);
-        $response="";
-        //edit post request, load service and update
-        //Update service
-        $update_service = $db->prepare('UPDATE services SET service_name=?, service_description=?, service_price=?  WHERE service_id =?');
-        $update_service->bind_param('sssi', $service_name, $service_description, $service_price, $service_id);
-        if($update_service->execute()){
-            $response="Done";
-            $update_service->close();
-        }else{
-            $response="Error";
-        }
-        
-        echo $response;
-    }
-}
+                <?php endforeach; ?>
+            </div>
+    <?php endforeach;
+    endif; ?>
+<?php endif;
 ?>
 
+<?php
+//price list controls from POST request Filter Select
+if (isset($_POST['action']) && $_POST['action'] == "price_list_filter") :
+    include("../connect.php");
+    if ($_POST['service_cat_id'] == "") :
+        $service_num = $db->query('SELECT COUNT(service_cat_id) AS num_services FROM services');
+        $service_num_r = mysqli_fetch_assoc($service_num);
 
+        //load table with categories
+        $cat_q = "SELECT * FROM services_categories";
+        $cat_r = mysqli_query($db, $cat_q);
+?><h2>Services <span class="notification"><?= $service_num_r['num_services']; ?></span></h2>
+        <?php if ($cat_r->num_rows > 0) : foreach ($cat_r as $cat) :
+                $service_q = $db->query('SELECT * FROM services WHERE service_cat_id=' . $cat['service_cat_id']);
+        ?>
+                <h3 class="my-2"><?= $cat['service_cat_name']; ?></h3>
+                <div class="grid-row-3col">
+
+                    <?php foreach ($service_q as $service) : ?>
+                        <div class="service-card">
+                            <div class="service-card-banner" data-promo="<?= $service['service_promo']; ?>">
+                                <span><?php if ($service['service_promo'] == "Yes") : ?>Promo<?php endif; ?></span>
+                            </div>
+                            <div class="service-card-body">
+                                <h4 class="service-card-heading"><?= html_entity_decode($service['service_name']); ?></h4>
+                                <p><?= html_entity_decode($service['service_description']); ?></p>
+                                <p class="service-card-price">&#163;<?= $service['service_price']; ?></p>
+                                <div class="service-card-featured" data-featured="<?= $service['service_featured']; ?>">
+                                    <span><?php if ($service['service_featured'] == "Yes") : ?>Featured Service<?php endif; ?></span>
+                                </div>
+                                <div class="service-card-actions my-2">
+                                    <a href="price_listitem?action=edit&service_id=<?= $service['service_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                    <a href="price_listitem?action=edit"><i class="fa-solid fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+        <?php endforeach;
+        endif; ?>
+    <?php else :
+        //define category
+        $search = mysqli_real_escape_string($db, $_POST['service_cat_id']);
+        //find services details
+        $service_q = $db->query('SELECT * FROM services WHERE service_cat_id=' . $_POST['service_cat_id']);
+        $result_num = mysqli_num_rows($service_q);
+        //find the service name
+        $category_q = $db->query('SELECT * FROM services_categories WHERE service_cat_id=' . $_POST['service_cat_id']);
+        $category_r = mysqli_fetch_assoc($category_q);
+        $service_num_r = mysqli_num_rows($service_q);
+
+    ?>
+        <h2>Services <span class="notification"><?= $service_num_r ?></span></h2>
+        <h3 class="my-2"><?= $category_r['service_cat_name']; ?></h3>
+        <div class="grid-row-3col">
+
+            <?php foreach ($service_q as $service) : ?>
+                <div class="service-card">
+                    <div class="service-card-banner" data-promo="<?= $service['service_promo']; ?>">
+                        <span><?php if ($service['service_promo'] == "Yes") : ?>Promo<?php endif; ?></span>
+                    </div>
+                    <div class="service-card-body">
+                        <h4 class="service-card-heading"><?= html_entity_decode($service['service_name']); ?></h4>
+                        <p><?= html_entity_decode($service['service_description']); ?></p>
+                        <p class="service-card-price">&#163;<?= $service['service_price']; ?></p>
+                        <div class="service-card-featured" data-featured="<?= $service['service_featured']; ?>">
+                            <span><?php if ($service['service_featured'] == "Yes") : ?>Featured Service<?php endif; ?></span>
+                        </div>
+                        <div class="service-card-actions my-2">
+                            <a href="price_listitem?action=edit&service_id=<?= $service['service_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                            <a href="price_listitem?action=edit"><i class="fa-solid fa-trash"></i> Delete</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
+
+<?php if (isset($_POST['action']) && $_POST['action'] == "price_list_search") :
+    include("../connect.php");
+    if ($_POST['search'] == "") :
+        ///return the result of the search box after keyup
+        $search = mysqli_real_escape_string($db, $_POST['search']);
+        $service_num = $db->query('SELECT COUNT(service_cat_id) AS num_services FROM services');
+        $service_num_r = mysqli_fetch_assoc($service_num);
+
+        //load table with categories
+        $cat_q = "SELECT * FROM services_categories";
+        $cat_r = mysqli_query($db, $cat_q);
+?>
+        <h2>Services <span class="notification"><?= $service_num_r['num_services']; ?></span></h2>
+        <?php if ($cat_r->num_rows > 0) : foreach ($cat_r as $cat) :
+                $service_q = $db->query('SELECT * FROM services WHERE service_cat_id=' . $cat['service_cat_id']);
+        ?>
+                <h3 class="my-2"><?= $cat['service_cat_name']; ?></h3>
+                <div class="grid-row-3col">
+
+                    <?php foreach ($service_q as $service) : ?>
+                        <div class="service-card">
+                            <div class="service-card-banner" data-promo="<?= $service['service_promo']; ?>">
+                                <span><?php if ($service['service_promo'] == "Yes") : ?>Promo<?php endif; ?></span>
+                            </div>
+                            <div class="service-card-body">
+                                <h4 class="service-card-heading"><?= html_entity_decode($service['service_name']); ?></h4>
+                                <p><?= html_entity_decode($service['service_description']); ?></p>
+                                <p class="service-card-price">&#163;<?= $service['service_price']; ?></p>
+                                <div class="service-card-featured" data-featured="<?= $service['service_featured']; ?>">
+                                    <span><?php if ($service['service_featured'] == "Yes") : ?>Featured Service<?php endif; ?></span>
+                                </div>
+                                <div class="service-card-actions my-2">
+                                    <a href="price_listitem?action=edit&service_id=<?= $service['service_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                    <a href="price_listitem?action=edit"><i class="fa-solid fa-trash"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+        <?php endforeach;
+        endif; ?>
+
+    <?php else :
+        $search = mysqli_real_escape_string($db, $_POST['search']);
+        $service_q = $db->query('SELECT services.service_id, services.service_name, services.service_description, services.service_cat_id, services.service_price, services.service_promo, services.service_featured, services_categories.service_cat_id, services_categories.service_cat_name FROM services LEFT JOIN services_categories ON services_categories.service_cat_id=services.service_cat_id WHERE services.service_name  LIKE "%' . $search . '%" ');
+        $service_r = mysqli_fetch_assoc($service_q); ?>
+        <p><?php echo mysqli_num_rows($service_q); ?> Results found, matching <?= $search; ?></p>
+        <h2>Services <span class="notification"><?php echo mysqli_num_rows($service_q); ?></span></h2>
+        <div class="grid-row-3col">
+
+            <?php foreach ($service_q as $service) : ?>
+                <div class="service-card">
+                    <div class="service-card-banner" data-promo="<?= $service['service_promo']; ?>">
+                        <span><?php if ($service['service_promo'] == "Yes") : ?>Promo<?php endif; ?></span>
+                    </div>
+                    <div class="service-card-body">
+                        <h4 class="service-card-heading"><?= html_entity_decode($service['service_name']); ?></h4>
+                        <p><?= html_entity_decode($service['service_description']); ?></p>
+                        <p class="service-card-price">&#163;<?= $service['service_price']; ?></p>
+                        <div class="service-card-featured" data-featured="<?= $service['service_featured']; ?>">
+                            <span><?php if ($service['service_featured'] == "Yes") : ?>Featured Service<?php endif; ?></span>
+                        </div>
+                        <div class="service-card-actions my-2">
+                            <a href="price_listitem?action=edit&service_id=<?= $service['service_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                            <a href="price_listitem?action=edit"><i class="fa-solid fa-trash"></i> Delete</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+<?php endif;
+exit(); ?>

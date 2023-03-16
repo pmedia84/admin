@@ -207,6 +207,7 @@
     grid-template-columns: 1fr auto;
     background-color: white;
     border-radius: 5px;
+    border: 1px solid $primary;
 .switch{
     align-self: center;
     margin-inline: $spacer-2;
@@ -264,7 +265,13 @@
 .response-card-body{
     padding-inline-end: $spacer-2;
 }
-
+.error-card{
+    //modifier class for an error
+    border-color: $error-response;
+    .response-card-icon svg path{
+        fill: $error-response
+    }
+}
 .menu-card, .menu{
     //for menu builder page
     border: 1px solid $primary;
@@ -351,3 +358,4 @@
         font-size: $fs-150;
     }
 }
+

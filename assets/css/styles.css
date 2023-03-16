@@ -492,6 +492,97 @@ a:hover{
 .gift-item-thumb{
     height: 150px;
 } 
+.price-list h2{
+        display: flex;
+        gap: 0.25rem;
+        align-items: center;
+    } 
+.notification{
+    font-size: 12px;
+    display: grid;
+    place-items: center;
+    color: rgb(59, 104, 92);
+    background-color: hsl(163, 28%, 95%);
+    border-radius: 100%;
+    font-weight: 700;
+    width: calc(12px * 2);
+    height: calc(12px * 2);
+} 
+/*/services card for price list*/ 
+.service-card{
+    display: flex;
+    width: 100%;
+    max-width: 500px;
+} 
+/*left hand banner, displays status of items*/ 
+.service-card-banner{
+    border: 1px solid rgb(59, 104, 92);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-color: rgb(59, 104, 92);
+    color: hsl(163, 28%, 95%);
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    text-align: center;
+    min-width: 1.5rem;
+} 
+.service-card-banner[data-promo="Yes"]{
+    background-color: #5A99B0;
+    border: 1px solid #5A99B0;
+} 
+.service-card-body{
+    padding: 1.5rem 0.5rem;
+    border-block: 1px solid rgb(59, 104, 92);
+    border-right: 1px solid rgb(59, 104, 92);
+    width: 100%;
+} 
+.service-card-heading{
+    text-align: center;
+    text-decoration: none;
+    
+} 
+.service-card-price{
+    font-size: 1.25rem;
+    font-weight: 700;
+} 
+.service-card-actions{
+    background-color: hsl(163, 28%, 95%);
+    padding: 0.5rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+} 
+.service-card-featured{
+    border-radius: 5px;
+    padding: 0.5rem;
+    color: hsl(163, 28%, 95%);
+} 
+.service-card-featured[data-featured="Yes"]{
+    background-color: #5FBABA;
+} 
+/*card for editing services*/ 
+.service-card-edit{
+    border: 1px solid rgb(59, 104, 92);
+
+} 
+.service-card-edit-header{
+    display: flex;
+    gap: 0.5rem;
+} 
+.service-card-edit-header .service-card-banner{
+        border: 1px solid rgb(59, 104, 92);
+        border-radius: 10px;
+        padding: 0.5rem;
+        background-color: rgb(59, 104, 92);
+        color: hsl(163, 28%, 95%);
+        writing-mode: inherit;
+        text-orientation: mixed;
+        text-align: left;
+    } 
+.service-card-edit-header .service-card-banner[data-promo="Yes"]{
+        background-color: #5A99B0;
+        border: 1px solid #5A99B0;
+    } 
 /*Standard column gives equal widths*/ 
 @media(min-width:768px){ 
 .col-50{
@@ -736,121 +827,77 @@ a.btn-primary{
 
 /*Form Grid, cols provide 2 columns 50% on larger screens*/ 
 
-.form-row{
-display: flex;
-flex-direction: column;
-} 
-
-.form-input-col{
+.form-row {
     display: flex;
     flex-direction: column;
 } 
 
-@media(min-width: 768px){
-    .form-col{
+.form-input-col {
+    display: flex;
+    flex-direction: column;
+} 
+
+@media(min-width: 768px) {
+    .form-col {
         width: 50%;
-       
-        
+
+
     }
 } 
 
-@media(min-width:992px){
-    .form-row{
+@media(min-width:992px) {
+    .form-row {
         flex-direction: row;
-        align-items:flex-end;
+        align-items: flex-end;
     }
-    .form-input-col{
+
+    .form-input-col {
         display: flex;
         flex-direction: column;
     }
 } 
 
-.form-input-row{
+.form-input-row {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 } 
 
-.form-input-row button{
+.form-input-row button {
         height: 33.33px;
         width: 33.33px;
         display: grid;
         place-items: center;
     } 
 
-.form-input-row button svg{
+.form-input-row button svg {
             height: 100%;
             margin: 0;
         } 
 
-.form-input-row button svg path{
+.form-input-row button svg path {
                 fill: #FFF;
             } 
 
-/*////*/ 
-
-/*Quote request form*/ 
-
-.quote-request{
-    background-color: hsl(162, 29%, 59%);
-    width: 100%;
- } 
-
-.quote-request h2, .quote-request h3{
-     color: rgb(59, 104, 92);
-    } 
-
-.quote-request label{
-     color: #fff;
-    } 
-
-.quote-request {
-     padding: 1rem;
-     border-radius: 10px;
-     flex-grow: 0.5;
-} 
-
-.quote-request .form-floating > label,.quote-request input,.quote-request textarea{
-         color: #212529;
-     } 
-
-.quote-request select option{
-         font-family: 'Ubuntu', sans-serif;
-     } 
-
-.quote-request textarea{
-         height: 120px !important;
-     } 
-
-@media(min-width: 768px){
-         .quote-request .form-col{
-             width: 100%;
-         }
-     } 
-
-.quote-request .google-policy{
-        color: white;
-     } 
-
 /*Recaptcha  settings*/ 
 
-.recaptcha-token{
+.recaptcha-token {
     display: none;
 } 
 
 /*container for privacy message, this is displayed as we have hidden the recaptcha logo*/ 
 
-.google-policy{
+.google-policy {
     margin-block: 0.5rem;
 } 
 
-.google-policy p{
+.google-policy p {
         margin-bottom: 0;
     } 
 
 /*/Form wrapper to wrap login and password reset  forms in etc*/ 
 
-.login-wrapper{
+.login-wrapper {
     border-radius: 10px;
     background-color: white;
     padding: 2rem;
@@ -862,12 +909,12 @@ flex-direction: column;
 
 /*/form input wrapper, holds labels and inputs together*/ 
 
-.form-input-wrapper{
+.form-input-wrapper {
     display: flex;
     flex-direction: column;
 } 
 
-.form-input-wrapper img{
+.form-input-wrapper img {
         height: 250px;
         width: 100%;
         object-fit: cover;
@@ -876,12 +923,20 @@ flex-direction: column;
 
 /*///////////////////Form Input settings///////////////////////////*/ 
 
-input{
-    outline: none;
+input {
+    outline: transparent;
+    -webkit-tap-highlight-color: transparent;
 } 
 
-input[type=text], input[type=password], textarea, input[type=file],input[type=number], input[type=date], input[type=time]{
-    
+input[type=text],
+input[type=password],
+textarea,
+input[type=file],
+input[type=number],
+input[type=date],
+input[type=time], 
+input[type=search] {
+
     border: 1px solid rgb(59, 104, 92);
     border-radius: 5px;
     padding: 0.25rem;
@@ -889,44 +944,61 @@ input[type=text], input[type=password], textarea, input[type=file],input[type=nu
     margin-block: 0.25rem;
 } 
 
-input[type=text]:focus,input[type=password]:focus,textarea:focus,input[type=file]:focus,input[type=number]:focus,input[type=date]:focus,input[type=time]:focus{
+input[type=text]:focus, input[type=password]:focus, textarea:focus, input[type=file]:focus, input[type=number]:focus, input[type=date]:focus, input[type=time]:focus, input[type=search]:focus {
         box-shadow: 0 0 2px 3px hsl(163, 28%, 50%);
         transition: box-shadow 300ms ease-out;
     } 
 
-input[type=text], input[type=password], textarea, input[type=file],input[type=number], input[type=date], input[type=time] {
+input[type=text],
+input[type=password],
+textarea,
+input[type=file],
+input[type=number],
+input[type=date],
+input[type=time], 
+input[type=search] {
+
     max-width: 80vw;
 } 
 
-@media(min-width:768px){ 
+@media(min-width:768px) { 
 
-input[type=text], input[type=password], textarea, input[type=file],input[type=number], input[type=date], input[type=time]{
+input[type=text],
+input[type=password],
+textarea,
+input[type=file],
+input[type=number],
+input[type=date],
+input[type=time], 
+input[type=search] {
         max-width: 80%
 }
     } 
 
-input[type=date], input[type=time], input[type=number]{
+input[type=date],
+input[type=time],
+input[type=number] {
     max-width: 15ch;
 } 
 
-textarea{
+textarea {
     width: 100%;
     min-height: 250px;
     margin-bottom: 1rem;
-    padding:.375rem .75rem;
+    padding: .375rem .75rem;
     border-radius: 5px;
-  } 
+} 
 
 @media (min-width:768px) { 
 
-textarea{
-      min-height: 0;
-      margin-bottom: 1rem;
-      height: 100%
-  }
+textarea {
+        min-height: 0;
+        margin-bottom: 1rem;
+        height: 100%
+}
     } 
 
-select{
+select {
     display: block;
     width: min-content;
     padding: 0.375rem 2.25rem 0.375rem 0.75rem;
@@ -938,53 +1010,66 @@ select{
     border-radius: 0.25rem;
     background-image: url("../img/icons/down.svg");
     background-repeat: no-repeat;
-      background-position: right 0.75rem center;
-      background-size: 16px 12px;
-  } 
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+} 
 
-select:focus{
-      outline: none;
-      box-shadow: 0 0 2pt 1pt rgb(59, 104, 92);
+select:focus {
+        outline: none;
+        box-shadow: 0 0 2pt 1pt rgb(59, 104, 92);
         transition: box-shadow 250ms ease;
     } 
 
 /*button wrapper, displays buttons and spaces them out*/ 
 
-.button-section, .modal-button-section{
+.button-section,
+.modal-button-section {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     align-items: center;
 } 
 
-.button-section button,.button-section a,.modal-button-section button,.modal-button-section a{
+.button-section button,
+    .button-section a,
+    .modal-button-section button,
+    .modal-button-section a {
         width: 100%;
         max-width: 390px;
     } 
 
-.button-section, .modal-button-section {
+.button-section,
+.modal-button-section {
+
     gap: .5rem;
 } 
 
-@media(min-width:768px){ 
+@media(min-width:768px) { 
 
-.button-section, .modal-button-section{
+.button-section,
+.modal-button-section {
         flex-direction: row;
         width: 80%;
         max-width: 600px
 }
-        .button-section button, .button-section a, .modal-button-section button, .modal-button-section a{
+
+        .button-section button,
+        .button-section a,
+        .modal-button-section button,
+        .modal-button-section a {
             width: fit-content;
         }
     } 
 
-.button-section a,.modal-button-section a{
+.button-section a, .modal-button-section a {
         text-decoration: none;
     } 
 
 /*checkboxes*/ 
 
-.checkbox-form-control, .radio-form-control{ /*label acts as the wrapper*/
+.checkbox-form-control,
+.radio-form-control {
+    /*label acts as the wrapper*/
     font-size: 1rem;
     font-weight: 400;
     display: grid;
@@ -992,7 +1077,8 @@ select:focus{
     gap: 0.5em;
 } 
 
-input[type="checkbox"]{/*basic styling*/
+input[type="checkbox"] {
+    /*basic styling*/
     -webkit-appearance: none;
             appearance: none;
     background-color: #fff;
@@ -1008,11 +1094,11 @@ input[type="checkbox"]{/*basic styling*/
     place-content: center;
 } 
 
-.checkbox-form-control + .checkbox-form-control {
+.checkbox-form-control+.checkbox-form-control {
     margin-top: 1em;
-  } 
+} 
 
-input[type="checkbox"]::before{
+input[type="checkbox"]::before {
     content: "";
     width: .65em;
     height: .65em;
@@ -1024,22 +1110,22 @@ input[type="checkbox"]::before{
             clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 } 
 
-input[type="checkbox"]:checked::before{
+input[type="checkbox"]:checked::before {
     transform: scale(1);
 } 
 
 input[type="checkbox"]:focus {
     outline: max(2px, 0.15em) solid rgb(59, 104, 92);
     outline-offset: max(2px, 0.15em);
-  } 
+} 
 
 /*/Radio Button*/ 
 
-.radio-form-control{
+.radio-form-control {
     height: 2rem;
 } 
 
-input[type=radio]{
+input[type=radio] {
     -webkit-appearance: none;
             appearance: none;
     border: 3px solid rgb(59, 104, 92);
@@ -1051,12 +1137,12 @@ input[type=radio]{
     margin: 0;
 } 
 
-input[type=radio]:focus{
+input[type=radio]:focus {
         box-shadow: 0 0 2px 3px hsl(163, 28%, 50%);
         transition: box-shadow 300ms ease-out;
     } 
 
-input[type=radio]:checked{
+input[type=radio]:checked {
     background-color: rgb(59, 104, 92);
     border: 3px solid #FFF;
     outline: 2px solid #999;
@@ -1068,7 +1154,7 @@ input[type=radio]:checked{
     content: "";
     position: absolute;
     display: none;
-  } 
+} 
 
 /*////Toggle Switches*/ 
 
@@ -1079,7 +1165,8 @@ input[type=radio]:checked{
     display: inline-block;
     width: 60px;
     height: 34px;
-  } 
+
+} 
 
 /* Hide default HTML checkbox */ 
 
@@ -1087,7 +1174,8 @@ input[type=radio]:checked{
     opacity: 0;
     width: 0;
     height: 0;
-  } 
+
+} 
 
 /* The slider */ 
 
@@ -1100,7 +1188,8 @@ input[type=radio]:checked{
     bottom: 0;
     background-color: #ccc;
     transition: .4s;
-  } 
+
+} 
 
 .slider:before {
     position: absolute;
@@ -1111,29 +1200,35 @@ input[type=radio]:checked{
     bottom: 4px;
     background-color: white;
     transition: .4s;
-  } 
 
-input:checked + .slider {
+} 
+
+.switch:focus-within .slider {
+    box-shadow: 0 0 2px 3px hsl(163, 28%, 50%);
+    transition: box-shadow 300ms ease-out;
+} 
+
+input:checked+.slider {
     background-color: hsl(163, 28%, 50%);
-  } 
+} 
 
-input:focus + .slider {
+input:focus+.slider {
     box-shadow: 0 0 1px hsl(163, 28%, 50%);
-  } 
+} 
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     transform: translateX(26px);
-  } 
+} 
 
 /* Rounded sliders */ 
 
 .slider.round {
     border-radius: 34px;
-  } 
+} 
 
 .slider.round:before {
     border-radius: 50%;
-  } 
+} 
 
 /*///////////////////////////////////////*/ 
 
@@ -1141,7 +1236,8 @@ input:checked + .slider:before {
 
 /*/ Form responses //////////////*/ 
 
-.form-response{ /*standard settings for success */
+.form-response {
+    /*standard settings for success */
     background-color: hsl(163, 28%, 80%);
     padding: 2rem;
     border-radius: 5px;
@@ -1149,20 +1245,21 @@ input:checked + .slider:before {
 
 /*Response colours*/ 
 
-.error{/*modifier class for error messages*/
+.error {
+    /*modifier class for error messages*/
     background-color: hsl(0, 95%, 67%);
 } 
 
 /*///////////////Form Hint text.  Smaller font size, provides a helpful hint/////////////////////////*/ 
 
-.form-hint-small{
+.form-hint-small {
     font-size: 0.8rem;
     color: gray;
 } 
 
 /*/////////////Form controls //////////*/ 
 
-.form-controls{
+.form-controls {
     padding: 1rem;
     display: flex;
     gap: 0.25rem;
@@ -1173,69 +1270,74 @@ input:checked + .slider:before {
 
 } 
 
-@media(min-width: 768px){
-    .form-controls{
+@media(min-width: 768px) {
+    .form-controls {
         gap: 1.5rem;
         flex-direction: row;
     }
 } 
 
-.form-controls-btn{
+.form-controls-btn {
     display: flex;
     justify-content: space-between;
     align-items: center;
 } 
 
-.form-controls-btn img{
+.form-controls-btn img {
         height: 1.25rem;
         margin-inline-start: 1rem;
     } 
 
 /*Form modal setting when on a big screen*/ 
 
-@media(min-width:768px){
-    .modal-body .form-card{
+@media(min-width:768px) {
+    .modal-body .form-card {
         width: 50ch;
     }
 } 
 
 /*Set the height of button sections to stop layout shifts when hidden*/ 
 
-.btn-wrapper{
+.btn-wrapper {
     height: 38.667px;
 } 
 
 /*/////////Spinners ///////////*/ 
 
-.form-controls-btn .loading-icon{
+.form-controls-btn .loading-icon {
 
     animation: spinner 3s infinite ease-out;
     opacity: 1;
 } 
 
-@keyframes spinner{
-    0%{transform: rotate(0deg);}
-    100%{transform: rotate(360deg);}
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 } 
 
-.loading{
+.loading {
     opacity: 1;
 } 
 
 /*///////Search box input\\\\\\\\\\*/ 
 
-.search-input{
+.search-input {
     display: flex;
     align-items: center;
-    
+
 } 
 
-.search-input input{
-        border-bottom-right-radius:0px;
-        border-top-right-radius:0px;
+.search-input input {
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
     } 
 
-.search-input button{
+.search-input button {
         height: 33.33px;
         width: 33.33px;
         padding: 0.25rem;
@@ -1247,24 +1349,26 @@ input:checked + .slider:before {
 
     } 
 
-.search-input button svg{
+.search-input button svg {
             height: 100%;
             margin: 0;
         } 
 
-.search-input button path{
+.search-input button path {
             fill: #fff;
         } 
 
-.price-list-controls, .search-controls{
+.price-list-controls,
+.search-controls {
     background-color: hsl(163, 28%, 80%);
     border-radius: 10px;
     padding: 0.5rem;
 } 
 
-@media(min-width: 768px){ 
+@media(min-width: 768px) { 
 
-.price-list-controls, .search-controls{
+.price-list-controls,
+.search-controls {
         display: flex;
         align-items: center;
         justify-content: space-between
@@ -1519,6 +1623,7 @@ input:checked + .slider:before {
     grid-template-columns: 1fr auto;
     background-color: white;
     border-radius: 5px;
+    border: 1px solid rgb(59, 104, 92);
 } 
 
 .settings-card .switch{
@@ -1584,6 +1689,15 @@ input:checked + .slider:before {
 .response-card-body{
     padding-inline-end: 0.5rem;
 } 
+
+.error-card{
+    /*modifier class for an error*/
+    border-color: hsl(0, 95%, 67%);
+} 
+
+.error-card .response-card-icon svg path{
+        fill: hsl(0, 95%, 67%)
+    } 
 
 .menu-card, .menu{
     /*for menu builder page*/
