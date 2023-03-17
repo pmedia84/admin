@@ -5,22 +5,22 @@
         </div>
         <ul class="nav-links">
             <?php if ($cms_type == "Business") : ?>
-                <li><a class="nav-link" href="index.php">Home <i class="fa-solid fa-house"></i></a></li>
+                <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "index")){echo"link-active";}?>" href="index.php">Home <i class="fa-solid fa-house"></i></a></li>
                 <?php if ($price_list_status == "On") : ?>
-                    <li><a class="nav-link" href="price_list.php">Price List <i class="fa-solid fa-tags"></i></a></li>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "price_list")){echo"link-active";}?>" href="price_list.php">Price List <i class="fa-solid fa-tags"></i></a></li>
                 <?php endif; ?>
                 <?php if ($image_gallery_status == "On") : ?>
-                    <li><a class="nav-link" href="gallery.php">Image Gallery <i class="fa-solid fa-image"></i></a></li>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "gallery")){echo"link-active";}?>" href="gallery.php">Image Gallery <i class="fa-solid fa-image"></i></a></li>
                 <?php endif; ?>
                 <?php if ($news_status == "On") : ?>
-                    <li><a class="nav-link" href="news.php">News <i class="fa-solid fa-newspaper"></i></a></li>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "news")){echo"link-active";}?>" href="news.php">News <i class="fa-solid fa-newspaper"></i></a></li>
                 <?php endif;?>
 
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-                    <li><a class="nav-link" href="settings.php">Settings <i class="fa-solid fa-gear"></i></a></li>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "settings")){echo"link-active";}?>" href="settings.php">Settings <i class="fa-solid fa-gear"></i></a></li>
                 <?php endif; ?>
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-                    <li><a class="nav-link" href="reviews.php">Reviews <i class="fa-solid fa-comment-dots"></i></a></li>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "reviews")){echo"link-active";}?>" href="reviews.php">Reviews <i class="fa-solid fa-comment-dots"></i></a></li>
                 <?php endif; ?>
             <?php endif; ?>
             <?php if ($cms_type == "Wedding") : ?>

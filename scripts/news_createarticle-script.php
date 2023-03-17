@@ -13,7 +13,7 @@ if (isset($_POST['news_articles_title'])) {
             //header image name is blank if no file uploaded
             $news_articles_img = "";
         } else { //if there is an image uploaded then save it to the folder
-            //////////////////////sort the image upload first////////////////////////////////////////
+            //sort the image upload first
             $dir = "../assets/img/news/";
             $file = $dir . basename($_FILES['news_articles_img']['name']);
             $imageFileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));
@@ -74,7 +74,7 @@ if (isset($_POST['news_articles_title'])) {
     if ($_POST['action'] == "edit") {
         //check that an image has been uploaded
         if ($_FILES['news_articles_img']['name'] == null) {
-            //dont overwrite the exisiting image file name
+            //don't overwrite the existing image file name
             $news_articles_title = mysqli_real_escape_string($db, $_POST['news_articles_title']);
             $news_articles_body = htmlentities($_POST['news_article_body']);
             $news_articles_status = $_POST['news_articles_status'];
@@ -89,7 +89,7 @@ if (isset($_POST['news_articles_title'])) {
         } else {
             //if a new image has been uploaded then run update everything including the image
             //if there is an image uploaded then save it to the folder
-            //////////////////////sort the image upload first////////////////////////////////////////
+            ///sort the image upload first/
             $dir = "../assets/img/news/";
             $file = $dir . basename($_FILES['news_articles_img']['name']);
             $imageFileType = strtolower(pathinfo($file, PATHINFO_EXTENSION));

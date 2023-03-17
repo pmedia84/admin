@@ -192,12 +192,12 @@ $invite_num = $invite_num->num_rows;
             ?>
                 <div class="news-card news-card-dashboard">
                     <?php if ($article['news_articles_img'] == null) : ?>
-                        <img src="./assets/img/news/news-item.jpg" alt="">
+                        <a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><img src="./assets/img/news/news-item.webp" alt=""></a>
                     <?php else : ?>
-                        <img src="./assets/img/news/<?= $article['news_articles_img']; ?>" alt="">
+                        <a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><img src="./assets/img/news/<?= $article['news_articles_img']; ?>" alt=""></a>
                     <?php endif; ?>
                     <p class="news-create-date my-2"><?= date('d-M-y', $news_articles_date); ?></p>
-                    <h3><?= $article['news_articles_title']; ?></h3>
+                    <h3><a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><?= $article['news_articles_title']; ?></a></h3>
                     <div class="news-card-body">
                         <p><?= $news_article_body; ?></p>
                     </div>

@@ -1,10 +1,10 @@
 <?php
 session_start();
-$location=urlencode($_SERVER['REQUEST_URI']);
+$location = urlencode($_SERVER['REQUEST_URI']);
 if (!$_SESSION['loggedin'] == TRUE) {
     // Redirect to the login page:
-    
-    header("Location: login.php?location=".$location);
+
+    header("Location: login.php?location=" . $location);
 }
 
 include("./connect.php");
@@ -15,7 +15,7 @@ include("inc/settings.php");
 //Variable for name of CMS
 //wedding is the name of people
 //business name
-$cms_name ="";
+$cms_name = "";
 $user_id = $_SESSION['user_id'];
 if ($cms_type == "Business") {
     //look for the business set up and load information
@@ -29,9 +29,9 @@ if ($cms_type == "Business") {
     //set cms name
     $cms_name = $business_name;
     //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id='.$user_id);
+    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id=' . $user_id);
     $business_users->execute();
-    $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
+    $business_users->bind_result($user_id, $user_name, $business_id, $user_type);
     $business_users->fetch();
     $business_users->close();
 }
@@ -102,7 +102,7 @@ if ($cms_type == "Wedding") {
     <!-- Main Body Of Page -->
     <main class="main col-2">
         <!-- Header Section -->
-        <?php include("inc/header.inc.php");?>
+        <?php include("inc/header.inc.php"); ?>
         <!-- Nav Bar -->
         <?php include("./inc/nav.inc.php"); ?>
         <!-- /nav bar -->
@@ -110,22 +110,20 @@ if ($cms_type == "Wedding") {
             <div class="breadcrumbs mb-2">
                 <a href="index.php" class="breadcrumb">Home</a> /
                 <a href="news.php" class="breadcrumb">News</a>
-                / Create News Articles
+                / Create News Post
             </div>
             <div class="main-cards">
 
-                <h1>Create News Article</h1>
-                <p class="font-emphasis">This page is best viewed on a large screen</p>
-                <?php if ($user_type == "Admin" || $user_type=="Developer") : ?>
+                <h1><i class="fa-solid fa-newspaper"></i> Create News Post</h1>
+                <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
 
 
-                    <div class="news-create">
-
-                        <form class="form-card" id="create_news_article" action="scripts/news_createarticle.php" method="post" enctype="multipart/form-data">
+                    <div class="std-card">
+                        <form id="create_news_article" action="scripts/news_createarticle.php" method="post" enctype="multipart/form-data" data-user_id="<?=$user_id;?>">
                             <div class="form-input-wrapper">
                                 <label for="news_articles_title">Title</label>
                                 <!-- input -->
-                                <input class="text-input input" type="text" name="news_articles_title" id="news_articles_title" placeholder="Article Title" required="" maxlength="45">
+                                <input class="text-input input" type="text" name="news_articles_title" id="news_articles_title" placeholder="Article Title" required="" maxlength="45" autofocus>
                             </div>
                             <div class="form-input-wrapper my-2">
                                 <label for="news_articles_img">Header Image</label>
@@ -150,7 +148,7 @@ if ($cms_type == "Wedding") {
                                 </select>
                             </div>
                             <div class="button-section my-3">
-                                <button class="btn-primary form-controls-btn" type="submit">Save Article<i class="fa-solid fa-floppy-disk"></i></button>
+                                <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Post </button>
 
                             </div>
 
@@ -167,7 +165,16 @@ if ($cms_type == "Wedding") {
         </div>
 
         </section>
-
+        <div class="d-none" id="response-card-wrapper">
+            <div class="response-card">
+                <div class="response-card-icon">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+                <div class="response-card-body">
+                    <p id="response-msg"></p>
+                </div>
+            </div>
+        </div>
 
     </main>
 
@@ -179,37 +186,11 @@ if ($cms_type == "Wedding") {
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
     <script>
-
-
         $("#form-reset").click(function() {
             $("#create_news_article *").prop("disabled", false);
         });
     </script>
-    <script>
-        //script for creating a news article
-        $("#create_news_article").submit(function(event) {
-            tinyMCE.triggerSave();
-            event.preventDefault();
-            //declare form variables and collect GET request information
-            user_id = '<?php echo $user_id; ?>';
-            var formData = new FormData($("#create_news_article").get(0));
-            formData.append("action", "addnew");
-            formData.append("user_id", user_id);
-            $.ajax({ //start ajax post
-                type: "POST",
-                url: "scripts/news_createarticle-script.php",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(data, responseText) {
-                    $("#response").html(data);
-                    $("#response").slideDown(400);
-                    $("#create_news_article *").prop("disabled", true);
-                }
-            });
-
-        });
-    </script>
+<script src="assets/js/news.js"></script>
 </body>
 
 </html>

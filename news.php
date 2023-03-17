@@ -107,7 +107,7 @@ $news = $db->query($news_query);
             <div class="main-cards">
             <?php if($news_status == "On"):?>
 
-                <h1>News Articles</h1>
+                <h1><i class="fa-solid fa-newspaper"></i> News Posts</h1>
                 <a class="btn-primary" id="add_social" href="news_createarticle.php">Create An Article <i class="fa-solid fa-plus"></i></a>
                 <?php if ($user_type == "Admin" ||$user_type=="Developer") : ?>
 
@@ -125,23 +125,21 @@ $news = $db->query($news_query);
                         ?>
                             <div class="news-card">
                                 <div class="news-card-header">
-                                    <h2><?= $article['news_articles_title']; ?></h2>
+                                    <h2><a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><?= $article['news_articles_title']; ?></a></h2>
                                     <span class="news-create-status">
                                         <?= $news_articles_status; ?>
                                     </span>
                                 </div>
                                 <?php if ($article['news_articles_img'] == null) : ?>
-                                    <img src="./assets/img/news/news-item.jpg" alt="">
+                                    <a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><img src="./assets/img/news/news-item.webp" alt=""></a>
                                 <?php else : ?>
-                                    <img src="./assets/img/news/<?= $article['news_articles_img']; ?>" alt="">
+                                    <a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><img src="./assets/img/news/<?= $article['news_articles_img']; ?>" alt=""></a>
                                 <?php endif; ?>
                                 <p class="news-create-date my-2"><?= date('d-m-y', $news_articles_date); ?></p>
                                 <div class="news-card-body my-2">
                                     <p><?= $news_article_body; ?></p>
                                 </div>
-
-
-                                <div class="news-card-actions">
+                                <div class="card-actions my-2">
                                     <a class="my-2" href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><i class="fa-solid fa-eye"></i> View Article</a>
                                     <a class="my-2" href="news_article.php?action=edit&news_articles_id=<?= $article['news_articles_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Article </a>
                                 </div>

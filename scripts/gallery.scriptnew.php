@@ -64,11 +64,7 @@ if (isset($_POST['action']) && $_POST['action'] == "upload") {
         echo $response;
         exit();
     }
-    print_r($_FILES['gallery_img']);
-    foreach ($_FILES['gallery_img']['name'] as $file) {
 
-        echo $file;
-    }
     //check for error codes
     if ($_FILES['gallery_img']['error'] !== UPLOAD_ERR_OK) {
 
@@ -99,9 +95,9 @@ if (isset($_POST['action']) && $_POST['action'] == "upload") {
                 break;
         }
     }
-    // Reject uploaded file larger than 1MB
+    // Reject uploaded file larger
     if ($_FILES["gallery_img"]["size"] > 3145728) {
-        exit('File too large (max 1MB)');
+        exit('File too large');
     }
     // Use fileinfo to get the mime type
     $finfo = new finfo(FILEINFO_MIME_TYPE);
