@@ -6,8 +6,6 @@ if(!empty($_GET)){
 }else{
     $location="index";
 }
-
-print_r($_SESSION);
 include("connect.php");
 include("inc/settings.php");
 //determine what type of cms is running
