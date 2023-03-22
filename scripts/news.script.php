@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['action']) && $_POST['a
     //*echo back to front end the new post and redirect to view it
     $response = "news_article.php?action=view&news_articles_id=".$article_id;
     echo $response;
-    $update_article->close();
+    
 }
 //?edit an article
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['action']) && $_POST['action'] == "edit") {
@@ -254,6 +254,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['action']) && $_POST['a
         $update_article->close();
         $response = 200;
     }
+   
 echo $response;
     
 }
