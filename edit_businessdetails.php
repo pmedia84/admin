@@ -7,9 +7,9 @@ if (!$_SESSION['loggedin'] == TRUE) {
     header("Location: login.php?location=".$location);
 }
 
+include("./connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
-include("./connect.php");
 //find if this module is on or off
 
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
@@ -112,7 +112,7 @@ $curaddress->close();
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / <a href="settings.php">Settings</a> / Edit Business Details</div>
             <div class="grid-col">
                 <?php
-                if ($user_type == "Admin") : ?>
+                if ($user_type == "Admin" || $user_type=="Developer") : ?>
                     <h1 class="text-center my-2">Edit Business Details: <?= $business_name; ?></h1>
                     <div class="std-card user-card">
                         <div class="form-controls my-2">

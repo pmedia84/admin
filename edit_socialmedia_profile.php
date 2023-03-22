@@ -8,9 +8,9 @@ if (!$_SESSION['loggedin'] == TRUE) {
     header("Location: login.php?location=".$location);
 }
 
+include("./connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
-include("./connect.php");
 //find if this module is on or off
 
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
@@ -42,7 +42,6 @@ if ($cms_type == "Business") {
     $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
     $business_users->fetch();
     $business_users->close();
-    echo $business_id;
 }
 
 //run checks to make sure a wedding has been set up correctly
@@ -120,7 +119,7 @@ if (isset($_GET['business_socials_id'])) { //only run the query if the get reque
             <div class="main-cards">
                 <h1>Edit Your Social Media Profile</h1>
                 <p>This information will be displayed on your contact page and on your footer.</p>
-                <?php if ($user_type == "Admin") : ?>
+                <?php if ($user_type == "Admin" || $user_type=="Developer") : ?>
                     <?php if ($_GET['action'] == "edit") : ?>
                         <?php if (($social_profile->num_rows) > 0) :
                             $social_profile->bind_result($business_socials_id, $socials_type_id, $business_socials_url, $Business_id, $socials_type_id, $socials_type_name);

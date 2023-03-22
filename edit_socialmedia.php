@@ -8,9 +8,9 @@ if (!$_SESSION['loggedin'] == TRUE) {
     header("Location: login.php?location=".$location);
 }
 
+include("./connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
-include("./connect.php");
 //find if this module is on or off
 
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
@@ -38,7 +38,6 @@ if ($cms_type == "Business") {
     $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
     $business_users->fetch();
     $business_users->close();
-    echo $business_id;
 }
 
 //run checks to make sure a wedding has been set up correctly
@@ -102,7 +101,7 @@ $social_types = mysqli_query($db, $social_types_query);
                 <h1>Social Media Profiles</h1>
                 <p>This information will be displayed on your contact page and on your footer.</p>
                 <?php
-                if ($user_type == "Admin") :
+                if ($user_type == "Admin" || $user_type=="Developer") :
 
                 ?>
 
