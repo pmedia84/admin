@@ -237,7 +237,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['action']) && $_POST['a
             };
         }
     }
-
     //* set up news article for adding to DB
     //!define all other variables
     $news_articles_title = htmlentities(mysqli_real_escape_string($db, $_POST['news_articles_title']));
@@ -250,6 +249,5 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['action']) && $_POST['a
         $update_article->close();
         $response = 200;
     }
-
     echo $response;
 }
