@@ -1,16 +1,12 @@
 <?php
 session_start();
-$location=$_SERVER['REQUEST_URI'];
-if (!$_SESSION['loggedin'] == TRUE) {
+$location = urlencode($_SERVER['REQUEST_URI']);
+if (!array_key_exists("loggedin", $_SESSION) ) {
     // Redirect to the login page:
-    
-    header("Location: login.php?location=".$location);
+    header("Location: login.php?location=" . $location);
+    exit();
 }
-//check the right user is logged in, needs to be admin or developer
-if(!$_SESSION['user_type']== "Developer" || $_SESSION['user_type']=="Admin"){
-    session_destroy();
-    header('Location: login.php');
-}
+
 include("./connect.php");
 include("./inc/head.inc.php");
 include("./inc/settings.php");
