@@ -11,17 +11,13 @@ $dir = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/news/"; //image upload location 
 $admin_dir = $_SERVER['DOCUMENT_ROOT'] . "/admin/assets/img/news/"; //save a copy of the image in the admin directory
 date_default_timezone_set('Europe/London'); //set time zone
 $article_date = date('y-m-d'); // timestamp for today
-$article_id="";
+$article_id = "";
 //* DB connection
 include("../connect.php");
-//*prep the db operations
-//! insert
-$new_article = $db->prepare('INSERT INTO news_articles (news_articles_title, news_articles_date, news_articles_body, news_articles_img, news_articles_author, news_articles_status)VALUES(?,?,?,?,?,?)');
-//!update
-$update_article = $db->prepare('UPDATE news_articles SET news_articles_title=?, news_articles_body=?, news_articles_img=?, news_articles_status=?  WHERE news_articles_id =?');
-
 //?Create an article
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['action']) && $_POST['action'] == "create") {
+    //! insert
+    $new_article = $db->prepare('INSERT INTO news_articles (news_articles_title, news_articles_date, news_articles_body, news_articles_img, news_articles_author, news_articles_status)VALUES(?,?,?,?,?,?)');
     //*check if an image has been uploaded and handle this first
     if (!$_FILES['news_articles_img']['name'] == null) {
         //*file name as uploaded
@@ -112,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['action']) && $_POST['a
             $response = 0;
         }
         //*define the image file name if one has been uploaded
-        $news_articles_img=$newimgname;
+        $news_articles_img = $newimgname;
     }
 
     //* set up news article for adding to DB
@@ -121,19 +117,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['action']) && $_POST['a
     $news_articles_body = htmlentities($_POST['news_article_body']);
     $news_articles_status = $_POST['news_articles_status'];
     $user_id = $_POST['user_id'];
-    
+
     $new_article->bind_param('ssssis', $news_articles_title, $article_date, $news_articles_body, $news_articles_img, $user_id, $news_articles_status);
-    if($new_article->execute()){
+    if ($new_article->execute()) {
         $new_article->close();
     }
     $article_id = $db->insert_id;
     //*echo back to front end the new post and redirect to view it
-    $response = "news_article.php?action=view&news_articles_id=".$article_id;
+    $response = "news_article.php?action=view&news_articles_id=" . $article_id;
     echo $response;
-    
 }
 //?edit an article
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['action']) && $_POST['action'] == "edit") {
+    //!update
+    $update_article = $db->prepare('UPDATE news_articles SET news_articles_title=?, news_articles_body=?, news_articles_img=?, news_articles_status=?  WHERE news_articles_id =?');
     //*Set the default file name to the existing one, this will only change if a new image has been uploaded.
     $news_articles_img = $_POST['img_filename'];
     //*check if an image has been uploaded and handle this first
@@ -227,19 +224,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['action']) && $_POST['a
             $response = 200;
         }
         //*define the image file name if one has been uploaded
-        $news_articles_img=$newimgname;
+        $news_articles_img = $newimgname;
         //* Delete the old image, but only if it had one set and was not the default
-        if(!$old_img ==""){
+        if (!$old_img == "") {
             $old_path = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/news/";
-            $old_admin_path=$_SERVER['DOCUMENT_ROOT'] . "/admin/assets/img/news/";
-            if (fopen($old_path . $old_img , "w")) {
+            $old_admin_path = $_SERVER['DOCUMENT_ROOT'] . "/admin/assets/img/news/";
+            if (fopen($old_path . $old_img, "w")) {
                 unlink($old_path . $old_img);
             };
             if (fopen($old_admin_path . $old_img, "w")) {
                 unlink($old_admin_path . $old_img);
             };
         }
-
     }
 
     //* set up news article for adding to DB
@@ -248,13 +244,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['action']) && $_POST['a
     $news_articles_body = htmlentities($_POST['news_article_body']);
     $news_articles_status = $_POST['news_articles_status'];
     $news_article_id = $_POST['news_articles_id'];
-    
+
     $update_article->bind_param('ssssi', $news_articles_title, $news_articles_body, $news_articles_img, $news_articles_status, $news_article_id);
-    if($update_article->execute()){
+    if ($update_article->execute()) {
         $update_article->close();
         $response = 200;
     }
-   
-echo $response;
-    
+
+    echo $response;
 }
