@@ -7,9 +7,9 @@ if (!$_SESSION['loggedin'] == TRUE) {
     header("Location: login.php?location=".$location);
 }
 
+include("./connect.php");
 include ('inc/head.inc.php');
 include("./inc/settings.php");
-include("./connect.php");
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
 //wedding is the name of people
@@ -104,7 +104,7 @@ $db->close();
 
                 <h1>Address</h1>
                 <?php
-                if ($user_type == "Admin") :
+                if ($user_type == "Admin" || $user_type=="Developer") :
 
                 ?>
                     <div class="std-card">
@@ -146,7 +146,7 @@ $db->close();
                 <div class="form-input-wrapper">
                     <label for="address_line_3">Town or City</label>
                     <!-- input -->
-                    <input type="text" name="address_line_3" id="address_line_3" placeholder="Town or City" autocomplete="address-line3" required="" maxlength="45" value="<?= $address_line_3; ?>">
+                    <input type="text" name="address_line_3" id="address_line_3" placeholder="Town or City" autocomplete="address-line3" maxlength="45" value="<?= $address_line_3; ?>">
                 </div>
                 <div class="form-input-wrapper">
                     <label for="address_county">County</label>
