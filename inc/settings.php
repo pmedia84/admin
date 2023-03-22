@@ -2,7 +2,6 @@
 //////////////////////////////////////////////////////////settings script for all cms websites\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 //connect to settings table
-
 $settings = $db->prepare('SELECT cms_type FROM settings');
 $settings->execute();
 $settings->store_result();
@@ -13,7 +12,6 @@ $settings->fetch();
 //Or wedding site with rsvp features etc
 // Business
 // Wedding
-// 
 $cms_type = $cms_type;
 
 //email settings for contact forms
