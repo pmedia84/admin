@@ -73,7 +73,6 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
         $_SESSION['db_session_id']=$session_id['session_id'];
         $_SESSION['user_type']=$user_type;
         $db->close();
-        print_r($_SESSION);
         echo"correct";
        }else{
         //look up how many failed login attempts have been made and return an error message to reset password if there are more than 2 failed attempts.
