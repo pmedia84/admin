@@ -1,8 +1,8 @@
 <?php
 session_start();
-$location = urlencode($_SERVER['REQUEST_URI']);
 if (!isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == TRUE) {
     // Redirect to the login page:
+    $location = urlencode($_SERVER['REQUEST_URI']);
     header("Location: login.php?location=" . $location);
     exit();
 }
