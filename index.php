@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['loggedin']) && !$_SESSION['loggedin'] == TRUE) {
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == TRUE) {
     // Redirect to the login page:
     $location = urlencode($_SERVER['REQUEST_URI']);
     header("Location: login.php?location=" . $location);
