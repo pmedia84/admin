@@ -1,7 +1,7 @@
 <?php
 session_start();
 $location = urlencode($_SERVER['REQUEST_URI']);
-if (!array_key_exists("loggedin", $_SESSION) && $_SESSION['loggedin']!=TRUE) {
+if (!array_key_exists("loggedin", $_SESSION) ) {
     // Redirect to the login page:
     header("Location: login.php?location=" . $location);
     exit();
