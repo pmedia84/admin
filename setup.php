@@ -238,7 +238,9 @@ if ($cms_type == "Wedding") {
                                 </form>
 
                             <?php else : ?>
-                                <?php header('location: login.php'); ?>
+                                <script>
+                                    window.location.replace("login.php");
+                                </script>
                             <?php endif; ?>
                         <?php endif; ?>
                     <?php endif; ?>
