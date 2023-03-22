@@ -5,7 +5,7 @@ include("../connect.php");
 
 if ( mysqli_connect_errno() ) {
 	// If there is an error with the connection, stop the script and display the error.
-    echo"hello";
+    
 	exit('Failed to connect to MySQL: ' . mysqli_connect_error());
     
 }
@@ -34,7 +34,7 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
      
        if(password_verify($_POST['password'], $password)){
         //check if the password is a temp one from new user setup
-        $pw_check = $db->prepare('SELECT user_id, user_pw_status, user_type FROM users WHERE user_id = ? AND user_type = "Admin" OR user_type="Developer"');
+        $pw_check = $db->prepare('SELECT user_id, user_pw_status, user_type FROM users WHERE user_id = ? AND user_type = "Admin" AND user_type="Developer"');
         $pw_check ->bind_param('i',$user_id);
         $pw_check->execute();
         $pw_check->bind_result($user_id, $user_pw_status, $user_type);
@@ -73,6 +73,7 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
         $_SESSION['db_session_id']=$session_id['session_id'];
         $_SESSION['user_type']=$user_type;
         $db->close();
+        print_r($_SESSION);
         echo"correct";
        }else{
         //look up how many failed login attempts have been made and return an error message to reset password if there are more than 2 failed attempts.

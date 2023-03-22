@@ -1,7 +1,7 @@
 <?php
 session_start();
 $location = urlencode($_SERVER['REQUEST_URI']);
-if (!isset($_SESSION) && $_SESSION['loggedin'] == TRUE) {
+if (!array_key_exists("loggedin", $_SESSION) && $_SESSION['loggedin']!=TRUE) {
     // Redirect to the login page:
     header("Location: login.php?location=" . $location);
     exit();
@@ -20,8 +20,6 @@ if ($cms_type == "Business") {
     $business->store_result();
     $business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
     $business->fetch();
-
-
     if ($business->num_rows == 0) {
         header('Location: setup.php?action=setup_business');
     }
