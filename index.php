@@ -1,13 +1,11 @@
 <?php
 session_start();
-$location=urlencode($_SERVER['REQUEST_URI']);
+$location = urlencode($_SERVER['REQUEST_URI']);
 if (!$_SESSION['loggedin'] == TRUE) {
     // Redirect to the login page:
-    
-    header("Location: login.php?location=".$location);
+
+    header("Location: login.php?location=" . $location);
 }
-
-
 include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
@@ -66,6 +64,14 @@ if ($cms_type == "Wedding") {
         // Redirect to the login page:
         header('Location: login.php');
     }
+    //find the amount of guests
+    $guest_num = ('SELECT guest_id FROM guest_list');
+    $guest_num = $db->query($guest_num);
+    $guest_amt = $guest_num->num_rows;
+    //find the amount of guests
+    $invite_num = ('SELECT invite_id FROM invitations');
+    $invite_num = $db->query($invite_num);
+    $invite_num = $invite_num->num_rows;
 }
 
 
@@ -96,14 +102,7 @@ $image_amt = $image_num->num_rows;
 $user_num = ('SELECT user_id FROM users');
 $user_num = $db->query($user_num);
 $user_amt = $user_num->num_rows;
-//find the amount of guests
-$guest_num = ('SELECT guest_id FROM guest_list');
-$guest_num = $db->query($guest_num);
-$guest_amt = $guest_num->num_rows;
-//find the amount of guests
-$invite_num = ('SELECT invite_id FROM invitations');
-$invite_num = $db->query($invite_num);
-$invite_num = $invite_num->num_rows;
+
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -130,16 +129,16 @@ $invite_num = $invite_num->num_rows;
         <section class="body">
             <div class="breadcrumbs"><span><i class="fa-solid fa-house"></i> Home / </span></div>
             <div class="main-dashboard">
-            <?php if ($news_status == "On") : ?>
-                <div class="dashboard-card">
-                    <div class="dashboard-card-header">
-                        <span><?= $article_amt; ?></span>
-                        <img src="assets/img/icons/newspaper.svg" alt="">
+                <?php if ($news_status == "On") : ?>
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <span><?= $article_amt; ?></span>
+                            <img src="assets/img/icons/newspaper.svg" alt="">
+                        </div>
+                        <h2>News Posts</h2>
+                        <a href="news.php">Manage</a>
                     </div>
-                    <h2>News Posts</h2>
-                    <a href="news.php">Manage</a>
-                </div>
-            <?php endif;?>
+                <?php endif; ?>
                 <div class="dashboard-card">
                     <div class="dashboard-card-header">
                         <span><?= $image_amt; ?></span>
@@ -152,16 +151,16 @@ $invite_num = $invite_num->num_rows;
                 <?php if ($cms_type == "Wedding") : ?>
                     <?php if ($invite_manager_status == "On") : ?>
                         <div class="dashboard-card">
-                        <div class="dashboard-card-header">
-                            <span><?= $guest_amt; ?></span>
-                            <i class="fa-solid fa-people-group"></i>
+                            <div class="dashboard-card-header">
+                                <span><?= $guest_amt; ?></span>
+                                <i class="fa-solid fa-people-group"></i>
+                            </div>
+                            <h2>Guest List</h2>
+                            <a href="guest_list.php">Manage</a>
                         </div>
-                        <h2>Guest List</h2>
-                        <a href="guest_list.php">Manage</a>
-                    </div>
-                        <?php endif;?>
+                    <?php endif; ?>
 
-                        <div class="dashboard-card">
+                    <div class="dashboard-card">
                         <div class="dashboard-card-header">
                             <span><?= $invite_num; ?></span>
                             <i class="fa-solid fa-champagne-glasses"></i>
@@ -176,40 +175,40 @@ $invite_num = $invite_num->num_rows;
         </section>
         <?php if ($news_status == "On") : ?>
 
-           
-        <div class="main-cards">
-            <h2>Published Posts</h2>
-            <?php foreach ($news as $article) :
-                $news_article_body = html_entity_decode($article['news_articles_body']);
-                $news_articles_date = strtotime($article['news_articles_date']);
 
-                if ($article['news_articles_status'] == "Published") {
-                    $news_articles_status = "<p class='news-item-status published'>Published <i class='fa-solid fa-check'></i></p>";
-                }
-                if ($article['news_articles_status'] == "Draft") {
-                    $news_articles_status = "<p class='news-item-status draft'>Draft <i class='fa-solid fa-flag'></i></p>";
-                }
-            ?>
-                <div class="news-card news-card-dashboard">
-                    <?php if ($article['news_articles_img'] == null) : ?>
-                        <a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><img src="./assets/img/news/news-item.webp" alt=""></a>
-                    <?php else : ?>
-                        <a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><img src="./assets/img/news/<?= $article['news_articles_img']; ?>" alt=""></a>
-                    <?php endif; ?>
-                    <p class="news-create-date my-2"><?= date('d-M-y', $news_articles_date); ?></p>
-                    <h3><a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><?= $article['news_articles_title']; ?></a></h3>
-                    <div class="news-card-body">
-                        <p><?= $news_article_body; ?></p>
+            <div class="main-cards">
+                <h2>Published Posts</h2>
+                <?php foreach ($news as $article) :
+                    $news_article_body = html_entity_decode($article['news_articles_body']);
+                    $news_articles_date = strtotime($article['news_articles_date']);
+
+                    if ($article['news_articles_status'] == "Published") {
+                        $news_articles_status = "<p class='news-item-status published'>Published <i class='fa-solid fa-check'></i></p>";
+                    }
+                    if ($article['news_articles_status'] == "Draft") {
+                        $news_articles_status = "<p class='news-item-status draft'>Draft <i class='fa-solid fa-flag'></i></p>";
+                    }
+                ?>
+                    <div class="news-card news-card-dashboard">
+                        <?php if ($article['news_articles_img'] == null) : ?>
+                            <a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><img src="./assets/img/news/news-item.webp" alt=""></a>
+                        <?php else : ?>
+                            <a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><img src="./assets/img/news/<?= $article['news_articles_img']; ?>" alt=""></a>
+                        <?php endif; ?>
+                        <p class="news-create-date my-2"><?= date('d-M-y', $news_articles_date); ?></p>
+                        <h3><a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><?= $article['news_articles_title']; ?></a></h3>
+                        <div class="news-card-body">
+                            <p><?= $news_article_body; ?></p>
+                        </div>
+                        <div class="card-actions"><a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><i class="fa-solid fa-eye"></i> View Article</a></div>
                     </div>
-                    <div class="card-actions"><a href="news_article.php?action=view&news_articles_id=<?= $article['news_articles_id']; ?>"><i class="fa-solid fa-eye"></i> View Article</a></div>
-                </div>
 
-            <?php endforeach; ?>
+                <?php endforeach; ?>
 
 
 
-        </div>
-        <?php endif;?>
+            </div>
+        <?php endif; ?>
 
     </main>
     <!-- /Main Body Of Page -->
