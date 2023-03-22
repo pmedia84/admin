@@ -133,7 +133,7 @@ if ($cms_type == "Wedding") {
                             </div>
                             <div class="form-input-wrapper my-2">
                                 <label for="news_article_body">Article Body</label>
-                                <textarea id="news_article_body" name="news_article_body" required="">
+                                <textarea id="news_article_body" name="news_article_body">
 
                                 </textarea>
                             </div>
