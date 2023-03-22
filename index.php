@@ -1,16 +1,15 @@
 <?php
-
+session_start();
 $location = urlencode($_SERVER['REQUEST_URI']);
 if (!$_SESSION['loggedin'] == TRUE) {
     // Redirect to the login page:
     header("Location: login.php?location=" . $location);
+    exit();
 }
-session_start();
 include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
 //determine what type of cms is running
-
 //run checks to make sure a business has been set up
 if ($cms_type == "Business") {
     //look for a business setup in the db, if not then direct to the setup page
@@ -34,9 +33,7 @@ if ($cms_type == "Business") {
     }
     $business->close();
     //find business details
-
 }
-
 //run checks to make sure a wedding has been set up correctly
 if ($cms_type == "Wedding") {
 
@@ -69,10 +66,6 @@ if ($cms_type == "Wedding") {
     $invite_num = $db->query($invite_num);
     $invite_num = $invite_num->num_rows;
 }
-
-
-
-
 //connect to user db to check admin rights etc
 //find username and email address to display on screen.
 $user = $db->prepare('SELECT user_id,  user_type FROM users WHERE user_id = ?');
@@ -98,7 +91,6 @@ $image_amt = $image_num->num_rows;
 $user_num = ('SELECT user_id FROM users');
 $user_num = $db->query($user_num);
 $user_amt = $user_num->num_rows;
-
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
