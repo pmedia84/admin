@@ -1,5 +1,5 @@
 <?php 
-session_set_cookie_params(0,"/admin" );
+session_set_cookie_params(0,"/admin; SameSite=None; Secure" );
 session_start();
 include("../connect.php");
 
@@ -44,7 +44,7 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
             echo "TEMP";
             exit();
         }
-        ////create session in db user sessions:////
+        //*create session in db user sessions:////
         //declare time and date variables
         date_default_timezone_set('Europe/London');
         $session_date = date('Y-m-d');
@@ -72,7 +72,6 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
         $_SESSION['user_name'] = $username;
         $_SESSION['db_session_id']=$session_id['session_id'];
         $_SESSION['user_type']=$user_type;
-        
         $db->close();
         echo"correct";
        }else{
