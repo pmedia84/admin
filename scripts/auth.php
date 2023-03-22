@@ -18,7 +18,7 @@ if(!isset($_POST['user_email'], $_POST['password'])){
 }
 
 
-if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE user_email = ? AND user_type<>"wedding_guest"')){
+if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE user_email = ? AND user_type ="Admin" OR user_type="Developer"')){
     
     
     $user ->bind_param('s',$_POST['user_email']);
@@ -34,7 +34,7 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
      
        if(password_verify($_POST['password'], $password)){
         //check if the password is a temp one from new user setup
-        $pw_check = $db->prepare('SELECT user_id, user_pw_status, user_type FROM users WHERE user_id = ? AND user_type<>"wedding_guest"');
+        $pw_check = $db->prepare('SELECT user_id, user_pw_status, user_type FROM users WHERE user_id = ? AND user_type = "Admin" OR user_type="Developer"');
         $pw_check ->bind_param('i',$user_id);
         $pw_check->execute();
         $pw_check->bind_result($user_id, $user_pw_status, $user_type);

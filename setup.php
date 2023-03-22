@@ -1,12 +1,11 @@
 <?php
 session_start();
-$business_id = "1";
-$wedding_id = "1";
 if (empty($_GET)) {
     //if user arrives at this page without a get request, redirect to the index page
     header('location: index.php');
 }
-
+$wedding_id=0;
+$business_id=0;
 include("connect.php");
 include("inc/settings.php");
 //determine what type of cms is running
@@ -21,7 +20,6 @@ if ($cms_type == "Business") {
         $business_id = $ar['business_id'];
         
     } else {
-        $business_id = "";
         $business_id = "";
     }
     //check if there are users for the business
@@ -405,9 +403,6 @@ if ($cms_type == "Wedding") {
 
     </main>
     <!-- /Main Body Of Page -->
-    <!-- Quote request form script -->
-
-    <!-- /Quote request form script -->
     <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
@@ -463,14 +458,9 @@ if ($cms_type == "Wedding") {
                     $("#loading-icon").hide(400);
                 },
                 success: function(data, responseText) {
-
                     window.location.replace(url);
-
-
-
                 }
             });
-
         });
     </script>
     <script>
@@ -502,10 +492,7 @@ if ($cms_type == "Wedding") {
                         $("#response").slideDown(400);
 
                     }
-                    //window.location.replace(url);
-
-
-
+                    window.location.replace(url);
                 }
             });
 

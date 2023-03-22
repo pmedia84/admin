@@ -59,10 +59,6 @@ if ($cms_type == "Wedding") {
         header('Location: setup.php?action=check_users_wedding');
     }
 
-    if (!$_SESSION['loggedin'] == true) {
-        // Redirect to the login page:
-        header('Location: login.php');
-    }
     //find the amount of guests
     $guest_num = ('SELECT guest_id FROM guest_list');
     $guest_num = $db->query($guest_num);
