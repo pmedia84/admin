@@ -1,5 +1,8 @@
 <?php
 session_start();
+print_r($_SESSION);
+
+echo session_id();
 //find the referring page to redirect to once logged in
 if(!empty($_GET)){
     $location=urldecode($_GET['location']);
@@ -9,7 +12,6 @@ if(!empty($_GET)){
 include("connect.php");
 include("inc/settings.php");
 //determine what type of cms is running
-
 //run checks to make sure a business has been set up
 if($cms_type =="Business"){
 //look for a business setup in the db, if not then direct to the setup page
@@ -17,7 +19,6 @@ $business_query = ('SELECT business_id FROM business');
 $business = $db->query($business_query);
 if($business -> num_rows ==0){
     header('Location: setup.php?action=setup_business');
-    
 }
     //check that there are users set up 
     $business_user_query = ('SELECT * FROM business_users');
@@ -26,13 +27,9 @@ if($business -> num_rows ==0){
         header('Location: setup.php?action=check_users_business');
         
     }
-
-
 }
-
 //run checks to make sure a wedding has been set up correctly
 if($cms_type =="Wedding"){
-    
     //look for a wedding setup in the db, if not then direct to the setup page
     $wedding_query = ('SELECT wedding_id FROM wedding');
     $wedding = $db->query($wedding_query);

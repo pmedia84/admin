@@ -20,7 +20,6 @@ if(!isset($_POST['user_email'], $_POST['password'])){
 
 if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE user_email = ? AND NOT user_type="wedding_guest"')){
     
-    
     $user ->bind_param('s',$_POST['user_email']);
     $user->execute();
     $user->store_result();
@@ -64,9 +63,7 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
         $session_id_query ="SELECT session_id FROM user_sessions WHERE user_id=".$user_id." ORDER BY session_id DESC LIMIT 1";
         $session_id_result= $db->query($session_id_query);
         $session_id = $session_id_result->fetch_assoc();
-        
-        session_regenerate_id();
-        $_SESSION['loggedin'] = TRUE;
+        $_SESSION['loggedin'] = "loggedin";
         $_SESSION['user_email'] = $_POST['user_email'];
         $_SESSION['user_id'] = $user_id;
         $_SESSION['user_name'] = $username;
@@ -74,6 +71,8 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
         $_SESSION['user_type']=$user_type;
         $db->close();
         echo"correct";
+        //print_r($_SESSION);
+        //echo session_id();
        }else{
         //look up how many failed login attempts have been made and return an error message to reset password if there are more than 2 failed attempts.
         $status = "Failed";

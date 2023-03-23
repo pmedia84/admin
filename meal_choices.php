@@ -21,10 +21,10 @@ foreach ($fetch as $line) {
 fclose($guestlist);
 $location = $_SERVER['REQUEST_URI'];
 $location = urlencode($_SERVER['REQUEST_URI']);
-if (!$_SESSION['loggedin'] == TRUE) {
+if ($_SESSION['loggedin'] != "loggedin") {
     // Redirect to the login page:
-
     header("Location: login.php?location=" . $location);
+    exit();
 }
 
 include("inc/head.inc.php");
