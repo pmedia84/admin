@@ -1,6 +1,7 @@
 <?php
 session_start();
-
+require("scripts/functions.php");
+check_login();
 include("./connect.php");
 //handle deleting menu, only process if confirm is yes, re direct to menu page
 if (isset($_GET['confirm']) && $_GET['confirm'] == "yes") {
@@ -11,13 +12,7 @@ if (isset($_GET['confirm']) && $_GET['confirm'] == "yes") {
         exit();
     }
 }
-$location = $_SERVER['REQUEST_URI'];
-$location = urlencode($_SERVER['REQUEST_URI']);
-if ($_SESSION['loggedin'] != "loggedin") {
-    // Redirect to the login page:
-    header("Location: login.php?location=" . $location);
-    exit();
-}
+
 
 include("inc/head.inc.php");
 include("inc/settings.php");

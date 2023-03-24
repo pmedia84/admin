@@ -1,6 +1,7 @@
 <?php
 session_start();
-
+require("scripts/functions.php");
+check_login();
 include("./connect.php");
 
 $guestlist = fopen("scripts/choices ".date('d-m-y').".csv", "w") or die("Unable to open file!");
@@ -19,13 +20,7 @@ foreach ($fetch as $line) {
   fputcsv($guestlist, $line);
 }
 fclose($guestlist);
-$location = $_SERVER['REQUEST_URI'];
-$location = urlencode($_SERVER['REQUEST_URI']);
-if ($_SESSION['loggedin'] != "loggedin") {
-    // Redirect to the login page:
-    header("Location: login.php?location=" . $location);
-    exit();
-}
+
 
 include("inc/head.inc.php");
 include("inc/settings.php");

@@ -1,11 +1,7 @@
 <?php
 session_start();
-$location = $_SERVER['REQUEST_URI'];
-if ($_SESSION['loggedin'] != "loggedin") {
-    // Redirect to the login page:
-    header("Location: login.php?location=" . $location);
-    exit();
-}
+require("scripts/functions.php");
+check_login();
 if(array_key_exists("confirm", $_GET) && $_GET['confirm']=="yes"){
     include("./connect.php");
     $service_id=$_GET['service_id'];

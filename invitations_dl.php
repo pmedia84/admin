@@ -1,6 +1,7 @@
 <?php
 session_start();
-
+require("scripts/functions.php");
+check_login();
 include("./connect.php");
 
 
@@ -25,14 +26,6 @@ foreach ($fetch as $line) {
   fputcsv($guestlist, $line);
 }
 fclose($guestlist);
-
-
-
-if (!$_SESSION['loggedin'] == true) {
-    // Redirect to the login page:
-    header('Location: login.php');
-}
-
 include("inc/head.inc.php");
 include("inc/settings.php");
 
