@@ -1,11 +1,15 @@
 <?php
 session_start();
-if ($_SESSION['loggedin'] != "loggedin") {
-    // Redirect to the login page:
+if(!isset($_SESSION['loggedin'])){
     $location = urlencode($_SERVER['REQUEST_URI']);
     header("Location: login.php?location=" . $location);
-    exit();
 }
+// if ($_SESSION['loggedin'] != "loggedin") {
+//     // Redirect to the login page:
+//     $location = urlencode($_SERVER['REQUEST_URI']);
+//     header("Location: login.php?location=" . $location);
+//     exit();
+// }
 include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");

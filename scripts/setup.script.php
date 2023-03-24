@@ -101,7 +101,7 @@ if (isset($_POST['action'])) {
                     <p><strong>User Email:</strong>' . $user_email . '</p>
                     <p><strong>User Access Level:</strong>' . $user_type . '</p>
                     <p><strong>Password:  </strong>' . $user_pw . '</p>
-                    <a style="background-color: #bedad2; padding: 10px; border-radius: 5px; color: #3b685c; text-decoration: none; margin: 5px;" href="http://'.$_SERVER['SERVER_NAME'].'/admin">Login Now</a>
+                    <a style="background-color: #bedad2; padding: 10px; border-radius: 5px; color: #3b685c; text-decoration: none; margin: 5px;" href="https://'.$_SERVER['SERVER_NAME'].'/admin">Login Now</a>
                     <br><hr style="color:#3b685c;">
                     <p>Kind regards</p>
                     <p><strong>Parrot Media</strong></p>
@@ -213,7 +213,7 @@ if (isset($_POST['action'])) {
                     <p><strong>User Access Level:</strong>' . $user_type . '</p>
                     <p><strong>Password:</strong>' . $user_pw . '</p>
                     <p>This is a temporary password, once you login you will be asked to create a password that you will remember.</p>
-                    <a style="background-color: #bedad2; padding: 10px; border-radius: 5px; color: #3b685c; text-decoration: none; margin: 5px;" href="http://'.$_SERVER['SERVER_NAME'].'/admin">Login Now</a>
+                    <a style="background-color: #bedad2; padding: 10px; border-radius: 5px; color: #3b685c; text-decoration: none; margin: 5px;" href="https://'.$_SERVER['SERVER_NAME'].'/admin">Login Now</a>
                     <br><br><hr style="color:#3b685c;">
                     <p>Kind regards</p>
                     <p><strong>Parrot Media</strong></p>
