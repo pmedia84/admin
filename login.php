@@ -1,4 +1,7 @@
 <?php
+session_start();
+include("connect.php");
+include("inc/settings.php");
 //determine what type of cms is running
 //run checks to make sure a business has been set up
 if($cms_type =="Business"){
@@ -35,7 +38,7 @@ if($cms_type =="Business"){
     
     
         }
-session_start();
+
 print_r($_SESSION);
 
 echo session_id();
@@ -45,8 +48,7 @@ if(!empty($_GET)){
 }else{
     $location="index";
 }
-include("connect.php");
-include("inc/settings.php");
+
 
 
 ?>
