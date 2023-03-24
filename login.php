@@ -34,23 +34,13 @@ if($cms_type =="Business"){
             header('Location: setup.php?action=check_users_wedding');
         }
         $db->close();
-    
-    
-    
         }
-
-print_r($_SESSION);
-
-echo session_id();
 //find the referring page to redirect to once logged in
 if(!empty($_GET)){
     $location=urldecode($_GET['location']);
 }else{
     $location="index";
 }
-
-
-
 ?>
 <?php include("./inc/head.inc.php"); ?>
 <!-- Meta Tags For Each Page -->
