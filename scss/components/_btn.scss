@@ -8,6 +8,9 @@
     padding: .375rem .75rem;
     transition: box-shadow 300ms ease-out;
     width: fit-content;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
    cursor: pointer;
     &:focus{
         box-shadow: 0 0 2px 3px $primary-800;
@@ -15,6 +18,7 @@
     }
 svg{
     margin-right: 0.5rem;
+    height: 1rem;
 }
     
 }
@@ -33,7 +37,6 @@ svg{
     color: $primary;
 }
 a.btn-primary{
-    
     text-decoration: none;
 }
 

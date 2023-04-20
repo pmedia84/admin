@@ -2,10 +2,12 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-
-include("./connect.php");
-include("./inc/head.inc.php");
-include("./inc/settings.php");
+$user = new User();
+$user_type = $user->user_type();
+$user_id = $user->user_id();
+include("connect.php");
+include("inc/head.inc.php");
+include("inc/settings.php");
 
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
@@ -67,7 +69,7 @@ $guest_home_img_res = $guest_home_img->fetch_assoc();
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / Website Settings</div>
             <div class="main-cards cms-settings-cards my-2">
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-                    <h1><i class="fa-solid fa-laptop"></i> Website Settings</h1>
+                    <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#laptop"></use></svg> Website Settings</h1>
                     <p>Manage your setting for your website and your guest area.</p>
                     <p>You can turn on RSVP and Guest area features from here too</p>
                     <?php
@@ -75,12 +77,11 @@ $guest_home_img_res = $guest_home_img->fetch_assoc();
                     $modules_query = ('SELECT * FROM wedding_modules');
                     $modules = $db->query($modules_query);
                     ?>
-                    
                     <h2>Features</h2>
                     <form action="wedding_settings.script.php" method="POST" enctype="multipart/form-data" id="cms_modules">
                         <?php foreach ($modules as $module) : ?>
                             <?php if($module['wedding_module_name'] =="Meal Choices") :?>
-                                <?php if($meal_choices_status=="On"):?>
+                                <?php if($meal_choices_wedmin->status()=="On"):?>
                                 <div class="settings-card">
                                 <div class="settings-card-text">
                                     <h3><?= $module['wedding_module_name']; ?></h3>
@@ -126,7 +127,7 @@ $guest_home_img_res = $guest_home_img->fetch_assoc();
                                 <input type="file" name="guest_home_img" id="guest_home_img" accept="image/*">
                             </div>
                             <div class="button-section">
-                                <button class="btn-primary form-controls-btn loading-btn" type="submit"><span id="loading-btn-text" class="loading-btn-text"><i class="fa-solid fa-upload"></i>Upload Image</span> <img id="loading-icon" class="loading-icon d-none" src="./assets/img/icons/loading.svg" alt=""></button>
+                                <button class="btn-primary form-controls-btn loading-btn" type="submit"><span id="loading-btn-text" class="loading-btn-text"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#upload"></use></svg>Upload Image</span> <img id="loading-icon" class="loading-icon d-none" src="./assets/img/icons/loading.svg" alt=""></button>
 
                             </div>
                         </form>

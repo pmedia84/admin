@@ -2,7 +2,10 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-include("./connect.php");
+$user = new User();
+$user_type = $user->user_type();
+$user_id = $user->user_id();
+include("connect.php");
 //handle deleting menu, only process if confirm is yes, re direct to menu page
 if (isset($_GET['confirm']) && $_GET['confirm'] == "yes") {
 
@@ -56,13 +59,7 @@ if ($cms_type == "Wedding") {
     $wedding->close();
     //set cms name
     $cms_name = $wedding_name;
-    //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, wedding_users.wedding_id, wedding_users.user_type FROM users NATURAL LEFT JOIN wedding_users WHERE users.user_id=' . $user_id);
 
-    $business_users->execute();
-    $business_users->bind_result($user_id, $user_name, $business_id, $user_type);
-    $business_users->fetch();
-    $business_users->close();
 }
 
 
@@ -122,24 +119,24 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
             </div>
             <div class="main-cards">
                 <?php if (empty($_GET)) : ?>
-                    <h1><i class="fa-solid fa-bowl-food"></i> Menu Builder</h1>
+                    <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#bowl-food"></use></svg> Menu Builder</h1>
                     <p>Here you can create a menu for your events, this will allow guests to see what food is available or where they can make choices.</p>
                 <?php endif; ?>
-                <?php if (isset($_GET['action']) && $_GET['action'] == "edit" && $menu_builder_status == "On") : ?>
-                    <h1><i class="fa-solid fa-bowl-food"></i> Edit Menu for your <?= $menu_result['event_name']; ?></h1>
+                <?php if (isset($_GET['action']) && $_GET['action'] == "edit" && $menu_builder->status() == "On") : ?>
+                    <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#bowl-food"></use></svg> Edit Menu for your <?= $menu_result['event_name']; ?></h1>
                 <?php endif; ?>
-                <?php if (isset($_GET['action']) && $_GET['action'] == "delete" && $menu_builder_status == "On") : ?>
-                    <h1><i class="fa-solid fa-bowl-food"></i> Delete Menu for your <?= $menu_result['event_name']; ?></h1>
+                <?php if (isset($_GET['action']) && $_GET['action'] == "delete" && $menu_builde->status() == "On") : ?>
+                    <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#bowl-food"></use></svg> Delete Menu for your <?= $menu_result['event_name']; ?></h1>
                 <?php endif; ?>
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-                    <?php if ($menu_builder_status == "On") : ?>
+                    <?php if ($menu_builder->status() == "On") : ?>
                         <div class="menu-body" id="menu-body">
                             <?php if (empty($_GET)) :
                                 $event_query = $db->query('SELECT * FROM wedding_events');
                             ?>
                                 <div class="std-card">
                                     <div class="form-controls my-2">
-                                        <button class="btn-primary" type="button" id="add-menu" data-action="create_menu"><i class="fa-solid fa-utensils"></i> Create Menu</button>
+                                        <button class="btn-primary" type="button" id="add-menu" data-action="create_menu"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#utensils"></use></svg> Create Menu</button>
                                     </div>
                                     <?php if ($menu_query->num_rows > 0) : ?>
                                         <?php foreach ($menu_query as $menu) :
@@ -175,8 +172,8 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
                                                 endif;
                                                 ?>
                                                 <div class="card-actions">
-                                                    <a class="btn-primary" href="menu?action=edit&menu_id=<?= $menu['menu_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Menu</a>
-                                                    <a href="menu.php?action=delete&confirm=no&menu_id=<?= $menu['menu_id']; ?>" class="btn-primary btn-secondary"><i class="fa-solid fa-trash"></i> Delete Menu</a>
+                                                    <a class="btn-primary" href="menu?action=edit&menu_id=<?= $menu['menu_id']; ?>"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#pen-to-square"></use></svg> Edit Menu</a>
+                                                    <a href="menu.php?action=delete&confirm=no&menu_id=<?= $menu['menu_id']; ?>" class="btn-primary btn-secondary"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#trash"></use></svg> Delete Menu</a>
                                                 </div>
                                                 </div>
                                             <?php endforeach; ?>

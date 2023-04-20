@@ -2,9 +2,9 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-
-
-include("./connect.php");
+$user = new User();
+$user_id = $user->user_id();
+include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
 
@@ -69,17 +69,11 @@ if ($cms_type == "Wedding") {
         <?php include("./inc/nav.inc.php"); ?>
         <!-- /nav bar -->
         <section class="body">
-
-
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> /  Guest List</div>
             <div class="main-cards">
-
-
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-
-
+                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
                     <?php if ($cms_type == "Wedding") : ?>
-                        <h2><i class="fa-solid fa-people-group"></i> Your Guest List</h2>
+                        <h2><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#people-group"></use></svg> Your Guest List</h2>
                         <p>Keep this information up to date as you plan for big day. Your invites will be sent out from this information.</p>
                         <a href="guest.php?action=create" class="btn-primary">Add Guest <i class="fa-solid fa-user-plus"></i></a>
                         <div class="search-controls">
@@ -87,7 +81,6 @@ if ($cms_type == "Wedding") {
                                 <div class="form-input-wrapper">
                                     <label for="search">Search by guest name</label>
                                     <div class="search-input">
-
                                         <input type="text" id="search" name="search" placeholder="Search For A Guest ...">
                                         <button class="btn-primary form-controls-btn loading-btn" type="submit"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></button>
                                     </div>

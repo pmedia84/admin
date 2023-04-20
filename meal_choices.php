@@ -2,7 +2,10 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-include("./connect.php");
+$user = new User();
+$user_type = $user->user_type();
+$user_id = $user->user_id();
+include("connect.php");
 
 $guestlist = fopen("scripts/choices ".date('d-m-y').".csv", "w") or die("Unable to open file!");
 
@@ -28,8 +31,7 @@ include("inc/settings.php");
 //Variable for name of CMS
 //wedding is the name of people
 //business name
-$cms_name = "";
-$user_id = $_SESSION['user_id'];
+
 
 
 //run checks to make sure a wedding has been set up correctly
@@ -45,13 +47,8 @@ if ($cms_type == "Wedding") {
     $wedding->close();
     //set cms name
     $cms_name = $wedding_name;
-    //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, wedding_users.wedding_id, wedding_users.user_type FROM users NATURAL LEFT JOIN wedding_users WHERE users.user_id=' . $user_id);
 
-    $business_users->execute();
-    $business_users->bind_result($user_id, $user_name, $business_id, $user_type);
-    $business_users->fetch();
-    $business_users->close();
+
 }
 
 
@@ -97,19 +94,19 @@ $choices_query = $db->query('SELECT meal_choice_order.choice_order_id, meal_choi
             </div>
             <div class="main-cards">
                 <?php if (empty($_GET)) : ?>
-                    <h1><i class="fa-solid fa-utensils"></i> Guest Meal Choices</h1>
+                    <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#utensils"></use></svg> Guest Meal Choices</h1>
                     <p>This page will update as your guests let you know what their choices are from your menu.</p>
                     <p>Once all your guests have given you their choices, you will be able to download or print to a PDF and send to your venue.</p>
                 <?php endif; ?>
 
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-                    <?php if ($meal_choices_status == "On") :
+                    <?php if ($meal_choices_m->status() == "On") :
                         $choices_totals = $db->query('SELECT meal_choices.menu_item_id, menu_items.menu_item_id, menu_items.menu_item_name, COUNT(meal_choices.choice_id) AS numberOfChoices FROM meal_choices LEFT JOIN menu_items ON menu_items.menu_item_id=meal_choices.menu_item_id GROUP BY menu_item_name');
 
                     ?>
                         <div class="std-card form-controls my-2">
-                            <a href="scripts/choices_dl" class="btn-primary"><i class="fa-solid fa-file-excel"></i> Download Meal Choices</a>
-                            <a href="scripts/print_meal_options" download="Meal Options <?=date('d-m-y');?>" class="btn-primary"><i class="fa-solid fa-file-pdf"></i> Print Meal Choices</a>
+                            <a href="scripts/choices_dl" class="btn-primary"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#file-excel"></use></svg> Download Meal Choices</a>
+                            <a href="scripts/print_meal_options" download="Meal Options <?=date('d-m-y');?>" class="btn-primary"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#file-pdf"></use></svg> Print Meal Choices</a>
                         </div>
                         <div class="std-card">
                             <h2 class="my-2">Meal Choice Totals</h2>

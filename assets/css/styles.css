@@ -1,5 +1,7 @@
 /*Colours*/
 
+/*Notifcation banner colors*/
+/*Red for a color needing attention*/
 /*form colours*/
 /* Border Radius*/
 
@@ -102,16 +104,17 @@ body{
     justify-content: space-between;
     min-height: -webkit-fill-available;
     min-height: stretch;
- 
     
 }
 @media(min-width:768px){
 body{
-        min-height: 100vh
- 
+        min-height: 100vh;
     
 }
     }
+body {
+ overscroll-behavior: none;
+}
 a{
     color: rgb(59, 104, 92);
     display: inline-block;
@@ -154,13 +157,13 @@ a:hover{
 } 
 .nav-links li {
         list-style-type: none;
+
+
     } 
-.nav-links li svg {
-            height: 25px;
-        } 
 .nav-links .nav-link {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         padding: 1rem;
         margin-block: .5rem;
         background-color: hsl(163, 28%, 80%);
@@ -168,8 +171,9 @@ a:hover{
         text-decoration: none;
         color: rgb(59, 104, 92);
     } 
-.nav-links .nav-link img {
-            height: 25px
+.nav-links .nav-link .icon {
+            height: 1.5em;
+            width: 1.5em;
         } 
 .nav-link.link-active {
     background-color: hsl(163, 28%, 60%);
@@ -353,43 +357,109 @@ a:hover{
         grid-column: 1/2;
         width: 100%;
     } 
-/*///Image gallery*/ 
+/*? Image cards for gallery pages*/ 
 .img-card {
-    border: 1px solid rgb(59, 104, 92);
-    background-color: #fff;
-    border-radius: 5px;
-    padding: 0.5rem;
-    place-self: start;
-    width: 100%;
-
-} 
-.img-card-header-img {
-
     position: relative;
+    height: 250px;
+  } 
+.img-card-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.61);
+    padding: 0.5rem;
+    font-size: 1rem;
+    text-align: center;
+  } 
+/**//*  image gallery cards*/ 
+.img-card .btn-edit{
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+      padding: 0.25rem;
+    } 
+.img-card .btn-edit svg{
+        margin: 0;
+      } 
+.img-card img{
+      scale: 1;
+      transition: scale 300ms ease-out;
+      cursor: default;
+    } 
+.img-card {
+  
+   border: 2px solid transparent;
+   background-color: #fff;
+   transition: border 300ms ease-out, opacity 300ms ease-out, background-color 300ms ease-out;
 } 
-.img-card-header-img img {
-        height: 200px;
-        width: 100%;
-        object-fit: cover;
+.img-card:focus, .img-card:hover, .img-card:focus-within{
+    border: 2px solid rgb(59, 104, 92);
+    opacity: 1;
+    transition: border 300ms ease-out, opacity 300ms ease-out, background-color 300ms ease-out;
+    
+   } 
+/*checkbox styling*/ 
+.img-select{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    text-align: center;
+    border: 1px solid #3b685c;
+    color: #3b685c;
+    width: 1.5em !important;
+    height: 1.5em !important;
+    z-index: 2;
+  } 
+.img-select::before{
+      width: .75em !important;
+      height: .75em !important;
     } 
-.img-card-header-img h3 {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        padding: 0.5rem;
-        background-color: rgba(255, 255, 255, 0.427);
-        text-align: center;
+.img-checked{
+    opacity: .9;
+    border: 2px solid rgb(59, 104, 92);
+    background-color: rgb(59, 104, 92);
+    transition: opacity 300ms ease-out, border 300ms ease-out, background-color 300ms ease-out;
+  } 
+.img-checked img{
+      scale: .9;
+      transition: scale 300ms ease-out;
     } 
-.img-card-header-img a {
+/*show the tick to state the image has been approved*/ 
+.img-card[data-status="Approved"] .img-status{
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(255, 255, 255, 0.51);
+      -webkit-backdrop-filter: blur(4px);
+              backdrop-filter: blur(4px);
+      padding: 0.5rem;
+      font-size: 1rem;
+      text-align: center;
+      border: 1px solid #3b685c;
+      color: #3b685c;
+      z-index: 2;
+    } 
+.gallery-img {
+    cursor: pointer;
+  
+  } 
+.gallery-img {
     width: 100%;
-} 
-.img-card-body-text {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-
-} 
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  } 
+.gallery-card {
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 0.5rem;
+  
+  
+  } 
 .delete-thumb {
     /*thumbnail for delete page*/
     height: 150px;
@@ -408,87 +478,6 @@ a:hover{
         align-items: center;
     }
 } 
-/*/gallery card, holds all the info etc and table*/ 
-.gallery-card {
-    border-radius: 10px;
-    background-color: #fff;
-    padding: 0.5rem;
-
-
-} 
-.gallery-card img{
-        width: unset !important;
-    } 
-/*//new styles for gallery page*/ 
-/*/ ////gallery table*/ 
-.gallery-table {
-    margin-bottom: 1.5rem;
-    width: 100%;
-} 
-.gallery-table th {
-        text-align: left;
-    } 
-.gallery-table .image-details {
-        width: auto;
-    } 
-.gallery-table .caption{
-        border-inline: 1px solid hsl(163, 28%, 90%);
-    } 
-.gallery-table td {
-        border-bottom: 1px solid rgb(59, 104, 92);
-    } 
-.gallery-table {
-
-    border-collapse: collapse;
-} 
-.gallery-table th:first-of-type {
-            border-top-left-radius: 5px;
-            padding-inline-start: 0.5rem;
-        } 
-.gallery-table th:last-of-type {
-            border-top-right-radius: 5px;
-        } 
-.gallery-table th {
-
-        background-color: hsl(163, 28%, 50%);
-        color: #fff;
-        padding-block: 1rem;
-} 
-.gallery-table th:hover input[type=checkbox] {
-                background-color: #fff;
-            } 
-.gallery-table tr:hover :not(th) {
-        background-color: hsl(163, 28%, 70%);
-    } 
-.gallery-table tr:hover :not(th) input[type=checkbox] {
-            background-color: #fff;
-        } 
-.gallery-thumb a {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-
-    } 
-.gallery-thumb img {
-        height: 70px;
-        width: 70px;
-        object-fit: cover;
-        margin-right: 0.5rem;
-    } 
-.gallery-select {
-    padding-inline: 0.5rem;
-    width: 25px;
-    height: 100%;
-} 
-.gallery-select input {
-        width: 100%;
-        margin-inline: auto;
-        background-color: #fff;
-
-    } 
-.gallery-selected {
-    background-color: hsl(163, 28%, 90%);
-} 
 .gift-item-thumb{
     height: 150px;
 } 
@@ -497,17 +486,6 @@ a:hover{
         gap: 0.25rem;
         align-items: center;
     } 
-.notification{
-    font-size: 12px;
-    display: grid;
-    place-items: center;
-    color: rgb(59, 104, 92);
-    background-color: hsl(163, 28%, 95%);
-    border-radius: 100%;
-    font-weight: 700;
-    width: calc(12px * 2);
-    height: calc(12px * 2);
-} 
 /*/services card for price list*/ 
 .service-card{
     display: flex;
@@ -640,6 +618,16 @@ grid-column: 2/3;
         grid-auto-rows: minmax(100px, auto)
 }
     } 
+.grid-row-4col{/*grid row with 3 columns of equal width*/
+    display: grid;
+    gap: 0.5rem;
+} 
+@media(min-width:992px){ 
+.grid-row-4col{
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: minmax(100px, auto)
+}
+    } 
 /*Utility classes for grid */ 
 .place-grid-start{/*places a grid item at the top of a grid row*/
     place-self: start;
@@ -741,6 +729,9 @@ grid-column: 2/3;
     padding: .375rem .75rem;
     transition: box-shadow 300ms ease-out;
     width: fit-content;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
    cursor: pointer;
     
 } 
@@ -752,6 +743,7 @@ grid-column: 2/3;
 
 .btn-primary svg{
     margin-right: 0.5rem;
+    height: 1rem;
 } 
 
 ::file-selector-button{
@@ -772,7 +764,6 @@ grid-column: 2/3;
 } 
 
 a.btn-primary{
-    
     text-decoration: none;
 } 
 
@@ -1663,11 +1654,16 @@ input:checked+.slider:before {
     
 } 
 
-.response-card{
-    
-    position: absolute;
+/*outer wrapper to show and hide card*/ 
+
+.response-card-wrapper{
+    position: fixed;
     right: 25px;
-    top: 40%;
+    top: 50px;
+    z-index: 1000;
+} 
+
+.response-card{
     padding-block: 1.5rem;
     border: 1px solid rgb(59, 104, 92);
     border-left: 5px solid rgb(59, 104, 92);
@@ -1675,7 +1671,7 @@ input:checked+.slider:before {
     background-color: #fff;
     display: flex;
     gap: 1.5rem;
-
+    z-index: 100;
 } 
 
 .response-card-icon{
@@ -1808,35 +1804,47 @@ input:checked+.slider:before {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    right: 0;
+    bottom: 0;
     z-index: 100;
     opacity: 0;
     pointer-events: none;
     transition: opacity 300ms ease-out;
  } 
 
-/*Defines the body of the modal, centered on screen with a close icon to dismiss*/ 
-
-.modal-body{
-    border: 1px solid rgb(59, 104, 92);
-    border-radius: 10px;
-    background-color: #fff;
-    padding: 1.5rem;
-    width: 95%;
-    max-width: 580px;
-    overflow-y: scroll;
-    display: grid;
-    place-items: center;
-} 
-
 .modal-content{
     height: 100%;
-    width: 100%;
+    
+    padding: 0.5rem;
 } 
 
-.modal-btns{
+/*modal header, align as a column on small screens*/ 
+
+.modal-header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} 
+
+.modal-header .modal-title{
+    align-self: self-start;
+  } 
+
+@media(min-width:768px){
+  .modal-header{
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+  .modal-content{
     width: 100%;
+    max-width: 500px;
+  }
+} 
+
+@media(min-width:992px){
+  .modal-content{
+    max-width: 700px;
+  }
 } 
 
 .modal-close{/*header section with close button set to the right*/
@@ -1856,6 +1864,72 @@ input:checked+.slider:before {
     transition: opacity 400ms ease-out;
     pointer-events: all;
 } 
+
+/*custom modal for image uploads in gallery*/ 
+
+.confirm-modal,.upload-modal {
+    background-color: rgba(0, 0, 0, 0.7);
+     place-items: end;
+  } 
+
+.confirm-modal .modal-content, .upload-modal .modal-content {
+      margin-bottom: env(safe-area-inset-bottom, 10px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      width: 100%;
+      height: max-content;
+      place-items: unset;
+      background-color: #fff;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+    } 
+
+.confirm-modal .modal-content input,.upload-modal .modal-content input{
+       width: 100%;
+      } 
+
+.confirm-modal .close,.upload-modal .close{
+     justify-content: center;
+     
+    } 
+
+.confirm-modal .btn-close,.upload-modal .btn-close{
+     color: rgb(59, 104, 92);
+     height: 2.5rem;
+     width: 2.5rem;
+    } 
+
+.confirm-modal .btn-close .x-mark,.upload-modal .btn-close .x-mark{
+        display: none;
+      } 
+
+.confirm-modal .modal-content{
+    padding: 0.5rem;
+  } 
+
+@media(min-width:768px){
+    .confirm-modal,.upload-modal{
+      place-items: center;
+    }
+      .confirm-modal .btn-close .x-mark,.upload-modal .btn-close .x-mark{
+        display: initial;
+      }
+      .confirm-modal .btn-close .line,.upload-modal .btn-close .line{
+        display: none;
+      }
+     .upload-modal .modal-content{
+      border-radius: 10px;
+
+    }
+    .confirm-modal .modal-content{
+      border-radius: 10px;
+      padding: 0.5rem;
+    }
+      .confirm-modal .modal-content .button-section{
+        width: 100%;
+      }
+   } 
 
 .cookie-overlay {/*container*/
   display: none;
@@ -2010,7 +2084,107 @@ max-width: 90vw;
     background-color: hsl(163, 28%, 95%);
     border-bottom: 2px double rgb(59, 104, 92);
     
-}
+} 
+
+/*table for guest submissions on gallery page*/ 
+
+.submission-table{
+    width: 100%;
+} 
+
+.submission-table tr:nth-child(2n){
+        background-color: white;
+    } 
+
+.submission-table .status[data-status="Awaiting"]{
+        display: block;
+        background-color: rgba(255, 0, 0, 0.406);
+        padding: 0.25rem;
+        border-radius: 10px;
+        width: fit-content;
+    } 
+
+.submission-table .status[data-status="Partial"]{
+        display: block;
+        background-color: hsl(163, 28%, 80%);
+        padding: 0.25rem;
+        border-radius: 10px;
+        width: fit-content;
+    } 
+
+.notification-header {
+    /* defines a header with a notification dot beside the header*/
+
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+
+} 
+
+.notification {
+    font-size: 12px;
+    display: grid;
+    place-items: center;
+    color: rgb(59, 104, 92);
+    background-color: hsl(163, 28%, 95%);
+    border-radius: 100%;
+    font-weight: 700;
+    width: calc(12px * 2);
+    height: calc(12px * 2);
+} 
+
+/*? General Toolbar that is sticky and will fix to top pf screen on wide screens and on the bottom for mobiles.*/ 
+
+/*menu footer for bottom of small screens*/ 
+
+.toolbar{
+    background-color: hsl(163, 28%, 95%);
+    position: sticky;
+    top: env(safe-area-inset-top, 5px);
+    left: 5px;
+    right: 5px;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+} 
+
+.toolbar .btn-primary{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: .8em;
+    } 
+
+.toolbar .btn-primary .icon{
+            margin: 0;
+        } 
+
+@media(min-width: 768px){
+    .toolbar{
+        position: sticky;
+        top: 5px;
+        justify-content: left;
+        align-items: end;
+    }
+        .toolbar .btn-primary{
+            font-size: 1em;
+            flex-direction: row;
+        }
+            .toolbar .btn-primary .icon{
+                margin-right: 0.5rem;
+            }
+} 
+
+/*icon set from SVG sprite, font awesome*/ 
+
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+    fill: currentColor;
+  }
 /*spacing utilities*/
 /*m = margin*/
 /*p = padding*/

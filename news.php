@@ -42,18 +42,12 @@ if ($cms_type == "Wedding") {
 
     $wedding->execute();
     $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_email, $wedding_phone, $wedding_contact_name);
+    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time, $wedding_email, $wedding_phone, $wedding_contact_name);
     $wedding->fetch();
     $wedding->close();
     //set cms name
     $cms_name = $wedding_name;
-    //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id='.$user_id);
 
-    $business_users->execute();
-    $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
-    $business_users->fetch();
-    $business_users->close();
 }
 // //find users and display on screen.
 // //connect to user db to check admin rights etc
@@ -101,7 +95,7 @@ $news = $db->query($news_query);
                 <a href="index.php" class="breadcrumb">Home</a> / Manage News Articles
             </div>
             <div class="main-cards">
-            <?php if($news_status == "On"):?>
+            <?php if($news_m->status() == "On"):?>
 
                 <h1><i class="fa-solid fa-newspaper"></i> News Posts</h1>
                 <a class="btn-primary" id="add_social" href="news_createarticle.php">Create An Article <i class="fa-solid fa-plus"></i></a>

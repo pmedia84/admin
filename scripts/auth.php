@@ -1,5 +1,5 @@
 <?php 
-session_set_cookie_params(0,"/admin; SameSite=None; Secure" );
+session_set_cookie_params(0,"/admin");
 session_start();
 include("../connect.php");
 
@@ -59,6 +59,7 @@ if($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE use
         $session->close();
 
         //set up php session variables and pass information to browser
+        session_regenerate_id();
         $status = "Failed";
         $session_id_query ="SELECT session_id FROM user_sessions WHERE user_id=".$user_id." ORDER BY session_id DESC LIMIT 1";
         $session_id_result= $db->query($session_id_query);

@@ -2,8 +2,9 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-
-
+$user = new User();
+$user_type = $user->user_type();
+$user_id = $user->user_id();
 include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
@@ -55,7 +56,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
 }
 $guest_group_id = ""; //empty variable for pages that don't use the GET request
 
-if ($meal_choices_status == "On") {
+if ($meal_choices_wedmin->status() == "On") {
     $meal_choices_q = $db->query('SELECT menu_items.menu_item_id, menu_items.menu_item_name, menu_items.course_id, meal_choices.menu_item_id, meal_choices.choice_order_id, meal_choice_order.choice_order_id, meal_choice_order.guest_id, menu_courses.course_name, menu_courses.course_id  FROM menu_items LEFT JOIN meal_choices ON meal_choices.menu_item_id=menu_items.menu_item_id LEFT JOIN meal_choice_order ON meal_choices.choice_order_id=meal_choice_order.choice_order_id LEFT JOIN menu_courses ON menu_courses.course_id=menu_items.course_id WHERE meal_choice_order.guest_id=' . $guest_id);
 }
 
@@ -517,7 +518,7 @@ if ($meal_choices_status == "On") {
                                     <p><?= $guest_fname; ?> is not associated with a group, they are a sole invite. If you want them to bring guests, you can assign them invites by editing their details. </p>
                                 </div>
                             <?php endif; ?>
-                            <?php if ($meal_choices_status == "On") : ?>
+                            <?php if ($meal_choices_wedmin->status() == "On") : ?>
                                 <div class="std-card">
                                     <h2>Meal Choices</h2>
                                     <?php if ($meal_choices_q->num_rows > 0) : ?>

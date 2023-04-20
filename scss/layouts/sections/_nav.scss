@@ -35,14 +35,13 @@
     li {
         list-style-type: none;
 
-        svg {
-            height: 25px;
-        }
+
     }
 
     .nav-link {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         padding: 1rem;
         margin-block: .5rem;
         background-color: $primary-800;
@@ -50,8 +49,9 @@
         text-decoration: none;
         color: $primary;
 
-        img {
-            height: 25px
+        .icon {
+            height: 1.5em;
+            width: 1.5em;
         }
     }
 }

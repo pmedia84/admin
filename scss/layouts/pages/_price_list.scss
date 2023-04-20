@@ -6,20 +6,6 @@
     }
 
 }
-
-.notification{
-    $fs:12px;
-    $padding: $spacer-2;
-    font-size: $fs;
-    display: grid;
-    place-items: center;
-    color: $primary;
-    background-color: $primary-950;
-    border-radius: 100%;
-    font-weight: 700;
-    width: calc($fs * 2);
-    height: calc($fs * 2);
-}
 ///services card for price list
 .service-card{
     display: flex;

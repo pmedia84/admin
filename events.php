@@ -2,8 +2,10 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-
-include("./connect.php");
+$user = new User();
+$user_type = $user->user_type();
+$user_id = $user->user_id();
+include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
 
@@ -81,17 +83,16 @@ if ($cms_type == "Wedding") {
 
 
                     <?php if ($cms_type == "Wedding") : ?>
-                        <h2><i class="fa-solid fa-calendar-day"></i> Your Wedding Day Events</h2>
+                        <h2><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#calendar-day"></use></svg> Your Wedding Day Events</h2>
                         <p>Keep this information up to date as you plan for your big day. Information from this page will be displayed on your website.</p>
                        
-                        <a class="btn-primary" href="event.php?action=create">Create An Event <i class="fa-solid fa-plus"></i></a>
+                        <a class="btn-primary" href="event.php?action=create">Create An Event <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#plus"></use></svg></a>
                         <?php foreach ($wedding_events as $event) :
                             $event_time = strtotime($event['event_time']);
                             $time = date('H:ia', $event_time);
                             $event_date = strtotime($event['event_date']);
                             $date = date('D d M Y', $event_date);
                         ?>
-
                             <div class="event-card">
                                 <h3 class="event-card-title mb-3"> <a href="event.php?action=view&event_id=<?= $event['event_id']; ?>"><?= $event['event_name']; ?> <span class="event-card-title-time"><?= $time ?></a></span></h3>
                                 <div class="event-card-details my-3">
@@ -111,9 +112,9 @@ if ($cms_type == "Wedding") {
                                 <h4>Address</h4>
                                 <address class="my-2"><?= $event['event_address']; ?></address>
                             <div class="card-actions">
-                                <a class="my-2" href="event.php?action=view&event_id=<?= $event['event_id']; ?>"><i class="fa-solid fa-eye"></i> View Event</a>
-                                <a class="my-2" href="event.php?action=edit&event_id=<?= $event['event_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Event </a>
-                                <a class="my-2" href="event.php?action=assign&event_id=<?= $event['event_id'];?>"><i class="fa-solid fa-user-plus"></i> Edit Guest List </a>
+                                <a class="my-2" href="event.php?action=view&event_id=<?= $event['event_id']; ?>"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#eye"></use></svg> View Event</a>
+                                <a class="my-2" href="event.php?action=edit&event_id=<?= $event['event_id']; ?>"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#pen-to-square"></use></svg> Edit Event </a>
+                                <a class="my-2" href="event.php?action=assign&event_id=<?= $event['event_id'];?>"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-pen"></use></svg> Edit Guest List </a>
                             </div>
                             </div>
                         <?php endforeach; ?>

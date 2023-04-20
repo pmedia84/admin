@@ -2,8 +2,10 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-
-include("./connect.php");
+$user = new User();
+$user_type = $user->user_type();
+$user_id = $user->user_id();
+include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
 
@@ -54,10 +56,7 @@ if ($cms_type == "Wedding") {
 <title>Mi-Admin | Invitation List</title>
 <!-- /Page Title -->
 </head>
-
 <body>
-
-
     <!-- Main Body Of Page -->
     <main class="main col-2">
 
@@ -82,11 +81,11 @@ if ($cms_type == "Wedding") {
 
 
                     <?php if ($cms_type == "Wedding") : ?>
-                        <h2><i class="fa-solid fa-champagne-glasses"></i> Your Invitations</h2>
+                        <h2><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#champagne-glasses"></use></svg> Your Invitations</h2>
                         <p>This is your invite list, this list is automatically populated when you assign guests to events.</p>
                         <p>You can also keep up to date with guests that you have not had a response from.</p>
                         <p>This list will only show the main guest.</p>
-                        <a class="btn-primary" href="invitations_dl.php">Download Invitations <i class="fa-solid fa-download"></i></a>
+                        <a class="btn-primary" href="invitations_dl.php">Download Invitations <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#download"></use></svg></a>
                             <form id="invite_search" action="./scripts/guest_list.script.php" method="POST">
                             <div class="search-controls">
 

@@ -242,11 +242,14 @@
     border-bottom: 1px solid $primary;
     
 }
-.response-card{
-    
-    position: absolute;
+//outer wrapper to show and hide card
+.response-card-wrapper{
+    position: fixed;
     right: 25px;
-    top: 40%;
+    top: 50px;
+    z-index: 1000;
+}
+.response-card{
     padding-block: $spacer-3;
     border: 1px solid $primary;
     border-left: 5px solid $primary;
@@ -254,7 +257,7 @@
     background-color: #fff;
     display: flex;
     gap: $spacer-3;
-
+    z-index: 100;
 }
 .response-card-icon{
     padding-inline: $spacer-2;

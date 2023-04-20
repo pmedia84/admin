@@ -2,54 +2,39 @@
 session_start();
 require("scripts/functions.php");
 check_login();
+$user = new User();
+$user_type = $user->user_type();
+$user_id = $user->user_id();
 include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
 //determine what type of cms is running
 //run checks to make sure a business has been set up
-if ($cms_type == "Business") {
-    //look for a business setup in the db, if not then direct to the setup page
-    $business_query = ('SELECT business_id, business_name FROM business');
-    $business = $db->query($business_query);
-    $business = $db->prepare('SELECT * FROM business');
-    $business->execute();
-    $business->store_result();
-    $business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
-    $business->fetch();
-    if ($business->num_rows == 0) {
-        header('Location: setup.php?action=setup_business');
-    }
-    //check that there are users set up 
-    $business_user_query = ('SELECT * FROM business_users');
-    $business_user = $db->query($business_user_query);
-    if ($business_user->num_rows == 0) {
-        header('Location: setup.php?action=check_users_business');
-    }
-    $business->close();
-    //find business details
+
+if (cms_type() == "Business") {
+    // //look for a business setup in the db, if not then direct to the setup page
+    // $business_query = ('SELECT business_id, business_name FROM business');
+    // $business = $db->query($business_query);
+    // $business = $db->prepare('SELECT * FROM business');
+    // $business->execute();
+    // $business->store_result();
+    // $business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
+    // $business->fetch();
+    // if ($business->num_rows == 0) {
+    //     header('Location: setup.php?action=setup_business');
+    // }
+    // //check that there are users set up 
+    // $business_user_query = ('SELECT * FROM business_users');
+    // $business_user = $db->query($business_user_query);
+    // if ($business_user->num_rows == 0) {
+    //     header('Location: setup.php?action=check_users_business');
+    // }
+    // $business->close();
+    // //find business details
 }
 //run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
-
-    //look for a wedding setup in the db, if not then direct to the setup page
-    $wedding_query = ('SELECT wedding_id, wedding_name FROM wedding LIMIT 1');
-    $wedding_result = $db->query($wedding_query);
-
-    if ($wedding_result->num_rows == 0) {
-        header('Location: setup.php?action=setup_wedding');
-    }
-    $wedding = $db->prepare($wedding_query);
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name);
-    $wedding->fetch();
-    $wedding->close();
-    //check that there are users set up 
-    $wedding_user_query = ('SELECT wedding_user_id FROM wedding_users');
-    $wedding_user = $db->query($wedding_user_query);
-    if ($wedding_user->num_rows == 0) {
-        header('Location: setup.php?action=check_users_wedding');
-    }
+if (cms_type() == "Wedding") {
+    wedding_load($wedding_name, $wedding_date, $wedding_id);  
 
     //find the amount of guests
     $guest_num = ('SELECT guest_id FROM guest_list');
@@ -60,15 +45,7 @@ if ($cms_type == "Wedding") {
     $invite_num = $db->query($invite_num);
     $invite_num = $invite_num->num_rows;
 }
-//connect to user db to check admin rights etc
-//find username and email address to display on screen.
-$user = $db->prepare('SELECT user_id,  user_type FROM users WHERE user_id = ?');
-$user->bind_param('s', $_SESSION['user_id']);
-$user->execute();
-$user->store_result();
-$user->bind_result($user_id, $user_type);
-$user->fetch();
-$user->close();
+
 //find news articles
 $news_query = ('SELECT * FROM news_articles WHERE news_articles_status="Published" ORDER BY news_articles_date LIMIT 3 ');
 $news = $db->query($news_query);
@@ -81,10 +58,6 @@ $article_amt = $article_num->num_rows;
 $image_num = ('SELECT image_id FROM images  ');
 $image_num = $db->query($image_num);
 $image_amt = $image_num->num_rows;
-//find the amount of users listed
-$user_num = ('SELECT user_id FROM users');
-$user_num = $db->query($user_num);
-$user_amt = $user_num->num_rows;
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -111,7 +84,7 @@ $user_amt = $user_num->num_rows;
         <section class="body">
             <div class="breadcrumbs"><span><i class="fa-solid fa-house"></i> Home / </span></div>
             <div class="main-dashboard">
-                <?php if ($news_status == "On") : ?>
+                <?php if ($news_m->status() == "On") : ?>
                     <div class="dashboard-card">
                         <div class="dashboard-card-header">
                             <span><?= $article_amt; ?></span>
@@ -131,7 +104,7 @@ $user_amt = $user_num->num_rows;
                 </div>
 
                 <?php if ($cms_type == "Wedding") : ?>
-                    <?php if ($invite_manager_status == "On") : ?>
+                    <?php if ($invite_manager->status() == "On") : ?>
                         <div class="dashboard-card">
                             <div class="dashboard-card-header">
                                 <span><?= $guest_amt; ?></span>
@@ -155,7 +128,7 @@ $user_amt = $user_num->num_rows;
 
 
         </section>
-        <?php if ($news_status == "On") : ?>
+        <?php if ($news_m->status() == "On") : ?>
 
 
             <div class="main-cards">

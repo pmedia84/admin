@@ -2,9 +2,12 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-include("./connect.php");
-include("./inc/head.inc.php");
-include("./inc/settings.php");
+$user = new User();
+$user_type = $user->user_type();
+$user_id = $user->user_id();
+include("connect.php");
+include("inc/head.inc.php");
+include("inc/settings.php");
 
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
@@ -84,7 +87,7 @@ if ($cms_type == "Wedding") {
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / Our Story</div>
             <div class="main-cards cms-settings-cards">
                 <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-                    <h1><i class="fa-regular fa-heart"></i> Our Story</h1>
+                    <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#heart"></use></svg> Our Story</h1>
                     <p>Edit or create your story for your wedding website.</p>
                     <?php
                     //connect to db and load story
@@ -97,7 +100,6 @@ if ($cms_type == "Wedding") {
                     ?>
                         <form class="form-card" id="edit_story" action="scripts/our_story.script.php" method="POST" enctype="multipart/form-data">
                             <div class="form-input-wrapper my-2">
-                                <label for="story_body">Story</label>
                                 <textarea id="story_body" name="story_body">
                         <?= $story_body; ?>
                         </textarea>
@@ -115,7 +117,7 @@ if ($cms_type == "Wedding") {
                                 </select>
                             </div>
                             <div class="button-section my-3">
-                                <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save </button>
+                                <button class="btn-primary form-controls-btn" type="submit"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#floppy-disk"></use></svg> Save </button>
                             </div>
                             <div id="response" class="d-none">
                             </div>

@@ -2,11 +2,12 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-
+$user = new User();
+$user_type = $user->user_type();
+$user_id = $user->user_id();
 include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
-
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
 //wedding is the name of people
@@ -18,14 +19,7 @@ $user_id = $_SESSION['user_id'];
 //run checks to make sure a wedding has been set up correctly
 if ($cms_type == "Wedding") {
     //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
 
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time, $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-    $wedding->close();
     //set cms name
     $cms_name = $wedding_name;
     //find user details for this business
