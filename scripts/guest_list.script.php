@@ -32,8 +32,8 @@ if (isset($_GET['action'])) {
         <td>'.$guest['guest_rsvp_status'].'</td>
         <td>'.$guest['guest_rsvp_code'].'</td>
         <td><div class="guest-list-actions">
-                <a href="guest.php?guest_id='.$guest['guest_id'].'&action=edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                <a href="guest.php?guest_id='.$guest['guest_id'].'&action=delete&confirm=no"><i class="fa-solid fa-user-minus"></i></a>
+                <a href="guest.php?guest_id='.$guest['guest_id'].'&action=edit"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#pen-to-square"></use></svg></a>
+                <a href="guest.php?guest_id='.$guest['guest_id'].'&action=delete&confirm=no"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-minus"></use></svg></a>
             </div>
         </td>
     </tr>                   

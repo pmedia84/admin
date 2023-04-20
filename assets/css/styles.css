@@ -741,8 +741,8 @@ grid-column: 2/3;
         transition: box-shadow 300ms ease-out;
     } 
 
-.btn-primary svg{
-    margin-right: 0.5rem;
+.btn-primary .icon{
+    margin-inline: 0.5rem;
     height: 1rem;
 } 
 

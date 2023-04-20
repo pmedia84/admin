@@ -75,14 +75,14 @@ if ($cms_type == "Wedding") {
                     <?php if ($cms_type == "Wedding") : ?>
                         <h2><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#people-group"></use></svg> Your Guest List</h2>
                         <p>Keep this information up to date as you plan for big day. Your invites will be sent out from this information.</p>
-                        <a href="guest.php?action=create" class="btn-primary">Add Guest <i class="fa-solid fa-user-plus"></i></a>
+                        <a href="guest.php?action=create" class="btn-primary">Add Guest <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-plus"></use></svg></a>
                         <div class="search-controls">
                             <form id="guest_search" action="./scripts/guest_list.script.php" method="POST">
                                 <div class="form-input-wrapper">
                                     <label for="search">Search by guest name</label>
                                     <div class="search-input">
                                         <input type="text" id="search" name="search" placeholder="Search For A Guest ...">
-                                        <button class="btn-primary form-controls-btn loading-btn" type="submit"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></button>
+                                        <button class="btn-primary form-controls-btn loading-btn" type="submit"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#magnifying-glass"></use></svg></button>
                                     </div>
                                 </div>
                             </form>

@@ -39,23 +39,6 @@ $("#gallery-body").on("click", ".img-select", function () {
   $(this).parent().toggleClass("img-checked");
 })
 
-$("#gallery-body").on("focusout", ".caption", function () {
-  let image_id = $(this).data("imgid");
-  let caption = $(this).text();
-  let action = $(this).data("action");
-  let formData = new FormData();
-  formData.append("action", action);
-  formData.append("image_id", image_id);
-  formData.append("caption", caption);
-  $.ajax({ //start ajax post
-    type: "POST",
-    url: "scripts/gallery.scriptnew.php",
-    data: formData,
-    contentType: false,
-    processData: false,
-
-  });
-})
 
 //? Uploading images. Use AJAX request
 $("#upload").on("submit", function (e) {

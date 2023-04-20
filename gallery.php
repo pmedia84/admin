@@ -206,7 +206,7 @@ $sub_total = $sub_q->num_rows;
                     <!-- input -->
                     <input type="file" name="gallery_img[]" id="gallery_img" accept="image/*" multiple>
                     <div class="modal-footer">
-                        <button class="btn-primary my-2 form-controls-btn loading-btn" type="submit" id="upload-btn" data-action="upload"><span id="loading-btn-text" class="loading-btn-text"><i class="fa-solid fa-upload"></i>Submit</span> <i id="loading-icon" class="fa-solid fa-spinner fa-spin-pulse spinner-icon d-none"></i></button>
+                        <button class="btn-primary my-2 form-controls-btn loading-btn" type="submit" id="upload-btn" data-action="upload"><span id="loading-btn-text" class="loading-btn-text"><svg class="icon spinner-icon "><use href="assets/img/icons/solid.svg#upload" /></svg>Submit</span> <svg class="icon spinner-icon d-none loader-spinner " id="loading-icon"><use href="assets/img/icons/solid.svg#circle-notch" /></svg></button>
                     </div>
                 </div>
             </form>
