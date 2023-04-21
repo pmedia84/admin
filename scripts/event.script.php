@@ -77,11 +77,11 @@ if ((array_key_exists('action', $_GET))) {
                     <td><a <?php if($guest['guest_type']=="Member"):?> class="text-muted"<?php endif;?> href="guest.php?action=view&guest_id=<?= $guest['guest_id']; ?>"><?= $guest['guest_fname'] . " " . $guest['guest_sname'] . ' ' . $plus; ?></a></td>
                     <td><?php if ($guest['guest_type'] == "Group Organiser" || $guest['guest_type'] == "Sole") : ?>
                             <label class="checkbox-form-control">
-                                <button class="btn-primary btn-secondary remove_guest" data-guestid="<?= $guest['guest_id']; ?>" data-guesttype="<?= $guest['guest_type']; ?>" data-guestgroupid="<?= $guest['guest_group_id']; ?>"><i class="fa-solid fa-user-minus"></i></button>
+                                <button class="btn-primary btn-secondary remove_guest" data-guestid="<?= $guest['guest_id']; ?>" data-guesttype="<?= $guest['guest_type']; ?>" data-guestgroupid="<?= $guest['guest_group_id']; ?>"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-minus"></use></svg></button>
                             </label>
                         <?php else : ?>
                             <label class="checkbox-form-control">
-                                <button class="btn-primary btn-secondary remove_guest disabled" disabled><i class="fa-solid fa-user-minus"></i></button>
+                                <button class="btn-primary btn-secondary remove_guest disabled" disabled><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-minus"></use></svg></button>
                             </label>
                         <?php endif; ?>
                     </td>
@@ -118,19 +118,15 @@ if ((array_key_exists('action', $_GET))) {
                     <tr>
                         <td><a href="guest.php?action=view&guest_id=<?= $inv['guest_id']; ?>"><?= $inv['guest_fname'] . " " . $inv['guest_sname'] . ' ' . $plus; ?></a></td>
                         <td>
-
                             <label class="checkbox-form-control" for="guest">
                                 <input class="assign_check" type="checkbox" id="guest" name="guest_id[]" value="<?= $inv['guest_id']; ?>" />
                             </label>
-
-
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </table>
-
             <div class="button-section my-3">
-                <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-user-plus"></i> Assign Selected Guests </button>
+                <button class="btn-primary form-controls-btn" type="submit"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-plus"></use></svg> Assign Selected Guests </button>
             </div>
         </form>
         <script>

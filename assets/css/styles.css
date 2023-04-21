@@ -4,7 +4,6 @@
 /*Red for a color needing attention*/
 /*form colours*/
 /* Border Radius*/
-
 /*/Screen Breakpoints*/
 
 /*Padding and margin settings*/
@@ -131,8 +130,7 @@ a:hover{
     left: 0;
     top: 0;
     right: 0;
-
-    z-index: 100;
+    z-index: 1000;
 } 
 .nav-btn-close{
     height: 35px;
@@ -217,30 +215,63 @@ a:hover{
 } 
 .header-actions-navbtn, .header-actions-btn-logout{
     height: 35px;
+    width: 35px;
+    outline: 2px solid transparent;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    transition: outline 300ms ease-out;
 } 
-.header-actions-navbtn svg,.header-actions-btn-logout svg{
-        height: 35px;
+.header-actions-navbtn .icon,.header-actions-btn-logout .icon{
+        height: 100%;
+        width: 100%;
         fill: rgb(59, 104, 92);
+        transition: fill 300ms ease-out;
     } 
-.header-actions-btn-user, .header-actions-btn-logout {
-    display: flex;
-} 
+.header-actions-navbtn:focus, .header-actions-navbtn:focus-within, .header-actions-btn-logout:focus, .header-actions-btn-logout:focus-within{
+        outline: 2px solid rgb(59, 104, 92);
+        transition: outline 300ms ease-out;
+    } 
+.header-actions-navbtn:focus .icon,.header-actions-navbtn:focus-within .icon,.header-actions-btn-logout:focus .icon,.header-actions-btn-logout:focus-within .icon{
+            fill: hsl(163, 28%, 50%);
+            transition: fill 300ms ease-out;
+        } 
 .header-actions-btn-user{
-    font-size: 35px;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    transition: outline 300ms ease-out;
+    font-size: 1.75rem;
+    display: flex;
+    align-items: flex-end;
 } 
-.header-actions-btn-user svg{
+.header-actions-btn-user .icon{
         fill: rgb(59, 104, 92);
+        opacity: 1;
+        transition: opacity 300ms ease-out;
     } 
+.header-actions-btn-user .down{
+        height: .65em;
+        transform: rotate(0);
+        transition: transform 300ms ease-out;
+    } 
+.header-actions-btn-user:focus, .header-actions-btn-user:focus-within{
+        outline: 2px solid rgb(59, 104, 92);
+        transition: outline 300ms ease-out;
+    } 
+.header-actions-btn-user:focus .icon,.header-actions-btn-user:focus-within .icon{
+            opacity: .8;
+            transition: opacity 300ms ease-out;
+        } 
+.header-actions-btn-user:focus .down,.header-actions-btn-user:focus-within .down{
+            transform: rotate(180deg);
+            transition: transform 300ms ease-in-out;
+        } 
 .header-actions-business-name {
     display: none;
 } 
-.header-actions-btn-logout{
-    display: flex;
-    align-items: center;
-} 
-.header-actions-btn-logout span{
-        margin-inline: .5rem;
-    } 
 /*login page header with logo*/ 
 .login-header img{
         height: 70px;
@@ -1482,7 +1513,6 @@ input:checked+.slider:before {
     background-color: hsl(163, 28%, 95%);
     padding: 0.5rem;
     border-radius: 5px;
-    margin-block: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -1637,7 +1667,6 @@ input:checked+.slider:before {
 .form-card{
     background-color: #fff;
     padding: 1.5rem;
-    margin-block: 1.5rem;
     border-radius: 5px;
 } 
 
@@ -1757,22 +1786,8 @@ input:checked+.slider:before {
 .menu-item-actions{
     display: flex;
     gap: 0.5rem;
+
 } 
-
-.menu-item-actions .btn-delete{
-        width: 33.33px;
-        display: grid;
-        place-items: center;
-    } 
-
-.menu-item-actions .btn-delete svg{
-            height: 100%;
-            margin: 0;
-        } 
-
-.menu-item-actions .btn-delete svg path{
-                fill: #FFF;
-            } 
 
 /*/meal choices cards*/ 
 
@@ -2184,7 +2199,26 @@ max-width: 90vw;
   height: 1em;
   vertical-align: -0.125em;
     fill: currentColor;
-  }
+  } 
+
+/*/dropdown menu*/ 
+
+.dropdown{
+    position: relative;
+} 
+
+.dropdown ul{
+    position: absolute;
+    bottom: -100px;
+    right: 0;
+    padding: 1.5rem;
+    background-color: hsl(163, 28%, 95%);
+    margin: 0;
+    width: max-content;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgb(145, 145, 145);
+    display: none;
+}
 /*spacing utilities*/
 /*m = margin*/
 /*p = padding*/

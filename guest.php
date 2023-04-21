@@ -17,14 +17,7 @@ $user_id = $_SESSION['user_id'];
 //run checks to make sure a wedding has been set up correctly
 if ($cms_type == "Wedding") {
     //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
-
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time,   $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-    $wedding->close();
+    wedding_load($wedding_name, $wedding_date, $wedding_id);  
     //set cms name
     $cms_name = $wedding_name;
     //find user details for this wedding
@@ -100,16 +93,24 @@ if ($meal_choices_wedmin->status() == "On") {
             </div>
             <div class="main-cards">
                 <?php if ($_GET['action'] == "edit") : ?>
-                    <h1><i class="fa-solid fa-user"></i> Edit Guest</h1>
+                    <h1><svg class="icon">
+                            <use xlink:href="assets/img/icons/solid.svg#user"></use>
+                        </svg> Edit Guest</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "view") : ?>
-                    <h1><i class="fa-solid fa-user"></i> View Guest</h1>
+                    <h1><svg class="icon">
+                            <use xlink:href="assets/img/icons/solid.svg#user"></use>
+                        </svg> View Guest</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "delete") : ?>
-                    <h1><i class="fa-solid fa-user"></i> Remove Guest</h1>
+                    <h1><svg class="icon">
+                            <use xlink:href="assets/img/icons/solid.svg#user"></use>
+                        </svg> Remove Guest</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "create") : ?>
-                    <h1><i class="fa-solid fa-user"></i> Add Guest</h1>
+                    <h1><svg class="icon">
+                            <use xlink:href="assets/img/icons/solid.svg#user"></use>
+                        </svg> Add Guest</h1>
                 <?php endif; ?>
 
 
@@ -186,8 +187,12 @@ if ($meal_choices_wedmin->status() == "On") {
                                     <p><?php if ($guest_rsvp_status == "") : ?>Not Responded<?php else : echo $guest_rsvp_status;
                                                                                         endif; ?></p>
                                     <div class="button-section">
-                                        <a class="btn-primary btn-delete my-2" href="guest.php?action=delete&confirm=yes&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i>Remove Guest</a>
-                                        <a class="btn-primary btn-secondary my-2" href="guest.php?action=view&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-ban"></i>Cancel</a>
+                                        <a class="btn-primary btn-delete my-2" href="guest.php?action=delete&confirm=yes&guest_id=<?= $guest_id; ?>"><svg class="icon">
+                                                <use xlink:href="assets/img/icons/solid.svg#user-minus"></use>
+                                            </svg>Remove Guest</a>
+                                        <a class="btn-primary btn-secondary my-2" href="guest.php?action=view&guest_id=<?= $guest_id; ?>"><svg class="icon">
+                                                <use xlink:href="assets/img/icons/solid.svg#ban"></use>
+                                            </svg>Cancel</a>
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -198,7 +203,6 @@ if ($meal_choices_wedmin->status() == "On") {
                     <?php endif; ?>
 
                     <?php if ($_GET['action'] == "create") : ?>
-
                         <form id="add_guest" action="scripts/guest.script.php" method="POST" enctype="multipart/form-data">
                             <div class="form-card">
                                 <h2>Main Guest</h2>
@@ -217,7 +221,7 @@ if ($meal_choices_wedmin->status() == "On") {
                                     <p class="form-hint-small">Optional, guests that use your guest area will update this themselves.</p>
                                     <input class="text-input input" type="text" id="guest_email" name="guest_email" placeholder="Email Address">
                                 </div>
-                                <button class="btn-primary btn-secondary my-2" type="button" id="show_address"><i class="fa-solid fa-map-location-dot"></i> Add Address</button>
+                                <button class="btn-primary btn-secondary my-2" type="button" id="show_address"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#map-location-dot"></use></svg> Add Address</button>
                                 <div class="form-hidden d-none">
                                     <div class="form-input-wrapper my-2">
                                         <label for="guest_address"><strong>Address</strong></label>
@@ -238,7 +242,7 @@ if ($meal_choices_wedmin->status() == "On") {
                                 <p>You can assign this guest extra invites here, if you know who they will be bringing with them.</p>
                                 <p>If you are unsure of their name, tick the box below each guest and they will be added as a plus one.</p>
                                 <div id="guest-group-row"></div>
-                                <button class="btn-primary btn-secondary my-2" type="button" id="add-member"><i class="fa-solid fa-user-plus"></i> Add Guests</button>
+                                <button class="btn-primary btn-secondary my-2" type="button" id="add-member"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-plus"></use></svg> Add Guests</button>
                             </div>
                             <div class="form-card">
                                 <h2>Assign To Events</h2>
@@ -304,8 +308,10 @@ if ($meal_choices_wedmin->status() == "On") {
                             }
                         ?>
                             <h2><?= $guest_fname . ' ' . $guest_sname; ?></h2>
-                            <div class="card-actions my-2">
-                                <a class="my-2" href="guest_list?"><i class="fa-solid fa-left-long"></i> Return To Guest List </a>
+                            <div class="card-actions">
+                                <a class="" href="guest_list?"><svg class="icon">
+                                        <use xlink:href="assets/img/icons/solid.svg#left-long"></use>
+                                    </svg> Return To Guest List </a>
                             </div>
 
                             <form id="edit_guest" action="scripts/guest.script.php" method="POST" enctype="multipart/form-data">
@@ -335,7 +341,9 @@ if ($meal_choices_wedmin->status() == "On") {
                                         <p class="form-hint-small">Optional, guests that use your guest area will update this themselves.</p>
                                         <input class="text-input input" type="text" id="guest_email" name="guest_email" placeholder="Email Address" value="<?= $guest_email; ?>">
                                     </div>
-                                    <button class="btn-primary btn-secondary my-2" type="button" id="show_address"><i class="fa-solid fa-map-location-dot"></i> Add Address</button>
+                                    <button class="btn-primary btn-secondary my-2" type="button" id="show_address"><svg class="icon">
+                                            <use xlink:href="assets/img/icons/solid.svg#map-location-dot"></use>
+                                        </svg> Add Address</button>
                                     <div class="form-hidden d-none">
                                         <div class="form-input-wrapper my-2">
                                             <label for="guest_address"><strong>Address</strong></label>
@@ -351,7 +359,7 @@ if ($meal_choices_wedmin->status() == "On") {
 
                                 </div>
                                 <?php if (isset($guest_group) && $guest_group->num_rows > 0) : ?>
-                                    <div class="std-card">
+                                    <div class="std-card my-2">
                                         <h3>Group</h3>
                                         <p>The guest group that <?= $guest_fname; ?> is organising.</p>
 
@@ -367,8 +375,12 @@ if ($meal_choices_wedmin->status() == "On") {
                                                     <td><a href="guest.php?action=view&guest_id=<?= $guest['guest_id']; ?>"><?= $guest['guest_fname'] . " " . $guest['guest_sname']; ?></a></td>
                                                     <td>
                                                         <div class="guest-list-actions">
-                                                            <a href="guest.php?guest_id=<?= $guest['guest_id']; ?>&action=edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                            <a href="guest.php?guest_id=<?= $guest['guest_id']; ?>&action=delete&confirm=no"><i class="fa-solid fa-user-minus"></i></a>
+                                                            <a href="guest.php?guest_id=<?= $guest['guest_id']; ?>&action=edit"><svg class="icon">
+                                                                    <use xlink:href="assets/img/icons/solid.svg#pen-to-square"></use>
+                                                                </svg></a>
+                                                            <a href="guest.php?guest_id=<?= $guest['guest_id']; ?>&action=delete&confirm=no"><svg class="icon">
+                                                                    <use xlink:href="assets/img/icons/solid.svg#user-minus"></use>
+                                                                </svg></a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -383,7 +395,9 @@ if ($meal_choices_wedmin->status() == "On") {
                                         <p>You can assign this guest extra invites here, if you know who they will be bringing with them.</p>
                                         <p>If you are unsure of their name, tick the box below each guest and they will be added as a plus one.</p>
                                         <div id="guest-group-row"></div>
-                                        <button class="btn-primary btn-secondary my-2" type="button" id="add-member"><i class="fa-solid fa-user-plus"></i> Add Guests</button>
+                                        <button class="btn-primary btn-secondary my-2" type="button" id="add-member"><svg class="icon">
+                                                <use xlink:href="assets/img/icons/solid.svg#user-plus"></use>
+                                            </svg> Add Guests</button>
                                     </div>
                                 <?php endif; ?>
                                 <div class="form-card">
@@ -400,7 +414,9 @@ if ($meal_choices_wedmin->status() == "On") {
                                     <?php endif; ?>
                                 </div>
                                 <div class="button-section my-3">
-                                    <button class="btn-primary form-controls-btn" type="submit"> Save Changes</button>
+                                    <button class="btn-primary form-controls-btn" type="submit"><svg class="icon">
+                                            <use xlink:href="assets/img/icons/solid.svg#floppy-disk"></use>
+                                        </svg> Save Changes</button>
                                 </div>
 
                                 <div id="response" class="d-none">

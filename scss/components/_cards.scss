@@ -92,7 +92,6 @@
     background-color: $primary-950;
     padding: $spacer-2;
     border-radius: 5px;
-    margin-block: $spacer-3;
     display: flex;
     flex-direction: column;
     gap: $spacer-2;
@@ -227,7 +226,6 @@
 .form-card{
     background-color: #fff;
     padding: $spacer-3;
-    margin-block: $spacer-3;
     border-radius: 5px;
 }
 
@@ -330,18 +328,7 @@
 .menu-item-actions{
     display: flex;
     gap: $spacer-2;
-    .btn-delete{
-        width: 33.33px;
-        display: grid;
-        place-items: center;
-        svg{
-            height: 100%;
-            margin: 0;
-            path{
-                fill: #FFF;
-            }
-        }
-    }
+
 }
 
 ///meal choices cards

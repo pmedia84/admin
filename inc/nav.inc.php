@@ -1,7 +1,7 @@
 <nav class="nav-bar">
     <div class="nav-container">
         <div class="close">
-            <button class="nav-btn-close" id="nav-btn-close"><i class="fa-solid fa-xmark"></i></button>
+            <button class="nav-btn-close" id="nav-btn-close"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#xmark"></use></svg></button>
         </div>
         <ul class="nav-links">
             <?php if ($cms_type == "Business") : ?>

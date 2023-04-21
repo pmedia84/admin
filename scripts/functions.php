@@ -24,7 +24,7 @@ function wedding_load(&$wedding_name, &$wedding_date, &$wedding_id)
     $wedding_name = $wedding_r['wedding_name'];
     $wedding_date = $wedding_r['wedding_date'];
     $wedding_id = $wedding_r['wedding_id'];
-    if ($wedding_q->num_rows > 5) {
+    if ($wedding_q->num_rows < 1) {
         header("Location: login");
     }
 }

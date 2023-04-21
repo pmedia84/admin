@@ -14,20 +14,12 @@ include("inc/settings.php");
 //wedding is the name of people
 //business name
 
-$user_id = $_SESSION['user_id'];
 
 
 //run checks to make sure a wedding has been set up correctly
 if ($cms_type == "Wedding") {
     //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
-
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time, $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-    $wedding->close();
+    wedding_load($wedding_name, $wedding_date, $wedding_id);  
     //set cms name
     $cms_name = $wedding_name;
     //find user details for this business
@@ -86,7 +78,7 @@ if ($cms_type == "Wedding") {
                         <h2><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#calendar-day"></use></svg> Your Wedding Day Events</h2>
                         <p>Keep this information up to date as you plan for your big day. Information from this page will be displayed on your website.</p>
                        
-                        <a class="btn-primary" href="event.php?action=create">Create An Event <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#plus"></use></svg></a>
+                        <a class="btn-primary" href="event.php?action=create">Create An Event <svg class="icon"><use xlink:href="assets/img/icons/regular.svg#calendar-plus"></use></svg></a>
                         <?php foreach ($wedding_events as $event) :
                             $event_time = strtotime($event['event_time']);
                             $time = date('H:ia', $event_time);
@@ -131,11 +123,7 @@ if ($cms_type == "Wedding") {
 
     </main>
 
-    <!-- /Main Body Of Page -->
-    <!-- Quote request form script -->
 
-    <!-- /Quote request form script -->
-    <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
 

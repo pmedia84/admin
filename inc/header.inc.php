@@ -14,13 +14,7 @@
                             } ; ?></h1>
     <div class="header-actions">
         <div class="header-actions-btn-section">
-            <div class="header-actions-navbtn">
-                <a href="#" class="nav-btn" id="nav-btn"><i class="fa-solid fa-bars"></i></a>
-            </div>
-
-            <a class="header-actions-btn-user" href="">
-            <i class="fa-solid fa-user"></i>
-            </a>
+            <button class="nav-btn header-actions-navbtn" id="nav-btn"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#bars"></use></svg></button>
             <div class="header-actions-business-name">
                 <h1><?php if ($cms_type == "Business") {
                         echo $business_name;
@@ -28,7 +22,14 @@
                         echo $wedding_name . '\'s Wedding';
                     } ?></h1>
             </div>
-            <a class="header-actions-btn-logout" href="logout.php"><span>Logout</span><i class="fa-solid fa-right-from-bracket"></i></a>
+            <!-- <div class="dropdown">
+                <button class="header-actions-btn-user dropdown-btn" title="User Profile"><svg class="icon user"><use xlink:href="assets/img/icons/solid.svg#user"></use></svg><svg class="icon down"><use xlink:href="assets/img/icons/solid.svg#chevron-down"></use></svg></button>
+                <ul role="list">
+                    <li><a href="">My Profile</a></li>
+                    <li><a href="">Log Out <svg class="icon down"><use xlink:href="assets/img/icons/solid.svg#right-from-bracket"></use></svg></a></li>
+
+                </ul>
+            </div>         -->
         </div>
     </div>
 </div>

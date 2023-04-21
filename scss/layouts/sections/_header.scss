@@ -20,30 +20,65 @@
 }
 .header-actions-navbtn, .header-actions-btn-logout{
     height: 35px;
-    svg{
-        height: 35px;
+    width: 35px;
+    outline: 2px solid transparent;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    transition: outline 300ms ease-out;
+    .icon{
+        height: 100%;
+        width: 100%;
         fill: $primary;
+        transition: fill 300ms ease-out;
+    }
+    &:focus, &:focus-within{
+        outline: 2px solid $primary;
+        transition: outline 300ms ease-out;
+        .icon{
+            fill: $primary-500;
+            transition: fill 300ms ease-out;
+        }
     }
 }
-.header-actions-btn-user, .header-actions-btn-logout {
-    display: flex;
-}
+
 .header-actions-btn-user{
-    font-size: 35px;
-    svg{
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    transition: outline 300ms ease-out;
+    font-size: 1.75rem;
+    display: flex;
+    align-items: flex-end;
+    .icon{
         fill: $primary;
+        opacity: 1;
+        transition: opacity 300ms ease-out;
+    }
+    .down{
+        height: .65em;
+        transform: rotate(0);
+        transition: transform 300ms ease-out;
+    }
+    &:focus, &:focus-within{
+        outline: 2px solid $primary;
+        transition: outline 300ms ease-out;
+        .icon{
+            opacity: .8;
+            transition: opacity 300ms ease-out;
+        }
+        .down{
+            transform: rotate(180deg);
+            transition: transform 300ms ease-in-out;
+        }
     }
 }
 .header-actions-business-name {
     display: none;
 }
-.header-actions-btn-logout{
-    display: flex;
-    align-items: center;
-    span{
-        margin-inline: .5rem;
-    }
-}
+
 
 .login-header{//login page header with logo
     img{

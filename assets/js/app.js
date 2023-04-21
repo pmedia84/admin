@@ -32,3 +32,7 @@ $("#cancel").click(function() {
 
 })
 
+//show dropdown menu when button clicked
+$(".dropdown-btn").on("click", function(){
+    $(this).siblings("ul").fadeToggle(400);
+})
