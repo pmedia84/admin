@@ -2,57 +2,21 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-
 include("connect.php");
-include("inc/head.inc.php");
 include("inc/settings.php");
-
-////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
-//Variable for name of CMS
-//wedding is the name of people
-//business name
-$cms_name = "";
-$user_id = $_SESSION['user_id'];
-
-
-//run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
-    //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
-
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time,   $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-    $wedding->close();
-    //set cms name
-    $cms_name = $wedding_name;
-    //find user details for this wedding
-    $wedding_users = $db->prepare('SELECT users.user_id, users.user_name, wedding_users.wedding_id, wedding_users.user_type FROM users NATURAL LEFT JOIN wedding_users WHERE users.user_id=' . $user_id);
-
-    $wedding_users->execute();
-    $wedding_users->bind_result($user_id, $user_name, $wedding_id, $user_type);
-    $wedding_users->fetch();
-    $wedding_users->close();
-}
-
-//////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //guest variable, only required for edit and view actions
 if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] == "delete") {
     $gift_item_id = $_GET['gift_item_id'];
     //find guest details
-
+    
     $gift_item = $db->prepare('SELECT * FROM gift_list WHERE gift_item_id =' . $gift_item_id);
-
+    
     $gift_item->execute();
     $gift_item->store_result();
 } else {
     $gift_item_id = "";
 }
-
-
-
+include("inc/head.inc.php");
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -118,20 +82,20 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
             </div>
             <div class="main-cards">
                 <?php if ($_GET['action'] == "edit") : ?>
-                    <h1><i class="fa-solid fa-gifts"></i> Edit Gift List Item</h1>
+                    <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#gift"></use></svg> Edit Gift List Item</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "view") : ?>
-                    <h1><i class="fa-solid fa-gifts"></i> View Gift List Item</h1>
+                    <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#gift"></use></svg> View Gift List Item</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "delete") : ?>
-                    <h1><i class="fa-solid fa-gifts"></i> Remove Item </h1>
+                    <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#gift"></use></svg> Remove Item </h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "create") : ?>
-                    <h1><i class="fa-solid fa-gifts"></i> Add An Item</h1>
+                    <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#gift"></use></svg> Add An Item</h1>
                 <?php endif; ?>
 
 
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : //detect if user is an admin or developer 
+                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : //detect if user is an admin or developer 
                 ?>
                     <?php if ($_GET['action'] == "delete") : //if action is delete, detect if the confirm is yes or no
                     ?>
@@ -200,7 +164,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
 
                     <?php if ($_GET['action'] == "create") : ?>
                         <div class="std-card">
-                            <form class="form-card" id="add_gift_item" action="scripts/gift_item.script.php" method="POST" enctype="multipart/form-data">
+                            <form class="" id="add_gift_item" action="scripts/gift_item.script.php" method="POST" enctype="multipart/form-data">
                                 <div class="form-input-wrapper">
                                     <label for="gift_item_name"><strong>Gift Name</strong></label>
                                     <p class="form-hint-small">This can be left blank if you are just wanting to leave a message on your gift list page. Such as asking for money towards a honeymoon.</p>
@@ -256,7 +220,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     echo $gift_item_name;
                                 } ?></h2>
                             <div class="std-card">
-                                <form class="form-card" id="edit_gift_item" action="scripts/gift_item.script.php" method="POST" enctype="multipart/form-data">
+                                <form class="" id="edit_gift_item" action="scripts/gift_item.script.php" method="POST" enctype="multipart/form-data">
                                     <div class="form-input-wrapper">
                                         <label for="gift_item_name"><strong>Gift Name</strong></label>
                                         <p class="form-hint-small">This can be left blank if you are just wanting to leave a message on your gift list page. Such as asking for money towards a honeymoon.</p>

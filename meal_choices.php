@@ -2,57 +2,22 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-$user = new User();
-$user_type = $user->user_type();
-$user_id = $user->user_id();
 include("connect.php");
-
-$guestlist = fopen("scripts/choices ".date('d-m-y').".csv", "w") or die("Unable to open file!");
-
-$query =("SELECT meal_choices.menu_item_id, meal_choices.choice_order_id, menu_items.menu_item_name, menu_items.course_id, menu_courses.course_name, menu_courses.course_id, meal_choice_order.choice_order_id, meal_choice_order.guest_id, guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname FROM meal_choices LEFT JOIN menu_items ON menu_items.menu_item_id=meal_choices.menu_item_id LEFT JOIN menu_courses ON menu_courses.course_id=menu_items.course_id LEFT JOIN meal_choice_order ON meal_choice_order.choice_order_id=meal_choices.choice_order_id LEFT JOIN guest_list ON guest_list.guest_id=meal_choice_order.guest_id ORDER BY guest_list.guest_id, menu_courses.course_id 
+$guestlist = fopen("scripts/choices " . date('d-m-y') . ".csv", "w") or die("Unable to open file!");
+$query = ("SELECT meal_choices.menu_item_id, meal_choices.choice_order_id, menu_items.menu_item_name, menu_items.course_id, menu_courses.course_name, menu_courses.course_id, meal_choice_order.choice_order_id, meal_choice_order.guest_id, guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname FROM meal_choices LEFT JOIN menu_items ON menu_items.menu_item_id=meal_choices.menu_item_id LEFT JOIN menu_courses ON menu_courses.course_id=menu_items.course_id LEFT JOIN meal_choice_order ON meal_choice_order.choice_order_id=meal_choices.choice_order_id LEFT JOIN guest_list ON guest_list.guest_id=meal_choice_order.guest_id ORDER BY guest_list.guest_id, menu_courses.course_id 
   ");
-
 $fetch = $db->query($query);
 $query_fetch = $fetch->fetch_array();
-
-$note=array("NOTE: Save this file as an Excel workbook and remove this line. If you make changes to your guest list then make sure you download this again.");
+$note = array("NOTE: Save this file as an Excel workbook and remove this line. If you make changes to your guest list then make sure you download this again.");
 fputcsv($guestlist, $note);
-$headers = array('Guest ID', 'First Name', 'Surname','Additional Invites', 'RSVP Code', 'Address', 'Postcode', '','Guest Group Name', 'Event ID', 'Event Name');
+$headers = array('Guest ID', 'First Name', 'Surname', 'Additional Invites', 'RSVP Code', 'Address', 'Postcode', '', 'Guest Group Name', 'Event ID', 'Event Name');
 fputcsv($guestlist, $headers);
 foreach ($fetch as $line) {
-  fputcsv($guestlist, $line);
+    fputcsv($guestlist, $line);
 }
 fclose($guestlist);
-
-
 include("inc/head.inc.php");
 include("inc/settings.php");
-////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
-//Variable for name of CMS
-//wedding is the name of people
-//business name
-
-
-
-//run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
-    //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
-
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time,  $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-    $wedding->close();
-    //set cms name
-    $cms_name = $wedding_name;
-
-
-}
-
-
-//////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //select the orders first
 $choices_query = $db->query('SELECT meal_choice_order.choice_order_id, meal_choice_order.guest_id, guest_list.guest_fname, guest_list.guest_id, guest_list.guest_sname FROM meal_choice_order LEFT JOIN guest_list ON guest_list.guest_id=meal_choice_order.guest_id');
 ?>
@@ -94,19 +59,25 @@ $choices_query = $db->query('SELECT meal_choice_order.choice_order_id, meal_choi
             </div>
             <div class="main-cards">
                 <?php if (empty($_GET)) : ?>
-                    <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#utensils"></use></svg> Guest Meal Choices</h1>
+                    <h1><svg class="icon">
+                            <use xlink:href="assets/img/icons/solid.svg#utensils"></use>
+                        </svg> Guest Meal Choices</h1>
                     <p>This page will update as your guests let you know what their choices are from your menu.</p>
                     <p>Once all your guests have given you their choices, you will be able to download or print to a PDF and send to your venue.</p>
                 <?php endif; ?>
 
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
+                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
                     <?php if ($meal_choices_m->status() == "On") :
                         $choices_totals = $db->query('SELECT meal_choices.menu_item_id, menu_items.menu_item_id, menu_items.menu_item_name, COUNT(meal_choices.choice_id) AS numberOfChoices FROM meal_choices LEFT JOIN menu_items ON menu_items.menu_item_id=meal_choices.menu_item_id GROUP BY menu_item_name');
 
                     ?>
                         <div class="std-card form-controls my-2">
-                            <a href="scripts/choices_dl" class="btn-primary"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#file-excel"></use></svg> Download Meal Choices</a>
-                            <a href="scripts/print_meal_options" download="Meal Options <?=date('d-m-y');?>" class="btn-primary"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#file-pdf"></use></svg> Print Meal Choices</a>
+                            <a href="scripts/choices_dl" class="btn-primary"><svg class="icon">
+                                    <use xlink:href="assets/img/icons/solid.svg#file-excel"></use>
+                                </svg> Download Meal Choices</a>
+                            <a href="scripts/print_meal_options" download="Meal Options <?= date('d-m-y'); ?>" class="btn-primary"><svg class="icon">
+                                    <use xlink:href="assets/img/icons/solid.svg#file-pdf"></use>
+                                </svg> Print Meal Choices</a>
                         </div>
                         <div class="std-card">
                             <h2 class="my-2">Meal Choice Totals</h2>
@@ -155,13 +126,8 @@ $choices_query = $db->query('SELECT meal_choice_order.choice_order_id, meal_choi
                         </div>
         </section>
     </main>
-
-    <!-- /Main Body Of Page -->
-
-    <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
-
 </body>
 
 </html>

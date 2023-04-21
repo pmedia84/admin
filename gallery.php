@@ -2,64 +2,8 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-$user = new User();
-$user_type = $user->user_type();
-$user_id = $user->user_id();
 include("./connect.php");
-include("inc/head.inc.php");
 include("inc/settings.php");
-////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
-//Variable for name of CMS
-//wedding is the name of people
-//business name
-$cms_name = "";
-$user_id = $_SESSION['user_id'];
-if ($cms_type == "Business") {
-    //look for the business set up and load information
-    //find business details.
-    $business = $db->prepare('SELECT * FROM business');
-
-    $business->execute();
-    $business->store_result();
-    $business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
-    $business->fetch();
-    $business->close();
-    //set cms name
-    $cms_name = $business_name;
-    //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id=' . $user_id);
-
-    $business_users->execute();
-    $business_users->bind_result($user_id, $user_name, $business_id, $user_type);
-    $business_users->fetch();
-    $business_users->close();
-}
-
-//run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
-    //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
-
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time,  $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-    $wedding->close();
-    //set cms name
-    $cms_name = $wedding_name;
-    //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, wedding_users.wedding_id, wedding_users.user_type FROM users NATURAL LEFT JOIN wedding_users WHERE users.user_id=' . $user_id);
-
-    $business_users->execute();
-    $business_users->bind_result($user_id, $user_name, $business_id, $user_type);
-    $business_users->fetch();
-    $business_users->close();
-}
-
-
-//////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
 //load images
 $gallery_query = $db->query('SELECT images.image_id,  images.image_title, images.image_description, images.image_filename, images.image_upload_date, images.image_placement, images.guest_id, images.status, guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname FROM images LEFT JOIN guest_list ON guest_list.guest_id=images.guest_id');
 $img_total = $gallery_query->num_rows;
@@ -69,6 +13,7 @@ $sub_q = $db->query('SELECT image_submissions.submission_id, image_submissions.g
 
 //load the total amt of submissions
 $sub_total = $sub_q->num_rows;
+include("inc/head.inc.php");
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -84,8 +29,6 @@ $sub_total = $sub_q->num_rows;
 <body>
     <!-- Main Body Of Page -->
     <main class="main col-2">
-
-
         <!-- Header Section -->
         <?php include("inc/header.inc.php"); ?>
         <!-- Nav Bar -->
@@ -96,7 +39,9 @@ $sub_total = $sub_q->num_rows;
                 <a href="index.php" class="breadcrumb">Home</a> / Manage Image Gallery
             </div>
             <div class="main-cards">
-                <h1 class="my-2 notification-header"><svg class="icon"><use href="assets/img/icons/solid.svg#images" /></svg> Photo Gallery <span class="notification" id="img_total"><?= $img_total; ?></span></h1>
+                <h1 class="my-2 notification-header"><svg class="icon">
+                        <use href="assets/img/icons/solid.svg#images" />
+                    </svg> Photo Gallery <span class="notification" id="img_total"><?= $img_total; ?></span></h1>
                 <?php if ($guest_image_gallery->status() == "On") : ?>
                     <div class="std-card">
                         <h2 class="notification-header">Guest Submissions <span class="notification"><?= $sub_total; ?></span></h2>
@@ -120,7 +65,7 @@ $sub_total = $sub_q->num_rows;
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
+                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
                     <div class="form-controls my-2 toolbar">
                         <button class="btn-primary" id="upload-btn" title="Save" data-action="upload">
                             <svg class="icon">
@@ -152,7 +97,7 @@ $sub_total = $sub_q->num_rows;
                                     foreach ($gallery_query as $image) :
                                 ?>
                                         <div class="img-card" data-status="<?= $image['status']; ?>">
-                                            <a href="image?image_id=<?=$image['image_id'];?>&action=edit" class="btn-primary btn-secondary btn-edit">
+                                            <a href="image?image_id=<?= $image['image_id']; ?>&action=edit" class="btn-primary btn-secondary btn-edit">
                                                 <svg class="icon">
                                                     <use href="assets/img/icons/solid.svg#pen" />
                                                 </svg>
@@ -206,7 +151,11 @@ $sub_total = $sub_q->num_rows;
                     <!-- input -->
                     <input type="file" name="gallery_img[]" id="gallery_img" accept="image/*" multiple>
                     <div class="modal-footer">
-                        <button class="btn-primary my-2 form-controls-btn loading-btn" type="submit" id="upload-btn" data-action="upload"><span id="loading-btn-text" class="loading-btn-text"><svg class="icon spinner-icon "><use href="assets/img/icons/solid.svg#upload" /></svg>Submit</span> <svg class="icon spinner-icon d-none loader-spinner " id="loading-icon"><use href="assets/img/icons/solid.svg#circle-notch" /></svg></button>
+                        <button class="btn-primary my-2 form-controls-btn loading-btn" type="submit" id="upload-btn" data-action="upload"><span id="loading-btn-text" class="loading-btn-text"><svg class="icon spinner-icon ">
+                                    <use href="assets/img/icons/solid.svg#upload" />
+                                </svg>Submit</span> <svg class="icon spinner-icon d-none loader-spinner " id="loading-icon">
+                                <use href="assets/img/icons/solid.svg#circle-notch" />
+                            </svg></button>
                     </div>
                 </div>
             </form>
@@ -241,10 +190,6 @@ $sub_total = $sub_q->num_rows;
             </div>
         </div>
     </div>
-
-    <!-- /Main Body Of Page -->
-
-    <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
     <script src="assets/js/gallery.js"></script>

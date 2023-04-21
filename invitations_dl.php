@@ -29,38 +29,6 @@ fclose($guestlist);
 include("inc/head.inc.php");
 include("inc/settings.php");
 
-////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
-//Variable for name of CMS
-//wedding is the name of people
-//business name
-$cms_name = "";
-$user_id = $_SESSION['user_id'];
-//run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
-    //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
-
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time, $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-    $wedding->close();
-    //set cms name
-    $cms_name = $wedding_name;
-    //find user details for this wedding
-    $wedding_users = $db->prepare('SELECT users.user_id, users.user_name, wedding_users.wedding_id, wedding_users.user_type FROM users NATURAL LEFT JOIN wedding_users WHERE users.user_id=' . $user_id);
-
-    $wedding_users->execute();
-    $wedding_users->bind_result($user_id, $user_name, $wedding_id, $user_type);
-    $wedding_users->fetch();
-    $wedding_users->close();
-
-    //find wedding events details
-    $wedding_events_query = ('SELECT * FROM wedding_events ORDER BY event_time');
-    $wedding_events = $db->query($wedding_events_query);
-    $wedding_events_result = $wedding_events->fetch_assoc();
-}
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
@@ -90,22 +58,18 @@ if ($cms_type == "Wedding") {
         <section class="body">
 
 
-            <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / <?php if ($cms_type == "Business") {
-                                                                                                echo "Settings";
-                                                                                            } else {
-                                                                                                echo "Invitations";
-                                                                                            } ?></div>
+            <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / Download Invitations</div>
             <div class="main-cards">
 
 
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
+                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
 
 
-                    <?php if ($cms_type == "Wedding") : ?>
+                    <?php if ($cms->type() == "Wedding") : ?>
                         <h2><i class="fa-solid fa-champagne-glasses"></i> Download Your Invitations</h2>
                         <p>Only do this once you are happy with your guest list and you have assigned all guests to the correct event.</p>
                         <p>Your guest list is now ready to download. Click the button below.</p>
-                        <a class="btn-primary" href="scripts/guestlist.csv" download="Guest List <?= date('d-m-y');?>.csv">Download  <i class="fa-solid fa-download"></i></a>
+                        <a class="btn-primary" href="scripts/guestlist.csv" download="Guest List <?= date('d-m-y');?>.csv"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#download"></use></svg> Download  </a>
                         
 
                         <div class="std-card d-none" id="invite_list">

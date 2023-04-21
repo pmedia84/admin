@@ -4,7 +4,7 @@
             <button class="nav-btn-close" id="nav-btn-close"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#xmark"></use></svg></button>
         </div>
         <ul class="nav-links">
-            <?php if ($cms_type == "Business") : ?>
+            <?php if ($cms->type() == "Business") : ?>
                 <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "index")){echo"link-active";}?>" href="index.php">Home <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#house"></use></svg></a></li>
                 <?php if ($price_list->module_status="On") : ?>
                     <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "price_list")){echo"link-active";}?>" href="price_list.php">Price List <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#tags"></use></svg></a></li>
@@ -23,7 +23,7 @@
                     <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "reviews")){echo"link-active";}?>" href="reviews.php">Reviews <i class="fa-solid fa-comment-dots"></i></a></li>
                 <?php endif; ?>
             <?php endif; ?>
-            <?php if ($cms_type == "Wedding") : ?>
+            <?php if ($cms->type() == "Wedding") : ?>
                 <li><a class="nav-link" href="index.php">Home <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#house"></use></svg></a></li>
                 <?php if ($guest_list_m->status()=="On") : ?>
                     <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "guest")){echo"link-active";}?>" href="guest_list">Guest List <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#people-group"></use></svg></a></li>
@@ -53,12 +53,12 @@
                 <?php if ($news_m->status()=="On") : ?>
                     <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "news")){echo"link-active";}?>" href="news">News <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#newspaper"></use></svg></a></li>
                 <?php endif; ?>
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
+                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
                     <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "wedding")){echo"link-active";}?>" href="wedding_settings">Website Settings <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#laptop"></use></svg></a></li>
                 <?php endif; ?>
                 
             <?php endif; ?>
-            <?php if ($user_type == "Developer") : ?>
+            <?php if ($user->user_type() == "Developer") : ?>
                 <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "cms")){echo"link-active";}?>" href="cms_settings">CMS Settings <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#gear"></use></svg></a></li>
             <?php endif; ?>
             <li><a class="nav-link" href="logout">Logout <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#right-from-bracket"></use></svg></a></li>

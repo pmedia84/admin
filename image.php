@@ -2,63 +2,9 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-$user = new User();
-$user_type = $user->user_type();
-$user_id = $user->user_id();
 include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
-
-////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
-//Variable for name of CMS
-//wedding is the name of people
-//business name
-$cms_name = "";
-$user_id = $_SESSION['user_id'];
-if ($cms_type == "Business") {
-    //look for the business set up and load information
-    //find business details.
-    $business = $db->prepare('SELECT * FROM business');
-
-    $business->execute();
-    $business->store_result();
-    $business->bind_result($business_id, $business_name, $address_id, $business_phone, $business_email, $business_contact_name);
-    $business->fetch();
-    $business->close();
-    //set cms name
-    $cms_name = $business_name;
-    //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id=' . $user_id);
-
-    $business_users->execute();
-    $business_users->bind_result($user_id, $user_name, $business_id, $user_type);
-    $business_users->fetch();
-    $business_users->close();
-}
-
-//run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
-    //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
-
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time,   $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-    $wedding->close();
-    //set cms name
-    $cms_name = $wedding_name;
-    //find user details for this business
-    $wedding_users = $db->prepare('SELECT users.user_id, users.user_name, wedding_users.wedding_id, wedding_users.user_type FROM users NATURAL LEFT JOIN wedding_users WHERE users.user_id=' . $user_id);
-
-    $wedding_users->execute();
-    $wedding_users->bind_result($user_id, $user_name, $wedding_id, $user_type);
-    $wedding_users->fetch();
-    $wedding_users->close();
-}
-
-//////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //image variable
 if (isset($_GET['image_id'])) {
     $image_id = $_GET['image_id'];
@@ -75,10 +21,6 @@ if (isset($_GET['image_id'])) {
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
 <meta name="title" content="Manage your website content">
-<!-- /Meta Tags -->
-
-<!-- / -->
-<!-- Page Title -->
 <title>Mi-Admin | Manage Image Gallery</title>
 <!-- /Page Title -->
 </head>
@@ -121,10 +63,8 @@ if (isset($_GET['image_id'])) {
                             <use href="assets/img/icons/solid.svg#image" />
                         </svg> Delete Photo</h1>
                 <?php endif; ?>
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : //detect if user is an admin or not 
+                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : //detect if user is an admin or not 
                 ?>
-
-
                     <?php if ($_GET['action'] == "edit") : ?>
                         <?php if (($image->num_rows) > 0) :
                             $image->bind_result($image_id, $image_title, $image_description, $image_filename, $image_upload_date, $image_placement, $guest_id, $status, $submission_id);
@@ -142,8 +82,8 @@ if (isset($_GET['image_id'])) {
                                     </div>
 
                                     <div class="button-section my-3">
-                                        <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes </button>
-                                        <a href="gallery" class="btn-primary btn-secondary form-controls-btn"><i class="fa-solid fa-ban"></i> Cancel Changes</a>
+                                        <button class="btn-primary form-controls-btn" type="submit"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#floppy-disk"></use></svg> Save Changes </button>
+                                        <a href="gallery" class="btn-primary btn-secondary form-controls-btn"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#ban"></use></svg> Cancel Changes</a>
                                     </div>
                                     <div id="response" class="d-none">
                                         <p>Article Saved <img src="./assets/img/icons/check.svg" alt=""></p>

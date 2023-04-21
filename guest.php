@@ -2,39 +2,10 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-$user = new User();
-$user_type = $user->user_type();
-$user_id = $user->user_id();
 include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
 
-////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
-//Variable for name of CMS
-//wedding is the name of people
-$cms_name = "";
-$user_id = $_SESSION['user_id'];
-//run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
-    //look for the Wedding set up and load information
-    wedding_load($wedding_name, $wedding_date, $wedding_id);  
-    //set cms name
-    $cms_name = $wedding_name;
-    //find user details for this wedding
-    $wedding_users = $db->prepare('SELECT users.user_id, users.user_name, wedding_users.wedding_id, wedding_users.user_type FROM users NATURAL LEFT JOIN wedding_users WHERE users.user_id=' . $user_id);
-
-    $wedding_users->execute();
-    $wedding_users->bind_result($user_id, $user_name, $wedding_id, $user_type);
-    $wedding_users->fetch();
-    $wedding_users->close();
-
-    //find wedding events details
-    $wedding_events_query = ('SELECT * FROM wedding_events ORDER BY event_time');
-    $wedding_events = $db->query($wedding_events_query);
-    $wedding_events_result = $wedding_events->fetch_assoc();
-}
-
-//////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //guest variable, only required for edit and view actions
 if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] == "delete") {
     $guest_id = $_GET['guest_id'];
@@ -52,7 +23,10 @@ $guest_group_id = ""; //empty variable for pages that don't use the GET request
 if ($meal_choices_wedmin->status() == "On") {
     $meal_choices_q = $db->query('SELECT menu_items.menu_item_id, menu_items.menu_item_name, menu_items.course_id, meal_choices.menu_item_id, meal_choices.choice_order_id, meal_choice_order.choice_order_id, meal_choice_order.guest_id, menu_courses.course_name, menu_courses.course_id  FROM menu_items LEFT JOIN meal_choices ON meal_choices.menu_item_id=menu_items.menu_item_id LEFT JOIN meal_choice_order ON meal_choices.choice_order_id=meal_choice_order.choice_order_id LEFT JOIN menu_courses ON menu_courses.course_id=menu_items.course_id WHERE meal_choice_order.guest_id=' . $guest_id);
 }
-
+//find wedding events details
+$wedding_events_query = ('SELECT * FROM wedding_events ORDER BY event_time');
+$wedding_events = $db->query($wedding_events_query);
+$wedding_events_result = $wedding_events->fetch_assoc();
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -64,7 +38,6 @@ if ($meal_choices_wedmin->status() == "On") {
 <title>Mi-Admin | Manage Guest</title>
 <!-- /Page Title -->
 </head>
-
 
 <body>
     <!-- Main Body Of Page -->
@@ -114,7 +87,7 @@ if ($meal_choices_wedmin->status() == "On") {
                 <?php endif; ?>
 
 
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : //detect if user is an admin or developer 
+                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : //detect if user is an admin or developer 
                 ?>
                     <?php if ($_GET['action'] == "delete") : //if action is delete, detect if the confirm is yes or no
                     ?>
@@ -161,7 +134,6 @@ if ($meal_choices_wedmin->status() == "On") {
                                     echo '<div class="std-card"><div class="form-response error"><p>' . $guest_fname . ' ' . $guest_sname . ' Has been removed from your guest list</p> <a href="guest_list" class="btn-primary my-2">Return To Guest List</a></div></div>';
                                 } else {
                                     echo '<div class="form-response error"><p>Error removing guest, please try again.</p></div>';
-                                    //echo mysqli_error($db);
                                 }
                             ?>
                             <?php else : ?>
@@ -221,7 +193,9 @@ if ($meal_choices_wedmin->status() == "On") {
                                     <p class="form-hint-small">Optional, guests that use your guest area will update this themselves.</p>
                                     <input class="text-input input" type="text" id="guest_email" name="guest_email" placeholder="Email Address">
                                 </div>
-                                <button class="btn-primary btn-secondary my-2" type="button" id="show_address"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#map-location-dot"></use></svg> Add Address</button>
+                                <button class="btn-primary btn-secondary my-2" type="button" id="show_address"><svg class="icon">
+                                        <use xlink:href="assets/img/icons/solid.svg#map-location-dot"></use>
+                                    </svg> Add Address</button>
                                 <div class="form-hidden d-none">
                                     <div class="form-input-wrapper my-2">
                                         <label for="guest_address"><strong>Address</strong></label>
@@ -242,7 +216,9 @@ if ($meal_choices_wedmin->status() == "On") {
                                 <p>You can assign this guest extra invites here, if you know who they will be bringing with them.</p>
                                 <p>If you are unsure of their name, tick the box below each guest and they will be added as a plus one.</p>
                                 <div id="guest-group-row"></div>
-                                <button class="btn-primary btn-secondary my-2" type="button" id="add-member"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-plus"></use></svg> Add Guests</button>
+                                <button class="btn-primary btn-secondary my-2" type="button" id="add-member"><svg class="icon">
+                                        <use xlink:href="assets/img/icons/solid.svg#user-plus"></use>
+                                    </svg> Add Guests</button>
                             </div>
                             <div class="form-card">
                                 <h2>Assign To Events</h2>
@@ -444,8 +420,6 @@ if ($meal_choices_wedmin->status() == "On") {
                             if ($guest_invites->num_rows > 1) {
                                 $guest_invites->fetch_array();
                             }
-
-
                         ?>
                             <h2><?= $guest_fname . ' ' . $guest_sname; ?></h2>
                             <div class="card-actions my-2">
@@ -480,9 +454,9 @@ if ($meal_choices_wedmin->status() == "On") {
                                 <h3>Dietary Requirements </h3>
                                 <p><?= $guest_dietery; ?></p>
                                 <div class="card-actions">
-                                    <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><i class="fa-solid fa-pen-to-square"></i> Edit Guest </a><br>
-                                    <a class="my-2" href="guest.php?action=delete&confirm=no&guest_id=<?= $guest_id; ?>"><i class="fa-solid fa-trash"></i> Remove Guest </a>
-                                    <a class="my-2" href="events.php"><i class="fa-solid fa-user-plus"></i> Assign Guest To Events </a>
+                                    <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#pen-to-square"></use></svg> Edit Guest </a><br>
+                                    <a class="my-2" href="guest.php?action=delete&confirm=no&guest_id=<?= $guest_id; ?>"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-minus"></use></svg> Remove Guest </a>
+                                    <a class="my-2" href="events.php"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-plus"></use></svg> Assign Guest To Events </a>
                                 </div>
                             </div>
 
@@ -555,9 +529,9 @@ if ($meal_choices_wedmin->status() == "On") {
                                 <p>There has been an error, please return to the last page and try again.</p>
                             </div>
                         <?php endif; ?>
-            </div>
 
-        </div>
+
+            </div>
 
 
 
@@ -567,18 +541,8 @@ if ($meal_choices_wedmin->status() == "On") {
 <?php else : ?>
     <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>
 <?php endif; ?>
-</div>
-
-</div>
-
 
     </main>
-
-    <!-- /Main Body Of Page -->
-    <!-- Quote request form script -->
-
-    <!-- /Quote request form script -->
-    <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
 

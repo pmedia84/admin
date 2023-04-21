@@ -2,43 +2,9 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-$user = new User();
-$user_type = $user->user_type();
-$user_id = $user->user_id();
 include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
-
-////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
-//Variable for name of CMS
-//wedding is the name of people
-//business name
-$cms_name = "";
-$user_id = $_SESSION['user_id'];
-
-
-//run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
-    //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
-
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time,   $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-
-    //set cms name
-    $cms_name = $wedding_name;
-    //find user details for this business
-    $wedding_users = $db->prepare('SELECT users.user_id, users.user_name, wedding_users.wedding_id, wedding_users.user_type FROM users NATURAL LEFT JOIN wedding_users WHERE users.user_id=' . $user_id);
-
-    $wedding_users->execute();
-    $wedding_users->bind_result($user_id, $user_name, $wedding_id, $user_type);
-    $wedding_users->fetch();
-    $wedding_users->close();
-}
-//////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -50,8 +16,6 @@ if ($cms_type == "Wedding") {
 <!-- Page Title -->
 <title>Mi-Admin | Our Story</title>
 <!-- /Page Title -->
-
-
 </head>
 <script>
     tinymce.init({
@@ -86,7 +50,7 @@ if ($cms_type == "Wedding") {
         <div class="body">
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / Our Story</div>
             <div class="main-cards cms-settings-cards">
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
+                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
                     <h1><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#heart"></use></svg> Our Story</h1>
                     <p>Edit or create your story for your wedding website.</p>
                     <?php

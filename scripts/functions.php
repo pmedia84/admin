@@ -7,6 +7,112 @@ function check_login()
     }
 }
 
+class Cms
+{
+    public $cms_type;
+    //?variables for wedding CMS
+    public $wedding_name;
+    public $wedding_date;
+    public $wedding_id;
+    public $wedding_time;
+    //?
+    //?Variables for business CMS
+    public $business_id;
+    public $business_name;
+    public $business_tel;
+    public $business_email;
+    public $business_contact;
+    //?
+    //*return the type of cms
+    function type()
+    {
+        //find the cms type first
+        include("../connect.php");
+        $cms_q = $db->query('SELECT cms_type FROM settings');
+        $cms_r = mysqli_fetch_assoc($cms_q);
+        $this->cms_type = $cms_r['cms_type'];
+        return $this->cms_type;
+    }
+
+    function setup()
+    {
+        include("../connect.php");
+        //business
+        if ($this->cms_type == "Business") {
+            //look for a business setup in the db, if not then direct to the setup page
+            $business_query = ('SELECT business_id FROM business');
+            $business = $db->query($business_query);
+            if ($business->num_rows == 0) {
+                header('Location: setup.php?action=setup_business');
+                return;
+            }
+            //check that there are users set up 
+            $business_user_query = ('SELECT * FROM business_users');
+            $business_user = $db->query($business_user_query);
+            if ($business_user->num_rows < 2) {
+                header('Location: setup.php?action=check_users_business');
+                return;
+            }
+        }
+        //wedding
+        if ($this->cms_type == "Wedding") {
+            //look for a wedding setup in the db, if not then direct to the setup page
+            $wedding_query = ('SELECT wedding_id FROM wedding');
+            $wedding = $db->query($wedding_query);
+            if ($wedding->num_rows == 0) {
+                header('Location: setup.php?action=setup_wedding');
+            }
+            //check that there are users set up 
+            $wedding_user_query = ('SELECT wedding_user_id FROM wedding_users ');
+            $wedding_user = $db->query($wedding_user_query);
+            if ($wedding_user->num_rows < 2) {
+                header('Location: setup.php?action=check_users_wedding');
+            }
+            $db->close();
+        }
+    }
+    //load wedding info
+    function wedding_load()
+    {
+        include("../connect.php");
+        $wedding_q = $db->query('SELECT * FROM wedding');
+        $wedding_r = mysqli_fetch_assoc($wedding_q);
+        $name = $wedding_r['wedding_name'];
+        $date = $wedding_r['wedding_date'];
+        $id = $wedding_r['wedding_id'];
+        $this->wedding_name = $name;
+        $this->wedding_date = $date;
+        $this->wedding_id = $id;
+    }
+    //load business info
+    function business_load()
+    {
+        include("../connect.php");
+        $business_q = $db->query('SELECT * FROM business');
+        $business_r = mysqli_fetch_assoc($business_q);
+        $name = $business_r['business_name'];
+        $this->business_name = $name;
+    }
+
+    //* Return all info for wedding
+    function w_name(){
+        return $this->wedding_name;
+    }
+    function w_date(){
+        return $this->wedding_date;
+    }
+    function w_id(){
+        return $this->wedding_id;
+    }
+
+    //*return all business info
+    function b_name(){
+        return $this->business_name;
+    }
+}
+
+
+
 function cms_type()
 {
     include("../connect.php");
@@ -24,8 +130,8 @@ function wedding_load(&$wedding_name, &$wedding_date, &$wedding_id)
     $wedding_name = $wedding_r['wedding_name'];
     $wedding_date = $wedding_r['wedding_date'];
     $wedding_id = $wedding_r['wedding_id'];
-    if ($wedding_q->num_rows < 1) {
-        header("Location: login");
+    if ($wedding_q->num_rows == 0) {
+        header("Location: setup.php?action=setup_wedding");
     }
 }
 class Module
@@ -265,7 +371,7 @@ class Img
                     $dir = $_SERVER['DOCUMENT_ROOT'] . "/admin/assets/img/gallery/" . $newimgname;
                     $i++;
                 }
-                
+
                 // convert into webp
                 $info = getimagesize($_FILES['gallery_img']['tmp_name'][$key]);
                 if ($info['mime'] == 'image/jpeg') {
