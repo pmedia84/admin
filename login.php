@@ -1,9 +1,9 @@
 <?php
 session_start();
 include("connect.php");
+require("scripts/functions.php");
 include("inc/settings.php");
 //load functions
-require("scripts/functions.php");
 
 //find the referring page to redirect to once logged in
 if(!empty($_GET)){
