@@ -27,6 +27,8 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
     $menu_query = $db->query('SELECT menu.menu_name, menu.menu_id, menu.event_id, wedding_events.event_id, wedding_events.event_name FROM menu LEFT JOIN wedding_events ON wedding_events.event_id=menu.event_id WHERE menu.menu_id=' . $_GET['menu_id']);
     $menu_result = mysqli_fetch_assoc($menu_query);
 }
+$menu_courses = $db->query('SELECT course_name, course_id FROM menu_courses');
+$course_res = mysqli_fetch_assoc($menu_courses);
 include("inc/head.inc.php");
 ?>
 <!-- Meta Tags For Each Page -->
@@ -77,7 +79,7 @@ include("inc/head.inc.php");
                             <use xlink:href="assets/img/icons/solid.svg#bowl-food"></use>
                         </svg> Edit Menu for your <?= $menu_result['event_name']; ?></h1>
                 <?php endif; ?>
-                <?php if (isset($_GET['action']) && $_GET['action'] == "delete" && $menu_builde->status() == "On") : ?>
+                <?php if (isset($_GET['action']) && $_GET['action'] == "delete" && $menu_builder->status() == "On") : ?>
                     <h1><svg class="icon">
                             <use xlink:href="assets/img/icons/solid.svg#bowl-food"></use>
                         </svg> Delete Menu for your <?= $menu_result['event_name']; ?></h1>
@@ -93,6 +95,9 @@ include("inc/head.inc.php");
                                         <button class="btn-primary" type="button" id="add-menu" data-action="create_menu"><svg class="icon">
                                                 <use xlink:href="assets/img/icons/solid.svg#utensils"></use>
                                             </svg> Create Menu</button>
+                                        <button class="btn-primary btn-secondary" id="edit-courses" type="button"><svg class="icon">
+                                                <use xlink:href="assets/img/icons/solid.svg#pen-to-square"></use>
+                                            </svg>Edit Courses</button>
                                     </div>
                                     <?php if ($menu_query->num_rows > 0) : ?>
                                         <?php foreach ($menu_query as $menu) :
@@ -171,7 +176,7 @@ include("inc/head.inc.php");
                                                 <?php else : ?>
                                                     <p><strong>Before you continue, you need to set up courses for your menu.</strong></p>
                                                     <div class="button-section my-3">
-                                                        <button class="btn-primary btn-secondary" id="close-modal" type="button">Close</button>
+                                                        <button class="btn-primary btn-secondary" id="close-menu-modal" type="button">Close</button>
                                                     </div>
                                                 <?php endif; ?>
                                             <?php else : ?>
@@ -195,7 +200,7 @@ include("inc/head.inc.php");
                                         </svg>Edit Courses</button>
                                     <a href="menu" class="btn-primary btn-secondary"><svg class="icon">
                                             <use xlink:href="assets/img/icons/solid.svg#xmark"></use>
-                                        </svg> Cancel Editing Menu</a>
+                                        </svg> Finish Editing Menu</a>
                                 </div>
                                 <div class="std-card" id="menu">
                                     <?php if ($menu_query->num_rows > 0) : ?>
@@ -217,7 +222,7 @@ include("inc/head.inc.php");
                                                                 </div>
                                                                 <div class="menu-item-actions">
                                                                     <button class="btn-primary btn-delete delete-dish" type="button" data-dish_id="<?= $item['menu_item_id']; ?>" data-menu_id="<?= $_GET['menu_id']; ?>" data-action="delete_dish"><svg class="icon">
-                                                                            <use xlink:href="assets/img/icons/solid.svg#xmark"></use>
+                                                                            <use xlink:href="assets/img/icons/solid.svg#trash"></use>
                                                                         </svg></button>
                                                                     <button class="btn-primary btn-secondary edit-dish" data-dish_id="<?= $item['menu_item_id']; ?>" data-menu_id="<?= $_GET['menu_id']; ?>"><svg class="icon">
                                                                             <use xlink:href="assets/img/icons/solid.svg#pen-to-square"></use>
@@ -233,95 +238,121 @@ include("inc/head.inc.php");
                                             $db->close(); ?>
                                         </div>
                                 </div>
-                                <div class="modal" id="course-modal">
-                                    <div class="modal-body">
-                                        <div class="modal-content">
-                                            <h2 class="text-center">Edit Menu Courses</h2>
-                                            <form class="my-2" action="menu.script.php" method="POST" id="courses-editor">
-                                                <div id="course-editor">
-                                                    <?php if ($menu_courses->num_rows > 0) :
-                                                        $index = 0;
-                                                    ?>
-                                                        <?php foreach ($menu_courses as $course) : ?>
-                                                            <div class="form-input-wrapper">
-                                                                <label for="course_name">Course Name</label>
-                                                                <input type="hidden" name="course[<?= $index; ?>][course_id]" value="<?= $course['course_id']; ?>">
-                                                                <div class="form-input-row"><input type="text" name="course[<?= $index; ?>][course_name]" value="<?= $course['course_name']; ?>"><button class="btn-primary btn-secondary btn-delete" type="button" data-course_id="<?= $course['course_id']; ?>" data-action="delete"><i class="fa-solid fa-xmark"></i></button></div>
-                                                            </div>
-                                                        <?php $index++;
-                                                        endforeach; ?>
-                                                        <div id="form-row"></div>
-                                                        <button class="btn-primary btn-secondary my-2" id="add-course" type="button"><i class="fa-solid fa-plus"></i> Add Course</button>
-                                                        <p><strong>Note:</strong> Removing a course will also remove any dishes associated with it.</p>
-                                                        <div class="button-section my-3 modal-btns">
-                                                            <button class="btn-primary" type="button" id="courses-save" data-action="save">Save Changes</button>
-                                                            <button class="btn-primary btn-secondary" id="close-course-modal" type="button">Cancel</button>
-                                                        </div>
-
-                                                    <?php else : ?>
-                                                        <?php $index = 0; ?>
-                                                        <div id="form-row"></div>
-                                                        <button class="btn-primary btn-secondary my-2" id="add-course" type="button"><i class="fa-solid fa-plus"></i> Add Course</button>
-                                                        <div class="button-section my-3 modal-btns">
-                                                            <button class="btn-primary" type="button" id="courses-save" data-action="save">Save Changes</button>
-                                                            <button class="btn-primary btn-secondary" id="close-course-modal" type="button">Cancel</button>
-                                                        </div>
-                                                        <p><strong>Note:</strong> Removing a course will also remove any dishes associated with it.</p>
-                                                        <?php $index++; ?>
-                                                    <?php endif; ?>
+                                <div class="modal" id="dish-modal">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button class="btn-close close" type="button">
+                                                <svg class="icon line">
+                                                    <use href="assets/img/icons/solid.svg#minus" />
+                                                </svg>
+                                                <svg class="icon x-mark">
+                                                    <use href="assets/img/icons/solid.svg#xmark" />
+                                                </svg>
+                                            </button>
+                                            <h2 class="text-center">Add Dish</h2>
+                                        </div>
+                                        <?php if ($menu_courses->num_rows > 0) : ?>
+                                            <form class="my-2" action="menu.script.php" method="POST" id="create-dish">
+                                                <div id="dish-creator">
+                                                    <div class="form-input-wrapper">
+                                                        <label for="menu_item_name">Dish Name</label>
+                                                        <input type="text" name="menu_item_name" id="menu_item_name" placeholder="Slow Roast Beef..." required>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <label for="menu_item_desc">Dish Description</label>
+                                                        <input type="text" name="menu_item_desc" id="menu_item_desc" placeholder="A description to entice your guests" required>
+                                                    </div>
+                                                    <div class="form-input-wrapper">
+                                                        <label for="course_id">Select Course</label>
+                                                        <select name="course_id" id="course_id" required>
+                                                            <option value="">Select Course</option>
+                                                            <?php foreach ($menu_courses as $course) : ?>
+                                                                <option value="<?= $course['course_id']; ?>"><?= $course['course_name']; ?></option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer my-2">
+                                                    <button class="btn-primary" id="save-dish" data-action="save_dish" data-menu_id="<?= $_GET['menu_id']; ?>" type="submit">Save Dish</button>
+                                                    <button class="btn-primary btn-secondary close" type="button" >Close</button>
+                                                </div>
+                                                <div class="d-none" id="response">
                                                 </div>
                                             </form>
-                                        </div>
+                                        <?php else : ?>
+                                            <p><strong>Before you continue, you need to set up courses for your menu.</strong></p>
+                                            <div class="button-section">
+                                                <button class="btn-primary btn-secondary" id="close-modal" type="button">Close</button>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
-                                </div>
-                                <div class="modal" id="dish-modal">
-                                    <div class="modal-body">
-                                        <div class="modal-content">
-                                            <h2 class="text-center">Add Dish</h2>
-                                            <?php if ($menu_courses->num_rows > 0) : ?>
-                                                <form class="my-2" action="menu.script.php" method="POST" id="create-dish">
-                                                    <div id="dish-creator">
-                                                        <div class="form-input-wrapper">
-                                                            <label for="menu_item_name">Dish Name</label>
-                                                            <input type="text" name="menu_item_name" id="menu_item_name" placeholder="Slow Roast Beef..." required>
-                                                        </div>
-                                                        <div class="form-input-wrapper">
-                                                            <label for="menu_item_desc">Dish Description</label>
-                                                            <input type="text" name="menu_item_desc" id="menu_item_desc" placeholder="A description to entice your guests" required>
-                                                        </div>
-                                                        <div class="form-input-wrapper">
-                                                            <label for="course_id">Select Course</label>
-                                                            <select name="course_id" id="course_id" required>
-                                                                <option value="">Select Course</option>
-                                                                <?php foreach ($menu_courses as $course) : ?>
-                                                                    <option value="<?= $course['course_id']; ?>"><?= $course['course_name']; ?></option>
-                                                                <?php endforeach; ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="button-section my-3 modal-btns">
-                                                        <button class="btn-primary" id="save-dish" data-action="save_dish" data-menu_id="<?= $_GET['menu_id']; ?>" type="submit">Save Dish</button>
-                                                        <button class="btn-primary btn-secondary" type="button" id="close-modal">Close</button>
-                                                    </div>
-                                                    <div class="d-none" id="response">
-                                                    </div>
-                                                </form>
-                                            <?php else : ?>
-                                                <p><strong>Before you continue, you need to set up courses for your menu.</strong></p>
-                                                <div class="button-section">
-                                                    <button class="btn-primary btn-secondary" id="close-modal" type="button">Close</button>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
+
                                 </div>
 
                                 <div class="modal" id="edit-dish-modal">
 
                                 </div>
                             <?php endif; ?>
+
                         </div>
                     <?php endif; ?>
+                    <div class="modal" id="course-modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="btn-close close" type="button">
+                                    <svg class="icon line">
+                                        <use href="assets/img/icons/solid.svg#minus" />
+                                    </svg>
+                                    <svg class="icon x-mark">
+                                        <use href="assets/img/icons/solid.svg#xmark" />
+                                    </svg>
+                                </button>
+                                <h2 class="text-center">Edit Menu Courses</h2>
+                            </div>
+                            <form class="my-2" action="menu.script.php" method="POST" id="courses-editor">
+                                <div id="course-editor">
+                                    <?php if ($menu_courses->num_rows > 0) :
+                                        $index = 0;
+                                    ?>
+                                        <?php foreach ($menu_courses as $course) : ?>
+                                            <div class="form-input-wrapper">
+                                                <label for="course_name">Course Name</label>
+                                                <input type="hidden" name="course[<?= $index; ?>][course_id]" value="<?= $course['course_id']; ?>">
+                                                <div class="form-input-row"><input type="text" name="course[<?= $index; ?>][course_name]" value="<?= $course['course_name']; ?>"><button class="btn-primary btn-secondary btn-delete" type="button" data-course_id="<?= $course['course_id']; ?>" data-action="delete"><svg class="icon">
+                                                            <use href="assets/img/icons/solid.svg#trash" />
+                                                        </svg></button></div>
+                                            </div>
+                                        <?php $index++;
+                                        endforeach; ?>
+                                        <div id="form-row"></div>
+                                        <button class="btn-primary btn-secondary my-2" id="add-course" type="button">
+                                            <svg class="icon">
+                                                <use href="assets/img/icons/solid.svg#plus" />
+                                            </svg> Add Course</button>
+                                        <p><strong>Note:</strong> Removing a course will also remove any dishes associated with it.</p>
+                                        <div class="modal-footer my-2">
+                                            <button class="btn-primary" type="button" id="courses-save" data-action="save">Save Changes</button>
+                                            <button class="btn-primary btn-secondary close" type="button">Cancel</button>
+                                        </div>
+                                    <?php else : ?>
+                                        <?php $index = 0; ?>
+                                        <div id="form-row"></div>
+                                        <button class="btn-primary btn-secondary my-2" id="add-course" type="button">
+                                            <svg class="icon">
+                                                <use href="assets/img/icons/solid.svg#plus" />
+                                            </svg> Add Course</button>
+                                        <div class="modal-footer my-2">
+                                            <button class="btn-primary" type="button" id="courses-save" data-action="save">Save Changes</button>
+                                            <button class="btn-primary btn-secondary close" type="button">Cancel</button>
+                                        </div>
+                                        <p><strong>Note:</strong> Removing a course will also remove any dishes associated with it.</p>
+                                        <?php $index++; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
                     <?php if (isset($_GET['action']) && $_GET['action'] == "delete") : ?>
                         <?php if ($_GET['confirm'] == "no") : ?>
                             <div class="std-card">
@@ -366,18 +397,18 @@ include("inc/head.inc.php");
     <!-- /Footer -->
 
     <script src="assets/js/menu.js"></script>
-    <?php if (isset($_GET['action']) && $_GET['action'] == "edit") : ?>
-        <script>
-            let index = <?= $index; ?>;
-            $("#course-editor").on("click", "#add-course", function() {
 
-                let input = "<div class='appended d-none'><div class='form-input-wrapper'><label for='course_name'>Course Name</label><input type='hidden' name='course[" + index + "][course_id]' value=''><div class='form-input-row'><input type='text' name='course[" + index + "][course_name]'><button class='btn-primary btn-secondary btn-delete' type='button'><i class='fa-solid fa-xmark'></i></button></div></div>";
-                $("#form-row").append(input);
-                $(".appended").slideDown(400);
-                index++;
-            })
-        </script>
-    <?php endif; ?>
+    <script>
+        let index = <?= $index; ?>;
+        $("#course-editor").on("click", "#add-course", function() {
+
+            let input = "<div class='appended d-none'><div class='form-input-wrapper'><label for='course_name'>Course Name</label><input type='hidden' name='course[" + index + "][course_id]' value=''><div class='form-input-row'><input type='text' name='course[" + index + "][course_name]'><button class='btn-primary btn-secondary btn-delete' type='button'><svg class='icon'><use href='assets/img/icons/solid.svg#trash'/></svg></button></div></div>";
+            $("#form-row").append(input);
+            $(".appended").slideDown(400);
+            index++;
+        })
+    </script>
+
 </body>
 
 </html>

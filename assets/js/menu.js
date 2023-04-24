@@ -1,7 +1,7 @@
 $("#edit-courses").on("click", function () {
     $("#course-modal").addClass("modal-active");
 })
-$("#course-editor").on("click", "#close-course-modal", function () {
+$("#course-modal").on("click", ".close", function () {
     $("#course-modal").removeClass("modal-active");
 })
 $("#course-editor").on("click", "#courses-save", function (e) {
@@ -47,7 +47,7 @@ $("#add-dish").on("click", function () {
     $("#dish-modal").addClass("modal-active");
 })
 
-$("#dish-modal").on("click", "#close-modal", function () {
+$("#dish-modal").on("click", ".close", function () {
     $("#dish-modal").removeClass("modal-active");
 })
 
@@ -128,9 +128,7 @@ $("#edit-dish-modal").on("submit", "#edit-dish", function (e) {
         success: function (data, responseText) {
             if (data === '1') {
                 $("#edit-dish")[0].reset();
-                $("#menu").fadeOut(400);
                 $("#menu").load("scripts/menu.script.php?action=load_menu&menu_id=" + menu_id);
-                $("#menu").fadeIn(400);
             } else {
                 $("#response").html(data);
                 $("#response").slideDown(400);
@@ -139,7 +137,7 @@ $("#edit-dish-modal").on("submit", "#edit-dish", function (e) {
     });
     $("#edit-dish-modal").removeClass("modal-active");
 })
-$("#edit-dish-modal").on("click", "#close-modal", function () {
+$("#edit-dish-modal").on("click", ".close", function () {
     $("#edit-dish-modal").removeClass("modal-active");
 })
 

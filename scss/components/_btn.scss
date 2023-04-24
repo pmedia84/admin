@@ -43,6 +43,7 @@ a.btn-primary{
 .btn-delete{
     background-color: $error-response;
     border-color: $error-response;
+    color: #fff;
     &:focus{
         box-shadow: 0 0 2px 3px $error-response;
         transition: box-shadow 300ms ease-out;
@@ -53,11 +54,7 @@ a.btn-primary{
     margin-block: .25rem;
 }
 
-.close{//wrapper for close button
-    display: flex;
-    justify-content: flex-end;
-    margin-block: $spacer-2;
-}
+
 .btn-close{//close button
     border: 0;
     border-radius: .375rem;

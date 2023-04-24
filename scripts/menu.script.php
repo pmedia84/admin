@@ -177,31 +177,38 @@ if (isset($_POST['action']) && $_POST['action'] == "edit_menu_name") {
             <div class="form-input-wrapper">
                 <label for="course_name">Course Name</label>
                 <input type="hidden" name="course[<?= $index; ?>][course_id]" value="<?= $course['course_id']; ?>">
-                <div class="form-input-row"><input type="text" name="course[<?= $index; ?>][course_name]" value="<?= $course['course_name']; ?>"><button class="btn-primary btn-secondary btn-delete" type="button" data-course_id="<?= $course['course_id']; ?>" data-action="delete"><i class="fa-solid fa-xmark"></i></button></div>
+                <div class="form-input-row"><input type="text" name="course[<?= $index; ?>][course_name]" value="<?= $course['course_name']; ?>"><button class="btn-primary btn-secondary btn-delete" type="button" data-course_id="<?= $course['course_id']; ?>" data-action="delete"><svg class="icon">
+                            <use href="assets/img/icons/solid.svg#trash" />
+                        </svg></button></div>
             </div>
-
         <?php $index++;
         endforeach; ?>
         <div id="form-row"></div>
-        <button class="btn-primary btn-secondary my-2" id="add-course" type="button"><i class="fa-solid fa-plus"></i> Add Course</button>
-        <div class="button-section my-3">
-            <button class="btn-primary" type="button" id="courses-save" data-action="save">Save Changes</button>
-            <button class="btn-primary btn-secondary" id="close-modal" type="button">Cancel</button>
-        </div>
+        <button class="btn-primary btn-secondary my-2" id="add-course" type="button">
+            <svg class="icon">
+                <use href="assets/img/icons/solid.svg#plus" />
+            </svg> Add Course</button>
         <p><strong>Note:</strong> Removing a course will also remove any dishes associated with it.</p>
+        <div class="modal-footer my-2">
+            <button class="btn-primary" type="button" id="courses-save" data-action="save">Save Changes</button>
+            <button class="btn-primary btn-secondary close" type="button">Cancel</button>
+        </div>
     <?php else : ?>
         <?php $index = 0; ?>
         <div id="form-row"></div>
-        <button class="btn-primary btn-secondary my-2" id="add-course" type="button"><i class="fa-solid fa-plus"></i> Add Course</button>
-        <div class="button-section my-3">
+        <button class="btn-primary btn-secondary my-2" id="add-course" type="button">
+            <svg class="icon">
+                <use href="assets/img/icons/solid.svg#plus" />
+            </svg> Add Course</button>
+        <div class="modal-footer my-2">
             <button class="btn-primary" type="button" id="courses-save" data-action="save">Save Changes</button>
-            <button class="btn-primary btn-secondary" id="close-modal" type="button">Cancel</button>
+            <button class="btn-primary btn-secondary close" type="button">Cancel</button>
         </div>
         <p><strong>Note:</strong> Removing a course will also remove any dishes associated with it.</p>
         <?php $index++; ?>
-
     <?php endif; ?>
-<?php exit(); endif;?>
+<?php exit();
+endif; ?>
 
 <?php if (isset($_GET['action']) && $_GET['action'] == "load_menu") :
 
@@ -228,8 +235,12 @@ if (isset($_POST['action']) && $_POST['action'] == "edit_menu_name") {
                                 <p class="menu-item-desc"><?= $item['menu_item_desc']; ?></p>
                             </div>
                             <div class="menu-item-actions">
-                                <button class="btn-primary btn-secondary btn-delete delete-dish" type="button" data-dish_id="<?= $item['menu_item_id']; ?>" data-menu_id="<?= $_GET['menu_id']; ?>" data-action="delete_dish"><i class="fa-solid fa-xmark"></i></button>
-                                <button class="btn-primary btn-secondary edit-dish" data-dish_id="<?= $item['menu_item_id']; ?>" data-menu_id="<?= $_GET['menu_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                                <button class="btn-primary btn-secondary btn-delete delete-dish" type="button" data-dish_id="<?= $item['menu_item_id']; ?>" data-menu_id="<?= $_GET['menu_id']; ?>" data-action="delete_dish"><svg class="icon">
+                    <use href="assets/img/icons/solid.svg#trash" />
+                </svg></button>
+                                <button class="btn-primary btn-secondary edit-dish" data-dish_id="<?= $item['menu_item_id']; ?>" data-menu_id="<?= $_GET['menu_id']; ?>"><svg class="icon">
+                    <use href="assets/img/icons/solid.svg#pen-to-square" />
+                </svg> Edit</button>
                             </div>
 
                         </div>
@@ -241,7 +252,8 @@ if (isset($_POST['action']) && $_POST['action'] == "edit_menu_name") {
         $db->close(); ?>
     </div>
 
-<?php exit(); endif;  ?>
+<?php exit();
+endif;  ?>
 <!-- line234 -->
 <?php if (isset($_GET['action']) && $_GET['action'] == "edit_dish") :
     include("../connect.php");
@@ -249,52 +261,62 @@ if (isset($_POST['action']) && $_POST['action'] == "edit_menu_name") {
     $menu_item = $db->query('SELECT menu_items.menu_item_id, menu_items.menu_item_name, menu_items.menu_item_desc, menu_items.course_id, menu_items.menu_id, menu_courses.course_name FROM menu_items LEFT JOIN menu_courses ON menu_courses.course_id=menu_items.course_id WHERE menu_item_id=' . $_GET['dish_id'] . ' AND menu_id=' . $_GET['menu_id']);
     $menu_item_res = mysqli_fetch_assoc($menu_item);
 ?>
-    <div class="modal-body">
-        <div class="modal-content">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="btn-close close" type="button">
+                <svg class="icon line">
+                    <use href="assets/img/icons/solid.svg#minus" />
+                </svg>
+                <svg class="icon x-mark">
+                    <use href="assets/img/icons/solid.svg#xmark" />
+                </svg>
+            </button>
             <h2 class="text-center">Edit Dish</span></h2>
-            <?php if ($menu_courses->num_rows > 0) : ?>
-                <form class="my-2" action="scripts/menu.script.php" method="POST" id="edit-dish">
-                    <div id="dish-editor">
-                        <div class="form-input-wrapper">
-                            <label for="menu_item_name">Dish Name</label>
-                            <input type="text" name="menu_item_name" id="menu_item_name" placeholder="Slow Roast Beef..." required value="<?= $menu_item_res['menu_item_name']; ?>">
-                        </div>
-                        <div class="form-input-wrapper">
-                            <label for="menu_item_desc">Dish Description</label>
-                            <input type="text" name="menu_item_desc" id="menu_item_desc" placeholder="A description to entice your guests" value="<?= $menu_item_res['menu_item_desc']; ?>">
-                        </div>
-                        <div class="form-input-wrapper">
-                            <label for="course_id">Select Course</label>
-                            <select name="course_id" id="course_id" required>
-                                <option value="<?= $menu_item_res['course_id']; ?>"><?= $menu_item_res['course_name']; ?></option>
-                                <?php foreach ($menu_courses as $course) : ?>
-                                    <option value="<?= $course['course_id']; ?>"><?= $course['course_name']; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="button-section my-3 modal-btns">
-                        <button class="btn-primary" id="edit-save-dish" data-action="edit_dish" data-dish_id="<?= $menu_item_res['menu_item_id']; ?>" data-menu_id="<?= $_GET['menu_id']; ?>" type="submit">Save Dish</button>
-                        <button class="btn-primary btn-secondary" type="button" id="close-modal">Close</button>
-                    </div>
-                    <div class="d-none" id="response">
-                    </div>
-                </form>
-            <?php else : ?>
-                <p><strong>Before you continue, you need to set up courses for your menu.</strong></p>
-                <div class="button-section">
-                    <button class="btn-primary btn-secondary" id="close-modal" type="button">Close</button>
-                </div>
-            <?php endif; ?>
         </div>
+        <?php if ($menu_courses->num_rows > 0) : ?>
+            <form class="my-2" action="scripts/menu.script.php" method="POST" id="edit-dish">
+                <div id="dish-editor">
+                    <div class="form-input-wrapper">
+                        <label for="menu_item_name">Dish Name</label>
+                        <input type="text" name="menu_item_name" id="menu_item_name" placeholder="Slow Roast Beef..." required value="<?= $menu_item_res['menu_item_name']; ?>">
+                    </div>
+                    <div class="form-input-wrapper">
+                        <label for="menu_item_desc">Dish Description</label>
+                        <input type="text" name="menu_item_desc" id="menu_item_desc" placeholder="A description to entice your guests" value="<?= $menu_item_res['menu_item_desc']; ?>">
+                    </div>
+                    <div class="form-input-wrapper">
+                        <label for="course_id">Select Course</label>
+                        <select name="course_id" id="course_id" required>
+                            <option value="<?= $menu_item_res['course_id']; ?>"><?= $menu_item_res['course_name']; ?></option>
+                            <?php foreach ($menu_courses as $course) : ?>
+                                <option value="<?= $course['course_id']; ?>"><?= $course['course_name']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer my-2">
+                    <button class="btn-primary" id="edit-save-dish" data-action="edit_dish" data-dish_id="<?= $menu_item_res['menu_item_id']; ?>" data-menu_id="<?= $_GET['menu_id']; ?>" type="submit">Save Dish</button>
+                    <button class="btn-primary btn-secondary close" type="button">Close</button>
+                </div>
+                <div class="d-none" id="response">
+                </div>
+            </form>
+        <?php else : ?>
+            <p><strong>Before you continue, you need to set up courses for your menu.</strong></p>
+            <div class="button-section">
+                <button class="btn-primary btn-secondary" id="close-modal" type="button">Close</button>
+            </div>
+        <?php endif; ?>
     </div>
+
 <?php $db->close();
-exit();
+    exit();
 endif;
- ?>
+?>
 
 <?php if (isset($_GET['action']) && $_GET['action'] == "load_menus") :
-include("../connect.php");
+    include("../connect.php");
     $menu_query = $db->query('SELECT menu.menu_name, menu.menu_id, menu.event_id, wedding_events.event_id, wedding_events.event_name FROM menu LEFT JOIN wedding_events ON wedding_events.event_id=menu.event_id'); ?>
     <div class="std-card">
         <div class="form-controls my-2">

@@ -801,6 +801,7 @@ a.btn-primary{
 .btn-delete{
     background-color: hsl(0, 95%, 67%);
     border-color: hsl(0, 95%, 67%);
+    color: #fff;
 } 
 
 .btn-delete:focus{
@@ -811,12 +812,6 @@ a.btn-primary{
 .btn-remove-guest{
     height: 100%;
     margin-block: .25rem;
-} 
-
-.close{/*wrapper for close button*/
-    display: flex;
-    justify-content: flex-end;
-    margin-block: 0.5rem;
 } 
 
 .btn-close{/*close button*/
@@ -883,23 +878,9 @@ a.btn-primary{
     display: flex;
     align-items: center;
     gap: 0.5rem;
+
+
 } 
-
-.form-input-row button {
-        height: 33.33px;
-        width: 33.33px;
-        display: grid;
-        place-items: center;
-    } 
-
-.form-input-row button svg {
-            height: 100%;
-            margin: 0;
-        } 
-
-.form-input-row button svg path {
-                fill: #FFF;
-            } 
 
 /*Recaptcha  settings*/ 
 
@@ -1821,17 +1802,12 @@ input:checked+.slider:before {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 100;
+    z-index: 1000;
     opacity: 0;
     pointer-events: none;
     transition: opacity 300ms ease-out;
- } 
 
-.modal-content{
-    height: 100%;
-    
-    padding: 0.5rem;
-} 
+ } 
 
 /*modal header, align as a column on small screens*/ 
 
@@ -1845,11 +1821,27 @@ input:checked+.slider:before {
     align-self: self-start;
   } 
 
+.modal-header .btn-close{
+    color: rgb(59, 104, 92);
+    height: 2.5rem;
+    width: 2.5rem;
+   } 
+
+.modal-header .btn-close .x-mark{
+       display: none;
+     } 
+
 @media(min-width:768px){
   .modal-header{
     flex-direction: row-reverse;
     justify-content: space-between;
   }
+    .modal-header .btn-close .x-mark{
+      display: initial;
+    }
+    .modal-header .btn-close .line{
+      display: none;
+    }
   .modal-content{
     width: 100%;
     max-width: 500px;
@@ -1860,6 +1852,13 @@ input:checked+.slider:before {
   .modal-content{
     max-width: 700px;
   }
+} 
+
+.modal-footer{
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
 } 
 
 .modal-close{/*header section with close button set to the right*/
@@ -1882,12 +1881,12 @@ input:checked+.slider:before {
 
 /*custom modal for image uploads in gallery*/ 
 
-.confirm-modal,.upload-modal {
+.modal {
     background-color: rgba(0, 0, 0, 0.7);
      place-items: end;
   } 
 
-.confirm-modal .modal-content, .upload-modal .modal-content {
+.modal .modal-content {
       margin-bottom: env(safe-area-inset-bottom, 10px);
       display: flex;
       flex-direction: column;
@@ -1898,24 +1897,25 @@ input:checked+.slider:before {
       background-color: #fff;
       border-top-right-radius: 10px;
       border-top-left-radius: 10px;
+      padding: 0.5rem;
     } 
 
-.confirm-modal .modal-content input,.upload-modal .modal-content input{
+.modal .modal-content input{
        width: 100%;
       } 
 
-.confirm-modal .close,.upload-modal .close{
+.modal .close{
      justify-content: center;
      
     } 
 
-.confirm-modal .btn-close,.upload-modal .btn-close{
+.modal .btn-close{
      color: rgb(59, 104, 92);
      height: 2.5rem;
      width: 2.5rem;
     } 
 
-.confirm-modal .btn-close .x-mark,.upload-modal .btn-close .x-mark{
+.modal .btn-close .x-mark{
         display: none;
       } 
 
@@ -1924,24 +1924,23 @@ input:checked+.slider:before {
   } 
 
 @media(min-width:768px){
-    .confirm-modal,.upload-modal{
+    .modal{
       place-items: center;
     }
-      .confirm-modal .btn-close .x-mark,.upload-modal .btn-close .x-mark{
+      .modal .btn-close .x-mark{
         display: initial;
       }
-      .confirm-modal .btn-close .line,.upload-modal .btn-close .line{
+      .modal .btn-close .line{
         display: none;
       }
      .upload-modal .modal-content{
       border-radius: 10px;
 
     }
-    .confirm-modal .modal-content{
+    .modal-content{
       border-radius: 10px;
-      padding: 0.5rem;
     }
-      .confirm-modal .modal-content .button-section{
+      .modal-content .button-section{
         width: 100%;
       }
    } 
