@@ -7,9 +7,16 @@ if (isset($_GET['user_email'])) {
 $user_id=0;
 include("./connect.php");
 include("inc/head.inc.php");
-include("inc/settings.php");
-
-if ($cms_type == "Business") {
+include($_SERVER['DOCUMENT_ROOT'] . "/email_settings.php");
+require("../admin/scripts/functions.php");
+$cms = new Cms();
+if ($cms->type() == "Wedding") {
+    $cms->wedding_load();
+}
+if ($cms->type() == "Business") {
+    $cms->business_load();
+}
+if ($cms->type() == "Business") {
     //look for the business set up and load information
     //find business details.
     $business = $db->prepare('SELECT * FROM business');
@@ -31,7 +38,7 @@ if ($cms_type == "Business") {
 }
 
 //run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
+if ($cms->type() == "Wedding") {
     //look for the Wedding set up and load information
     //find Wedding details.
     $wedding = $db->prepare('SELECT * FROM wedding');

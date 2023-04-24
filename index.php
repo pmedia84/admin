@@ -4,7 +4,6 @@ require("scripts/functions.php");
 check_login();
 include("connect.php");
 include("inc/settings.php");
-
 //find news articles
 $news_query = ('SELECT * FROM news_articles WHERE news_articles_status="Published" ORDER BY news_articles_date LIMIT 3 ');
 $news = $db->query($news_query);

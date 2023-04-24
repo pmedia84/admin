@@ -46,7 +46,7 @@ if (isset($_POST['action'])) {
         $user_name = mysqli_real_escape_string($db, $_POST['username']);
         $business_id = $_POST['business_id'];
         $user_type = $_POST['user_type'];
-        $user_cms_type = $cms_type;
+        $user_cms_type = "Business";
         // Generate Random Password
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*_";
         $password = substr(str_shuffle($chars), 0, 8);
@@ -151,13 +151,13 @@ if (isset($_POST['action'])) {
 //set up users for wedding cms
 
     if ($_POST['action'] == "create_user_wedding") {
-        include("../inc/settings.php");
+        include($_SERVER['DOCUMENT_ROOT'] . "/email_settings.php");
         //declare variables
         $user_email = mysqli_real_escape_string($db, $_POST['user_email']);
         $user_name = mysqli_real_escape_string($db, $_POST['username']);
         $wedding_id = $_POST['wedding_id'];
         $user_type = $_POST['user_type'];
-        $user_cms_type = $cms_type;
+        $user_cms_type = "Wedding";
         // Generate Random Password
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*_";
         $password = substr(str_shuffle($chars), 0, 8);

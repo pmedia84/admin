@@ -10,7 +10,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/admin/mailer/Exception.php';
 session_start();
 
 include("../connect.php");
-include("../inc/settings.php");
+include($_SERVER['DOCUMENT_ROOT'] . "/email_settings.php");
 if (mysqli_connect_errno()) {
     // If there is an error with the connection, stop the script and display the error.
     echo "hello";

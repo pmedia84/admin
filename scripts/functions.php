@@ -35,7 +35,7 @@ class Cms
     }
 
     function setup()
-    {
+    { 
         include("../connect.php");
         //business
         if ($this->cms_type == "Business") {

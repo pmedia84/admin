@@ -908,6 +908,7 @@ a.btn-primary{
     max-width: 600px;
     margin: 0 auto;
     margin-block: 1.5rem;
+    place-self: center;
 } 
 
 /*/form input wrapper, holds labels and inputs together*/ 

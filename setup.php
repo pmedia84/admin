@@ -4,48 +4,22 @@ if (empty($_GET)) {
     //if user arrives at this page without a get request, redirect to the index page
     header('location: index.php');
 }
-$wedding_id=0;
-$business_id=0;
 include("connect.php");
-include("inc/settings.php");
-//determine what type of cms is running
-//run checks to make sure a business has been set up
-if ($cms_type == "Business") {
-    //look for a business setup in the db, if not then direct to the setup page
-    $business_query = ('SELECT business_id FROM business ORDER BY business_id LIMIT 1');
-    $business = $db->query($business_query);
-    //check if a business exists, if it does fetch the ID, if not set the business ID to NULL
-    if ($business->num_rows > 0) {
-        $ar = mysqli_fetch_assoc($business);
-        $business_id = $ar['business_id'];
-        
-    } else {
-        $business_id = "";
-    }
-    //check if there are users for the business
-    $users_query = ('SELECT user_id, business_id FROM business_users WHERE business_id=' . $business_id);
-    $users = $db->query($users_query);
-    
-}
+require("scripts/functions.php");
+$cms = new Cms();
 
 //run checks to make sure a wedding has been set up
-if ($cms_type == "Wedding") {
+if ($cms->type() == "Wedding") {
     //look for a wedding setup in the db, if not then direct to the setup page
     $wedding_query = ('SELECT wedding_id FROM wedding');
     $wedding = $db->query($wedding_query);
     if ($wedding->num_rows > 0) {
         $ar = mysqli_fetch_assoc($wedding);
         $wedding_id = $ar['wedding_id'];
-        
-    }else {
+    } else {
         $wedding_id = "";
     }
-
-
-
 }
-
-
 
 
 ?>
@@ -73,7 +47,7 @@ if ($cms_type == "Wedding") {
             </div>
         </div>
         <div class="login-wrapper">
-            <?php if($cms_type == "Business"):?>
+            <?php if ($cms->type() == "Business") : ?>
                 <?php if ($_GET['action'] == "setup_business") : ?>
                     <?php if ($business->num_rows == 0) : ?>
                         <h1>Setup Business</h1>
@@ -151,23 +125,23 @@ if ($cms_type == "Wedding") {
                         <?php
                         //find an admin for this business
                         $admin_user_query = ('SELECT user_type, business_id FROM business_users WHERE business_id=' . $business_id . ' AND user_type = "Admin" ');
-                        
-                        if($admin_user = $db->query($admin_user_query)){
+
+                        if ($admin_user = $db->query($admin_user_query)) {
                             $admin_user_result = $admin_user->fetch_assoc();
-                        }else{
-                            $admin_user_result="";
+                        } else {
+                            $admin_user_result = "";
                         }
-                        
+
 
                         //find a Developer for this business
                         $dev_user_query = ('SELECT user_type, business_id FROM business_users WHERE business_id=' . $business_id . ' AND user_type = "Developer" ');
-                        
-                        if($dev_user = $db->query($dev_user_query)){
+
+                        if ($dev_user = $db->query($dev_user_query)) {
                             $dev_user_result = $dev_user->fetch_assoc();
-                        }else{
-                            $dev_user_result="";
+                        } else {
+                            $dev_user_result = "";
                         }
-                        
+
                         ?>
                         <?php if ($admin_user_result == "") : ?>
                             <h1><?= $business_result['business_name']; ?></h1>
@@ -246,10 +220,8 @@ if ($cms_type == "Wedding") {
                     <?php endif; ?>
                 <?php endif; ?>
 
-            <?php endif;?>
-
-
-            <?php if($cms_type =="Wedding"):?>
+            <?php endif; ?>
+            <?php if ($cms->type() == "Wedding") : ?>
                 <?php if ($_GET['action'] == "setup_wedding") : ?>
                     <?php if ($wedding->num_rows == 0) : ?>
                         <h1>Setup Wedding</h1>
@@ -262,7 +234,7 @@ if ($cms_type == "Wedding") {
                                 <!-- input -->
                                 <input type="text" name="wedding_name" id="wedding_name" placeholder="The Wedding Of:" required="" maxlength="45">
                             </div>
-                            
+
                             <h2>Wedding Primary Contact Details</h2>
                             <div class="form-input-wrapper">
                                 <label for="wedding_email">eMail Address:</label>
@@ -290,10 +262,10 @@ if ($cms_type == "Wedding") {
                         <h1>Setup Wedding</h1>
                         <p><strong>Wedding already setup!</strong></p>
                     <?php endif; ?>
-                    <?php endif; ?>
-                    
-                    <?php if ($_GET['action'] == "check_users_wedding") : ?>
-                    
+                <?php endif; ?>
+
+                <?php if ($_GET['action'] == "check_users_wedding") : ?>
+
                     <?php
                     //display wedding name
                     $wedding_query = ('SELECT wedding_id, wedding_name FROM wedding LIMIT 1');
@@ -309,7 +281,7 @@ if ($cms_type == "Wedding") {
                     $dev_user_query = ('SELECT user_type, wedding_id FROM wedding_users WHERE wedding_id=' . $wedding_id . ' AND user_type = "Developer" ');
                     $dev_user = $db->query($dev_user_query);
                     $dev_user_result = $dev_user->fetch_assoc();
-              
+
                     ?>
                     <?php if ($admin_user_result == null) : ?>
                         <h1>The Wedding of <?= $wedding_result['wedding_name']; ?></h1>
@@ -385,29 +357,23 @@ if ($cms_type == "Wedding") {
                             </script>
                         <?php endif; ?>
                     <?php endif; ?>
-                    
+
+                <?php endif; ?>
+
+
             <?php endif; ?>
-                
-            
-            <?php endif;?>
-           
-            
+
+
 
 
 
         </div>
-
-
-
-
-
-
-
     </main>
     <!-- /Main Body Of Page -->
     <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
+    <?php if ($cms->type()=="Business"):?>
     <script>
         //script for saving new business details then redirects to set up users
         $("#setup-business").submit(function(event) {
@@ -437,32 +403,6 @@ if ($cms_type == "Wedding") {
                 }
             });
 
-        });
-    </script>
-        <script>
-        //script for saving new wedding details then redirects to set up users
-        $("#setup-wedding").submit(function(event) {
-            event.preventDefault();
-            var formData = new FormData($("#setup-wedding").get(0));
-            var url = "setup.php?action=check_users_wedding"
-            formData.append("action", "create_wedding");
-
-            $.ajax({ //start ajax post
-                type: "POST",
-                url: "scripts/setup.script.php",
-                data: formData,
-                contentType: false,
-                processData: false,
-                beforeSend: function() { //animate button
-                    $("#loading-icon").show(400);
-                },
-                complete: function() {
-                    $("#loading-icon").hide(400);
-                },
-                success: function(data, responseText) {
-                    window.location.replace(url);
-                }
-            });
         });
     </script>
     <script>
@@ -500,7 +440,35 @@ if ($cms_type == "Wedding") {
 
         });
     </script>
-        <script>
+    <?php endif;?>
+    <script>
+        //script for saving new wedding details then redirects to set up users
+        $("#setup-wedding").submit(function(event) {
+            event.preventDefault();
+            var formData = new FormData($("#setup-wedding").get(0));
+            var url = "setup.php?action=check_users_wedding"
+            formData.append("action", "create_wedding");
+
+            $.ajax({ //start ajax post
+                type: "POST",
+                url: "scripts/setup.script.php",
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() { //animate button
+                    $("#loading-icon").show(400);
+                },
+                complete: function() {
+                    $("#loading-icon").hide(400);
+                },
+                success: function(data, responseText) {
+                    window.location.replace(url);
+                }
+            });
+        });
+    </script>
+    
+    <script>
         //script for adding new users
         $("#add_user_wedding").submit(function(event) {
             event.preventDefault();
@@ -509,7 +477,6 @@ if ($cms_type == "Wedding") {
             var url = "setup.php?action=check_users_wedding";
             formData.append("action", "create_user_wedding");
             formData.append("wedding_id", wedding_id);
-
             $.ajax({ //start ajax post
                 type: "POST",
                 url: "scripts/setup.script.php",

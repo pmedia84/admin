@@ -3,7 +3,6 @@ session_start();
 include("connect.php");
 require("scripts/functions.php");
 include("inc/settings.php");
-//load functions
 
 //find the referring page to redirect to once logged in
 if(!empty($_GET)){
@@ -23,14 +22,7 @@ if(!empty($_GET)){
 <title>Mi-Admin | Dashboard</title>
 <!-- /Page Title -->
 </head>
-
 <body>
-
-
-    <!-- Main Body Of Page -->
-
-
-
     <main class="main login-main">
     <div class="header">
 
