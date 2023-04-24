@@ -145,46 +145,56 @@ include("inc/head.inc.php");
                                     endif; ?>
                                 </div>
                                 <div class="modal" id="menu-modal">
-                                    <div class="modal-body">
-                                        <div class="modal-content">
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <button class="btn-close close" type="button">
+                                                <svg class="icon line">
+                                                    <use href="assets/img/icons/solid.svg#minus" />
+                                                </svg>
+                                                <svg class="icon x-mark">
+                                                    <use href="assets/img/icons/solid.svg#xmark" />
+                                                </svg>
+                                            </button>
                                             <h2 class="text-center">Create a New Menu</h2>
-                                            <?php if ($event_query->num_rows > 0) : ?>
-                                                <?php if ($menu_courses->num_rows > 0) : ?>
-                                                    <form class="my-2" action="menu.script.php" method="POST" id="create-menu" data-action="new_menu">
-                                                        <div id="dish-creator">
-                                                            <div class="form-input-wrapper">
-                                                                <label for="menu_name">Menu Name</label>
-                                                                <input type="text" name="menu_name" id="menu_name" placeholder="Wedding Breakfast..." required>
-                                                            </div>
-                                                            <div class="form-input-wrapper">
-                                                                <label for="event_id">Select Event This Menu Is For</label>
-                                                                <select name="event_id" id="event_id" required>
-                                                                    <option value="">Select Event</option>
-                                                                    <?php foreach ($event_query as $event) : ?>
-                                                                        <option value="<?= $event['event_id']; ?>"><?= $event['event_name']; ?></option>
-                                                                    <?php endforeach; ?>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="button-section my-3 modal-btns">
-                                                            <button class="btn-primary" id="save-menu" type="submit">Save Menu</button>
-                                                            <button class="btn-primary btn-secondary" type="button" id="close-menu-modal">Close</button>
-                                                        </div>
-                                                        <div class="d-none" id="response">
-                                                        </div>
-                                                    </form>
-                                                <?php else : ?>
-                                                    <p><strong>Before you continue, you need to set up courses for your menu.</strong></p>
-                                                    <div class="button-section my-3">
-                                                        <button class="btn-primary btn-secondary" id="close-menu-modal" type="button">Close</button>
-                                                    </div>
-                                                <?php endif; ?>
-                                            <?php else : ?>
-                                                <p>You have no events set up, please create an event first</p>
-                                                <a href="event.php?action=create" class="btn-primary my-3">Create Events</a>
-                                            <?php endif; ?>
                                         </div>
+                                        <?php if ($event_query->num_rows > 0) : ?>
+                                            <?php if ($menu_courses->num_rows > 0) : ?>
+                                                <form class="my-2" action="menu.script.php" method="POST" id="create-menu" data-action="new_menu">
+                                                    <div id="dish-creator">
+                                                        <div class="form-input-wrapper">
+                                                            <label for="menu_name">Menu Name</label>
+                                                            <input type="text" name="menu_name" id="menu_name" placeholder="Wedding Breakfast..." required>
+                                                        </div>
+                                                        <div class="form-input-wrapper">
+                                                            <label for="event_id">Select Event This Menu Is For</label>
+                                                            <select name="event_id" id="event_id" required>
+                                                                <option value="">Select Event</option>
+                                                                <?php foreach ($event_query as $event) : ?>
+                                                                    <option value="<?= $event['event_id']; ?>"><?= $event['event_name']; ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer my-2">
+                                                        <button class="btn-primary" id="save-menu" type="submit">Save Menu</button>
+                                                        <button class="btn-primary btn-secondary" type="button" id="close-menu-modal">Close</button>
+                                                    </div>
+                                                    <div class="d-none" id="response">
+                                                    </div>
+                                                </form>
+                                            <?php else : ?>
+                                                <p><strong>Before you continue, you need to set up courses for your menu.</strong></p>
+                                                <div class="modal-footer my-2">
+                                                    <button class="btn-primary btn-secondary" id="close-menu-modal" type="button">Close</button>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php else : ?>
+                                            <p>You have no events set up, please create an event first</p>
+                                            <a href="event.php?action=create" class="btn-primary my-3">Create Events</a>
+                                        <?php endif; ?>
                                     </div>
+
                                 </div>
                             <?php endif; ?>
                             <?php if (isset($_GET['action']) && $_GET['action'] == "edit") : ?>
@@ -274,7 +284,7 @@ include("inc/head.inc.php");
                                                 </div>
                                                 <div class="modal-footer my-2">
                                                     <button class="btn-primary" id="save-dish" data-action="save_dish" data-menu_id="<?= $_GET['menu_id']; ?>" type="submit">Save Dish</button>
-                                                    <button class="btn-primary btn-secondary close" type="button" >Close</button>
+                                                    <button class="btn-primary btn-secondary close" type="button">Close</button>
                                                 </div>
                                                 <div class="d-none" id="response">
                                                 </div>
