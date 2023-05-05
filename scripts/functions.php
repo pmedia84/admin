@@ -303,7 +303,7 @@ class Img
         $img = $db->prepare('INSERT INTO images (image_filename,  image_placement, status)VALUES(?,?,?)');
         //set the file name
         $newimgname = "gallery-img-0.webp";
-        //set the upload path
+        //set the upload path for admin
         $dir = $_SERVER['DOCUMENT_ROOT'] . "/admin/assets/img/gallery/" . $newimgname;
         foreach ($_FILES['gallery_img']['name'] as $key => $val) {
             // Reject uploaded file larger than 3MB
