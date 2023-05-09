@@ -2,7 +2,12 @@
 session_start();
 require("scripts/functions.php");
 check_login();
+$user = new User();
+$user_type = $user->user_type();
+$user_id = $user->user_id();
+
 include("connect.php");
+include("inc/head.inc.php");
 include("inc/settings.php");
 //find wedding events details
 $wedding_events_query = ('SELECT * FROM wedding_events ORDER BY event_time');

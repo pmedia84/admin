@@ -9,15 +9,12 @@ include("connect.php");
 include("inc/head.inc.php");
 include("inc/settings.php");
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
-//Variable for name of CMS
-//wedding is the name of people
-//business name
-$cms_name = "";
-$user_id = $_SESSION['user_id'];
+
+
 
 
 //run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
+if ($cms->type() == "Wedding") {
     //look for the Wedding set up and load information
     wedding_load($wedding_name, $wedding_date, $wedding_id);
     //set cms name
