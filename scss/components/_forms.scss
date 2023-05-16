@@ -451,9 +451,9 @@ input:checked+.slider:before {
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
 
-        svg {
+        .icon {
             height: 100%;
-            margin: 0;
+            margin-right: 0;
         }
 
         path {

@@ -191,6 +191,12 @@ $meal_choices_m->module_name("Meal Choices");
 $guest_image_gallery = new Module();
 $guest_image_gallery->module_name("Guest Image Gallery");
 
+$reviews = new Module();
+$reviews->module_name("Reviews");
+
+$forms = new Module();
+$forms->module_name("Forms");
+
 //*modules for guest area 
 class Wedding_module
 {

@@ -3,8 +3,8 @@ session_start();
 require("scripts/functions.php");
 check_login();
 include("connect.php");
-include("inc/head.inc.php");
 include("inc/settings.php");
+$user=new User();
 
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
@@ -12,7 +12,7 @@ include("inc/settings.php");
 //business name
 $cms_name = "";
 $user_id = $_SESSION['user_id'];
-if ($cms_type == "Business") {
+if ($cms->type() == "Business") {
     //look for the business set up and load information
     //find business details.
     $business = $db->prepare('SELECT * FROM business');
@@ -39,7 +39,7 @@ if ($cms_type == "Business") {
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //load all service names for the search bar
 $service_names_q=$db->query('SELECT service_name FROM services');
-
+include("inc/head.inc.php");
 
 ?>
 <!-- Meta Tags For Each Page -->
