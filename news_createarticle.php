@@ -2,10 +2,9 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-
-include("./connect.php");
-include("inc/head.inc.php");
+include("connect.php");
 include("inc/settings.php");
+$user=new User();
 
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
@@ -13,7 +12,7 @@ include("inc/settings.php");
 //business name
 $cms_name = "";
 $user_id = $_SESSION['user_id'];
-if ($cms_type == "Business") {
+if ($cms->type() =="Business") {
     //look for the business set up and load information
     //find business details.
     $business = $db->prepare('SELECT * FROM business');
@@ -32,7 +31,7 @@ if ($cms_type == "Business") {
     $business_users->close();
 }
 //run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
+if ($cms->type() =="Wedding") {
     //look for the Wedding set up and load information
     //find Wedding details.
     $wedding = $db->prepare('SELECT * FROM wedding');
@@ -58,7 +57,7 @@ if ($cms_type == "Wedding") {
     $wedding_events_result = $wedding_events->fetch_assoc();
 }
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
+include("inc/head.inc.php");
 
 ?>
 <!-- Meta Tags For Each Page -->

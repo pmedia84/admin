@@ -2,10 +2,9 @@
 session_start();
 require("scripts/functions.php");
 check_login();
-
-include("./connect.php");
-include("inc/head.inc.php");
+include("connect.php");
 include("inc/settings.php");
+$user=new User();
 
 ////////////////Find details of the cms being used, on every page\\\\\\\\\\\\\\\
 //Variable for name of CMS
@@ -13,7 +12,7 @@ include("inc/settings.php");
 //business name
 $cms_name ="";
 $user_id = $_SESSION['user_id'];
-if ($cms_type == "Business") {
+if ($cms->type() =="Business") {
     //look for the business set up and load information
     //find business details.
     $business = $db->prepare('SELECT * FROM business');
@@ -35,7 +34,7 @@ if ($cms_type == "Business") {
 }
 
 //run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
+if ($cms->type() == "Wedding") {
     //look for the Wedding set up and load information
     //find Wedding details.
     $wedding = $db->prepare('SELECT * FROM wedding');
@@ -52,19 +51,13 @@ if ($cms_type == "Wedding") {
 // //find users and display on screen.
 // //connect to user db to check admin rights etc
 // //find username and email address to display on screen.
-// $user = $db->prepare('SELECT user_id,  user_type, business_id FROM users WHERE user_id = ?');
-// $user->bind_param('s', $_SESSION['user_id']);
-// $user->execute();
-// $user->store_result();
-// $user->bind_result($user_id, $user_type, $business_id);
-// $user->fetch();
-// $user->close();
+
 //find news articles
 $news_query = ('SELECT * FROM news_articles ORDER BY news_articles_status ');
 $news = $db->query($news_query);
 
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
+include("inc/head.inc.php");
 
 ?>
 <!-- Meta Tags For Each Page -->
