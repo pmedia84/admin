@@ -176,7 +176,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
 
                     <?php if ($_GET['action'] == "create") : ?>
                         <form id="add_guest" action="scripts/guest.script.php" method="POST" enctype="multipart/form-data">
-                            <div class="form-card">
+                            <div class="std-card my-3">
                                 <h2>Main Guest</h2>
                                 <div class="form-input-wrapper">
                                     <label for="guest_fname"><strong>First Name</strong></label>
@@ -211,7 +211,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
 
                             </div>
 
-                            <div class="form-card">
+                            <div class="std-card my-3">
                                 <h2>Additional Guests</h2>
                                 <p>You can assign this guest extra invites here, if you know who they will be bringing with them.</p>
                                 <p>If you are unsure of their name, tick the box below each guest and they will be added as a plus one.</p>
@@ -220,7 +220,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                         <use xlink:href="assets/img/icons/solid.svg#user-plus"></use>
                                     </svg> Add Guests</button>
                             </div>
-                            <div class="form-card">
+                            <div class="std-card my-3">
                                 <h2>Assign To Events</h2>
                                 <p>You can assign this guest to your events now, or you can do this within the event manager tab.</p>
 
