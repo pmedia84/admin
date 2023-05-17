@@ -189,6 +189,11 @@ if (isset($_GET['img_total'])) {
                 foreach ($gallery_query as $image) :
             ?>
                     <div class="img-card" data-status="<?= $image['status']; ?>">
+                        <a href="image?image_id=<?= $image['image_id']; ?>&action=edit" class="btn-primary btn-secondary btn-edit">
+                            <svg class="icon">
+                                <use href="assets/img/icons/solid.svg#pen" />
+                            </svg>
+                        </a>
                         <input class="img-select" data-select="false" data-image_filename="<?= $image['image_filename']; ?>" type="checkbox" name="gallery_img[<?= $key; ?>][image_id]" value="<?= $image['image_id']; ?>">
                         <img class="gallery-img" src="assets/img/gallery/<?= $image['image_filename']; ?>" alt="" data-img_id="<?= $image['image_id']; ?>">
                         <p class="img-card-caption"><?= $image['image_description']; ?></p>
