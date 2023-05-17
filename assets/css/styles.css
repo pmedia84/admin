@@ -763,6 +763,7 @@ grid-column: 2/3;
     font-size: 1em;
     display: flex;
     align-items: center;
+    justify-content: space-between;
    cursor: pointer;
     
 } 
@@ -773,7 +774,7 @@ grid-column: 2/3;
     } 
 
 .btn-primary .icon, .btn-primary .loading-btn-text{
-        margin-right: 0.375rem;
+        margin-inline: 0.375rem;
     
     } 
 
@@ -1026,7 +1027,6 @@ select:focus {
 
 /*button wrapper, displays buttons and spaces them out*/ 
 
-.button-section,
 .modal-button-section {
     display: flex;
     justify-content: space-between;
@@ -1034,15 +1034,12 @@ select:focus {
     align-items: center;
 } 
 
-.button-section button,
-    .button-section a,
-    .modal-button-section button,
+.modal-button-section button,
     .modal-button-section a {
         width: 100%;
         max-width: 390px;
     } 
 
-.button-section,
 .modal-button-section {
 
     gap: .5rem;
@@ -1050,22 +1047,44 @@ select:focus {
 
 @media(min-width:768px) { 
 
-.button-section,
 .modal-button-section {
         flex-direction: row;
         width: 80%;
         max-width: 600px
 }
 
-        .button-section button,
-        .button-section a,
         .modal-button-section button,
         .modal-button-section a {
             width: fit-content;
         }
     } 
 
-.button-section a, .modal-button-section a {
+.modal-button-section a {
+        text-decoration: none;
+    } 
+
+.button-section{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+} 
+
+@media(min-width:768px) { 
+
+.button-section{
+        flex-direction: row
+}
+
+
+        .button-section button,
+        .button-section a {
+            width: fit-content;
+        }
+    } 
+
+.button-section a {
         text-decoration: none;
     } 
 

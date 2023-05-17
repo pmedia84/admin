@@ -195,7 +195,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                 </div>
                                 <button class="btn-primary btn-secondary my-2" type="button" id="show_address"><svg class="icon">
                                         <use xlink:href="assets/img/icons/solid.svg#map-location-dot"></use>
-                                    </svg> Add Address</button>
+                                    </svg> Address</button>
                                 <div class="form-hidden d-none">
                                     <div class="form-input-wrapper my-2">
                                         <label for="guest_address"><strong>Address</strong></label>
@@ -237,11 +237,11 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                 <?php else : ?>
                                     <p>There are no events set up, you will need to create them in your <a href="events">Events Tab</a></p>
                                 <?php endif; ?>
-
-
                             </div>
                             <div class="button-section my-3">
-                                <button class="btn-primary form-controls-btn" type="submit"> Submit</button>
+                                <button class="btn-primary form-controls-btn" type="button" id="save-and-new" title="Save this guest and add another"> Save & Add Another Guest</button>
+                                <button class="btn-primary  btn-secondary form-controls-btn" type="button" id="save-guest" title="Save this guest and return to your guest list"> Save & Return To Guest List</button>
+                                <a href="guest_list" class="btn-primary btn-secondary">Return To Guest List</a>
                             </div>
 
                             <div id="response" class="d-none">
@@ -545,7 +545,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
     </main>
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
-
+<?php if(isset($_GET['action']) && $_GET['action']=="edit"):?>
     <script>
         //script for editing a guest
         $("#edit_guest").submit(function(event) {
@@ -575,9 +575,10 @@ $wedding_events_result = $wedding_events->fetch_assoc();
             });
         });
     </script>
+    <?php endif;?>
     <script>
         //script for adding a guest
-        $("#add_guest").submit(function(event) {
+        $("#save-guest").on("click",function(event) {
             event.preventDefault();
             var formData = new FormData($("#add_guest").get(0));
             formData.append("action", "create");
@@ -590,6 +591,28 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                 success: function(data, responseText) {
                     if (data === "success") {
                         window.location.replace('guest_list.php');
+                    }
+
+                }
+            });
+
+        });
+    </script>
+    <script>
+        //script for adding a guest
+        $("#save-and-new").on("click",function(event) {
+            event.preventDefault();
+            var formData = new FormData($("#add_guest").get(0));
+            formData.append("action", "create");
+            $.ajax({ //start ajax post
+                type: "POST",
+                url: "scripts/guest.script.php",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data, responseText) {
+                    if (data === "success") {
+                        window.location.replace('guest?action=create');
                     }
 
                 }
