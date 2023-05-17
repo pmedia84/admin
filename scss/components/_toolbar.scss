@@ -38,3 +38,21 @@
         }
     }
 }
+
+///toolbar for forms page
+.forms-toolbar{
+gap: $spacer-3;
+padding: $spacer-2;
+border-radius: $border-radius;
+background-color: $primary-900;
+.search-input {
+    .btn-primary{
+        display:unset ;
+    }
+    .icon{
+        margin: 0;
+
+    }
+}
+
+}

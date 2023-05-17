@@ -95,8 +95,6 @@
     display: flex;
     flex-direction: column;
     gap: $spacer-2;
-    
-    
 }
 
 
@@ -222,12 +220,6 @@
      }
 }
 
-/////Form card for dividing up forms
-.form-card{
-    background-color: #fff;
-    padding: $spacer-3;
-    border-radius: 5px;
-}
 
 
 ///alert cards
@@ -349,3 +341,58 @@
     }
 }
 
+//?Form response cards, for viewing and managing form responses from front end. Consultation forms
+
+//Outer wrapper
+.client-form{
+    background-color: $primary-950;
+    display: grid;
+    gap: $spacer-2;
+    grid-template-columns: 8px auto 25%;
+
+    border-radius: $border-radius-2;
+}
+//change status bar to unread color
+.client-form[data-status=unread] .client-form-status{
+    background-color: $primary;
+}
+//inner body
+.client-form-body{
+    padding: $spacer-1 $spacer-1 $spacer-1 0;
+
+}
+//hide the actions but only on devices that have a pointer
+.client-form-actions{
+    place-self: center;
+    justify-self: right;
+    font-size: 1.25rem;
+    padding: $spacer-1;
+    .icon{
+        margin-inline: $spacer-1;
+    }
+}
+@media(hover:hover){
+.client-form-actions{
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+}
+.client-form:hover .client-form-actions{
+    opacity: 1;
+    transition: opacity 200ms ease-out;
+}
+}
+//Status Bar to left
+.client-form-status{
+    border-top-left-radius: inherit;
+    border-bottom-left-radius: inherit;
+}
+
+//? Card for viewing and deleting responses
+.client-form-response{
+    border: 2px solid $primary-500;
+    
+}
+
+.client-form-response-actions{
+    flex-direction: row;
+}

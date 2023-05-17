@@ -6,21 +6,24 @@
         <ul class="nav-links">
             <?php if ($cms->type() == "Business") : ?>
                 <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "index")){echo"link-active";}?>" href="index.php">Home <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#house"></use></svg></a></li>
-                <?php if ($price_list->module_status="On") : ?>
+                <?php if ($price_list->status()=="On") : ?>
                     <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "price_list")){echo"link-active";}?>" href="price_list.php">Price List <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#tags"></use></svg></a></li>
                 <?php endif; ?>
-                <?php if ($image_gallery_status == "On") : ?>
-                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "gallery")){echo"link-active";}?>" href="gallery.php">Image Gallery <i class="fa-solid fa-image"></i></a></li>
+                <?php if ($image_gallery->status() == "On") : ?>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "gallery")){echo"link-active";}?>" href="gallery.php">Image Gallery <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#image"></use></svg></a></li>
                 <?php endif; ?>
-                <?php if ($news_status == "On") : ?>
-                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "news")){echo"link-active";}?>" href="news.php">News <i class="fa-solid fa-newspaper"></i></a></li>
+                <?php if ($news_m->status() == "On") : ?>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "news")){echo"link-active";}?>" href="news.php">News <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#newspaper"></use></svg></a></li>
+                <?php endif;?>
+                <?php if ($forms->status() == "On") : ?>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "forms") || str_contains($_SERVER['REQUEST_URI'], "form")){echo"link-active";}?>" href="forms">Forms <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#clipboard-user"></use></svg></a></li>
                 <?php endif;?>
 
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "settings")){echo"link-active";}?>" href="settings.php">Settings <i class="fa-solid fa-gear"></i></a></li>
+                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "settings")){echo"link-active";}?>" href="settings.php">Settings <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#gear"></use></svg></a></li>
                 <?php endif; ?>
-                <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
-                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "reviews")){echo"link-active";}?>" href="reviews.php">Reviews <i class="fa-solid fa-comment-dots"></i></a></li>
+                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "reviews")){echo"link-active";}?>" href="reviews.php">Reviews <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#comment-dots"></use></svg> </a></li>
                 <?php endif; ?>
             <?php endif; ?>
             <?php if ($cms->type() == "Wedding") : ?>
