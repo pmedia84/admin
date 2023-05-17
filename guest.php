@@ -291,7 +291,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                             </div>
 
                             <form id="edit_guest" action="scripts/guest.script.php" method="POST" enctype="multipart/form-data">
-                                <div class="form-card">
+                                <div class="std-card">
                                     <?php if ($guest_type == "Group Organiser") : ?>
                                         <h2>Main Guest</h2>
                                     <?php endif; ?>
@@ -366,7 +366,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                     </div>
                                 <?php endif; ?>
                                 <?php if ($guest_type == "Group Organiser") : ?>
-                                    <div class="form-card">
+                                    <div class="std-card my-2">
                                         <h2>Additional Guests</h2>
                                         <p>You can assign this guest extra invites here, if you know who they will be bringing with them.</p>
                                         <p>If you are unsure of their name, tick the box below each guest and they will be added as a plus one.</p>
@@ -376,7 +376,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                             </svg> Add Guests</button>
                                     </div>
                                 <?php endif; ?>
-                                <div class="form-card">
+                                <div class="std-card my-2">
                                     <h2>Events</h2>
                                     <?php if ($guest_invites->num_rows >= 1) : ?>
 

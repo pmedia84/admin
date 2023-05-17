@@ -31,7 +31,6 @@ $guest_list_result = $guest_list->fetch_assoc();
     <!-- Main Body Of Page -->
     <main class="main col-2">
 
-
         <!-- Header Section -->
         <?php include("inc/header.inc.php"); ?>
         <!-- Nav Bar -->
@@ -55,7 +54,8 @@ $guest_list_result = $guest_list->fetch_assoc();
                                     <label for="search">Search by guest name</label>
                                     <div class="search-input">
                                         <input type="text" id="search" name="search" placeholder="Search For A Guest ...">
-                                        <button class="btn-primary form-controls-btn loading-btn" type="submit"><svg class="icon">
+                                        <button class="btn-primary form-controls-btn loading-btn" type="submit">
+                                            <svg class="icon">
                                                 <use xlink:href="assets/img/icons/solid.svg#magnifying-glass"></use>
                                             </svg></button>
                                     </div>
