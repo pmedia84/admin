@@ -54,13 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
                         </span>
                         <span class="guest-card-tag" data-invite-status="<?= $guest['invite_rsvp_status']; ?>">
                             <svg class="icon feather-icon">
-                                <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                                <use xlink:href="assets/img/icons/feather.svg#message-square"></use>
                             </svg>
                             <?= $guest['invite_rsvp_status']; ?>
                         </span>
-                        <span class="guest-card-tag">
+                        <span class="guest-card-tag" data-guest-type="<?= $guest['guest_type']; ?>">
                             <svg class="icon feather-icon">
-                                <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                                <use xlink:href="assets/img/icons/feather.svg#user"></use>
                             </svg>
                             <?= $guest['guest_type']; ?>
                         </span>
@@ -100,24 +100,22 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
         case "Not Replied":
             $rsvp = "WHERE invitations.invite_rsvp_status ='Not Replied'";
             break;
-            case "Not Attending":
-                $rsvp = "WHERE invitations.invite_rsvp_status ='Not Attending'";
-                break;
-            case "Attending":
-                $rsvp = "WHERE invitations.invite_rsvp_status ='Attending'";
-                break;
-
+        case "Not Attending":
+            $rsvp = "WHERE invitations.invite_rsvp_status ='Not Attending'";
+            break;
+        case "Attending":
+            $rsvp = "WHERE invitations.invite_rsvp_status ='Attending'";
+            break;
     }
     switch ($event_filter) {
         case "":
             $event = "AND invitations.event_id >0 ";
             break;
-default:
-$event = "AND invitations.event_id=".$event_filter;
-
+        default:
+            $event = "AND invitations.event_id=" . $event_filter;
     }
     //find wedding guest list
-    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id ' . $rsvp.' '.$event);
+    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id ' . $rsvp . ' ' . $event);
     $guest_list = $db->query($guest_list_query);
     $guest_list_result = $guest_list->fetch_assoc();
     $result_num = $guest_list->num_rows;
@@ -155,13 +153,13 @@ $event = "AND invitations.event_id=".$event_filter;
                         </span>
                         <span class="guest-card-tag" data-invite-status="<?= $guest['invite_rsvp_status']; ?>">
                             <svg class="icon feather-icon">
-                                <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                                <use xlink:href="assets/img/icons/feather.svg#message-square"></use>
                             </svg>
                             <?= $guest['invite_rsvp_status']; ?>
                         </span>
-                        <span class="guest-card-tag">
+                        <span class="guest-card-tag" data-guest-type="<?= $guest['guest_type']; ?>">
                             <svg class="icon feather-icon">
-                                <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                                <use xlink:href="assets/img/icons/feather.svg#user"></use>
                             </svg>
                             <?= $guest['guest_type']; ?>
                         </span>

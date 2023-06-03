@@ -77,6 +77,26 @@
         background-color: $alert-primary;
         color: #fff;
     }
+    span[data-invite-status="Not Attending"]{
+        background-color: $alert-primary;
+        color: #fff;
+    }
+    span[data-invite-status="Attending"]{
+        background-color: $success;
+        color: #525252;
+    }
+    span[data-guest-type="Sole"]{
+        background-color: $info-400;
+        color: #fff;
+    }
+    span[data-guest-type="Group Organiser"]{
+        background-color: $info;
+        color: #fff;
+    }
+    span[data-guest-type="Member"]{
+        background-color: $info-300;
+        color: #fff;
+    }
 }
 @media(min-width:$md){
 .guest-card-body{

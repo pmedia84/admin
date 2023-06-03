@@ -11,6 +11,9 @@ $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_
 $guest_list = $db->query($guest_list_query);
 //load events for the filters
 $events = $db->query("SELECT event_id, event_name FROM wedding_events");
+$total_guests = $db->query("SELECT COUNT(guest_id) AS guest_total FROM guest_list");
+$total_guests_r = mysqli_fetch_assoc($total_guests);
+
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -42,7 +45,7 @@ $events = $db->query("SELECT event_id, event_name FROM wedding_events");
                                 <h2 class="notification-header">
                                     <svg class="icon">
                                         <use xlink:href="assets/img/icons/solid.svg#people-group"></use>
-                                    </svg> Guest List <span class="notification"></span>
+                                    </svg> Guest List <span class="notification"><?=$total_guests_r['guest_total'];?></span>
                                 </h2>
                                 <form action="" method="POST" id="guest_search">
                                     <div class="form-input-wrapper">
@@ -119,13 +122,13 @@ $events = $db->query("SELECT event_id, event_name FROM wedding_events");
                                                     </span>
                                                     <span class="guest-card-tag" data-invite-status="<?= $guest['invite_rsvp_status']; ?>">
                                                         <svg class="icon feather-icon">
-                                                            <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                                                            <use xlink:href="assets/img/icons/feather.svg#message-square"></use>
                                                         </svg>
                                                         <?= $guest['invite_rsvp_status']; ?>
                                                     </span>
-                                                    <span class="guest-card-tag">
+                                                    <span class="guest-card-tag" data-guest-type="<?=$guest['guest_type'];?>">
                                                         <svg class="icon feather-icon">
-                                                            <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                                                            <use xlink:href="assets/img/icons/feather.svg#user"></use>
                                                         </svg>
                                                         <?= $guest['guest_type']; ?>
                                                     </span>
