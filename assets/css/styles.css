@@ -590,6 +590,92 @@ a:hover{
         background-color: #5A99B0;
         border: 1px solid #5A99B0;
     } 
+.guest-list-header{
+    display: flex;
+    flex-direction: column;
+    /**/
+} 
+@media(min-width:768px){
+    .guest-list-header{
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+} 
+/*show group button*/ 
+/*animation settings for chevron icon*/ 
+.group-btn .icon{
+    rotate: 0;
+    transition: rotate 300ms ease-out;
+} 
+/*rotate the chevron icon when clicked*/ 
+.icon-clicked{
+    rotate: 180deg;
+    transition: rotate 300ms ease-out;
+} 
+/*guest group cards*/ 
+/*?group Cards*/ 
+.guest-group{
+    margin-block: 0.25rem;
+    background-color: hsl(163, 28%, 95%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid hsl(163, 28%, 80%);
+} 
+/*?outer guest card*/ 
+.guest-card{
+    background-color: #fff;
+    border: 1px solid hsl(163, 28%, 80%);
+    border-radius: 5px;
+    padding: 0.5rem;
+    transition: border 300ms ease-out;
+} 
+.guest-card:hover, .guest-card:focus-within{
+        border: 1px solid rgb(59, 104, 92);
+    } 
+.guest-card-body{
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+} 
+.guest-card-tags{
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    gap: 0.5rem;
+} 
+.guest-card-tags span{
+        display: block;
+        background-color: hsl(163, 28%, 95%);
+        padding: 0.5rem;
+        border-radius: 12px;
+        width: fit-content;
+        font-size: .75rem;
+        flex-grow: 0;
+        
+        
+    } 
+.guest-card-tags span a{
+            
+            font-size: .75rem;
+        } 
+.guest-card-tags span[data-invite-status="Not Replied"]{
+        background-color: hsla(0, 99%, 66%, 0.753);
+        color: #fff;
+    } 
+@media(min-width:768px){
+.guest-card-body{
+    flex-direction: row;
+    justify-content: space-between;
+}
+    .guest-card-tags{
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+} 
 /*Standard column gives equal widths*/ 
 @media(min-width:768px){ 
 .col-50{
@@ -1288,17 +1374,18 @@ input:checked+.slider:before {
     padding: 1rem;
     display: flex;
     gap: 0.25rem;
-    align-items: center;
+    align-items: start;
     flex-direction: column;
-    border: 1px solid hsl(163, 28%, 50%);
+    border-bottom: 2px solid hsl(163, 28%, 50%);
     border-radius: 2.5px;
-
+    background-color: #FFF;
 } 
 
 @media(min-width: 768px) {
     .form-controls {
-        gap: 1.5rem;
+        gap: 0.5rem;
         flex-direction: row;
+        align-items: end;
     }
 } 
 
@@ -1349,7 +1436,7 @@ input:checked+.slider:before {
     opacity: 1;
 } 
 
-/*///////Search box input\\\\\\\\\\*/ 
+/*?earch box input\\\\\\\\\\*/ 
 
 .search-input {
     display: flex;
@@ -1382,6 +1469,24 @@ input:checked+.slider:before {
 .search-input button path {
             fill: #fff;
         } 
+
+/*?custom search box for guest list*/ 
+
+.guest-search{
+    display: flex;
+    align-items: center;
+    gap:0.25rem;
+} 
+
+.guest-search input {
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 5px;
+    } 
+
+.guest-search .icon{
+        height: 25px;
+        width: 25px;
+    } 
 
 .price-list-controls,
 .search-controls {
@@ -2105,93 +2210,83 @@ input:checked+.slider:before {
     100%{transform: rotate(360deg);}
 } 
 
-.table-wrapper{
+.table-wrapper {
     /*wraps table to make it responsive*/
-overflow-x: auto;
-max-width: 90vw;
+    overflow-x: auto;
+    max-width: 90vw;
 } 
 
-@media(min-width:768px){ 
+@media(min-width:768px) { 
 
-.table-wrapper{
-    max-width: 100%
+.table-wrapper {
+        max-width: 100%
 }
-} 
-
-.std-table{/*standard table settings*/
-
-    width: 100%;
-    margin-bottom: 1.5rem;
-border-collapse: collapse;
-
-} 
-
-.std-table th{
-        text-align: left;
     } 
 
-.std-table td{
-        border-bottom: 1px solid rgb(59, 104, 92);
-    } 
+.std-table {
+    /*standard table settings*/
 
-.std-table tr:nth-child(even){
-        background-color: hsl(163, 28%, 90%);
-    } 
-
-.guest-list-actions{
-    width: 50%;
-    max-width: 100px;
- 
-    display: flex;
-    justify-content:left;
-    gap: 1.5rem;
-    padding: 0.25rem;
-    font-size: 1.25rem;
-} 
-
-.meal-choices{
-    
     width: 100%;
     margin-bottom: 1.5rem;
     border-collapse: collapse;
 
 } 
 
-.meal-choices th{
+.std-table th {
+        text-align: left;
+    } 
+
+.std-table td {
+        border-bottom: 1px solid rgb(59, 104, 92);
+    } 
+
+.std-table tr:nth-child(even) {
+        background-color: hsl(163, 28%, 90%);
+    } 
+
+.meal-choices {
+
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-collapse: collapse;
+
+} 
+
+.meal-choices th {
         text-align: left;
         background-color: hsl(163, 28%, 90%);
         padding: 0.5rem;
     } 
 
-.meal-choices th:first-of-type{
+.meal-choices th:first-of-type {
             border-top-left-radius: 5px;
         } 
 
-.meal-choices th:last-of-type{
+.meal-choices th:last-of-type {
             border-top-right-radius: 5px;
         } 
 
-.meal-choices td{
-       padding: 0.5rem
+.meal-choices td {
+        padding: 0.5rem
     } 
 
-.guest-name-col{
+.guest-name-col {
     background-color: hsl(163, 28%, 95%);
     border-bottom: 2px double rgb(59, 104, 92);
-    
+
 } 
 
 /*table for guest submissions on gallery page*/ 
 
-.submission-table{
+.submission-table {
     width: 100%;
 } 
 
-.submission-table tr:nth-child(2n){
+.submission-table tr:nth-child(2n) {
         background-color: white;
     } 
 
-.submission-table .status[data-status="Awaiting"]{
+.submission-table .status[data-status="Awaiting"] {
         display: block;
         background-color: rgba(255, 0, 0, 0.406);
         padding: 0.25rem;
@@ -2199,12 +2294,48 @@ border-collapse: collapse;
         width: fit-content;
     } 
 
-.submission-table .status[data-status="Partial"]{
+.submission-table .status[data-status="Partial"] {
         display: block;
         background-color: hsl(163, 28%, 80%);
         padding: 0.25rem;
         border-radius: 10px;
         width: fit-content;
+    } 
+
+/*?new guest list table*/ 
+
+.guest-list tr{
+        border-bottom: 1px solid rgb(59, 104, 92);
+       
+    } 
+
+.guest-list tr:first-of-type{
+        border-bottom: 2px solid rgb(59, 104, 92);
+        position: sticky;
+        top: 0;
+    } 
+
+.guest-list {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-collapse: collapse;
+} 
+
+.guest-list th {
+        text-align: left;
+    } 
+
+.guest-list td{
+        padding-block: 0.5rem;
+    } 
+
+.guest-list tr .guest{
+       display: flex;
+       flex-direction: column;
+    } 
+
+.guest-list tr .guest_name{
+        font-weight: 800;
     } 
 
 .notification-header {
@@ -2250,11 +2381,8 @@ border-collapse: collapse;
         flex-direction: column;
         align-items: center;
         font-size: .8em;
-    } 
 
-.toolbar .btn-primary .icon{
-            margin: 0;
-        } 
+    } 
 
 @media(min-width: 768px){
     .toolbar{
@@ -2298,6 +2426,14 @@ background-color: hsl(163, 28%, 90%);
   height: 1em;
   vertical-align: -0.125em;
     fill: currentColor;
+  } 
+
+.feather-icon{
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
   } 
 
 /*/dropdown menu*/ 
@@ -2410,6 +2546,12 @@ background-color: hsl(163, 28%, 90%);
 /*text utility classes*/
 .wrap-words{
     word-wrap: anywhere;
+}
+.sticky{
+    position: sticky;
+    top: env(safe-area-inset-top, 5px);
+    left: 5px;
+    right: 5px;
 }
 
 

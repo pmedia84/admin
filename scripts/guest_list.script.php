@@ -1,100 +1,186 @@
 <?php
-if (isset($_GET['action'])) {
-    if($_GET['action']=="load_guest_list"){
-        //load guest list from the db and send back to the front page
-        include("../connect.php");
-        //find wedding guest list
-        $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_events, guest_list.guest_rsvp_code, guest_list.guest_rsvp_status FROM guest_list ORDER BY guest_list.guest_group_id DESC');
-        $guest_list = $db->query($guest_list_query);
-        $guest_list_result = $guest_list->fetch_assoc();
-        $num_guests = $guest_list->num_rows;
-        echo 
-        '<p>Total Number Of Guests: <strong>'.$num_guests.'</strong></p>';
-        echo
-        '<table class="std-table">
-            <tr>
-                <th>Name</th>
-                <th>Extra Invites</th>
-                <th>RSVP Status</th>
-                <th>RSVP Code</th>
-                <th>Manage</th>
-            </tr>'; 
-    foreach($guest_list as $guest){
-            
-        if($guest['guest_extra_invites']>=1){
-            $plus= "+".$guest['guest_extra_invites'];
-        }else{
-            $plus="";
-        }
-        echo' <tr>
-        <td><a href="guest.php?guest_id='.$guest['guest_id'].'&action=view">'.$guest['guest_fname'].' '.$guest['guest_sname'].' '.$plus.'</a></td>
-        <td>'.$guest['guest_extra_invites'].'</td>
-        <td>'.$guest['guest_rsvp_status'].'</td>
-        <td>'.$guest['guest_rsvp_code'].'</td>
-        <td><div class="guest-list-actions">
-                <a href="guest.php?guest_id='.$guest['guest_id'].'&action=edit"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#pen-to-square"></use></svg></a>
-                <a href="guest.php?guest_id='.$guest['guest_id'].'&action=delete&confirm=no"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-minus"></use></svg></a>
+//prevent anyone browsing to this script page via a GET request.
+if ($_SERVER['REQUEST_METHOD'] != "POST") {
+    http_response_code(403);
+    echo "<h1>" . http_response_code() . " Forbidden</h1>";
+    exit;
+}
+?>
+<?php if (isset($_POST['action']) && $_POST['action'] == "search") :
+    include("../connect.php");
+    $search = mysqli_real_escape_string($db, $_POST['search']);
+    //find wedding guest list
+    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_fname LIKE "%' . $search . '%" OR guest_list.guest_sname LIKE "%' . $search . '%" ORDER BY guest_list.guest_sname');
+    if ($search == "") {
+        $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_type="Group Organiser" OR guest_list.guest_type="Sole" ORDER BY guest_list.guest_sname');
+    }
+    $guest_list = $db->query($guest_list_query);
+    $guest_list_result = $guest_list->fetch_assoc();
+    $result_num = $guest_list->num_rows;
+
+
+?>
+
+    <?php if ($guest_list->num_rows > 0) : ?>
+        <?php if ($search != "") : ?>
+            <h2 class="notification-header">Guests Found Matching "<?= $search; ?>" <span class="notification"><?= $result_num; ?></span></h2>
+        <?php endif ?>
+        <?php foreach ($guest_list as $guest) : ?>
+            <div class="guest-card my-2">
+                <div class="guest-card-body">
+                    <div class="guest-card-title">
+                        <h3>
+                            <a href="guest?action=view&guest_id=<?= $guest['guest_id']; ?>" class="guest_name">
+                                <?php echo $guest['guest_fname'] . ' ' . $guest['guest_sname'];
+                                if ($guest['guest_extra_invites'] > 0) {
+                                    echo " +" . $guest['guest_extra_invites'];
+                                } ?>
+                            </a>
+                        </h3>
+                        <?php if ($guest['guest_type'] == "Group Organiser") : ?>
+                            <a href="" class="group-btn">View Group
+                                <svg class="icon">
+                                    <use xlink:href="assets/img/icons/solid.svg#chevron-down"></use>
+                                </svg>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                    <div class="guest-card-tags">
+                        <span class="guest-card-tag">
+                            <svg class="icon feather-icon">
+                                <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                            </svg>
+                            <a href=""><?= $guest['event_name']; ?></a>
+                        </span>
+                        <span class="guest-card-tag" data-invite-status="<?= $guest['invite_rsvp_status']; ?>">
+                            <svg class="icon feather-icon">
+                                <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                            </svg>
+                            <?= $guest['invite_rsvp_status']; ?>
+                        </span>
+                        <span class="guest-card-tag">
+                            <svg class="icon feather-icon">
+                                <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                            </svg>
+                            <?= $guest['guest_type']; ?>
+                        </span>
+                    </div>
+                </div>
+                <?php if ($guest['guest_type'] == "Group Organiser") : ?>
+                    <div class="guest-group-card d-none">
+                        <div class="guest-group">
+                            <h3><?= $guest['guest_fname']; ?>'s extra invites</h3>
+                            <?php $guest_group = $db->query("SELECT guest_id, guest_fname, guest_sname FROM guest_list WHERE guest_group_id=" . $guest['guest_group_id'] . " AND guest_type='Member'"); ?>
+                            <?php foreach ($guest_group as $member) : ?>
+                                <a href="guest?action=view&guest_id=<?= $member['guest_id']; ?>"><?= $member['guest_fname'] . " " . $member['guest_sname']; ?></a>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </div>
-        </td>
-    </tr>                   
-    ';}
+        <?php endforeach; ?>
+    <?php else : ?>
+        <h2>Sorry, no guests found matching those details</h2>
+    <?php endif; ?>
+<?php endif; ?>
 
-    echo '</table>';
+<?php if (isset($_POST['action']) && $_POST['action'] == "guest_filter") :
+    include("../connect.php");
+    $rsvp_filter = $_POST['rsvp_filter'];
+    $event_filter = $_POST['event_filter'];
+    //default filter setting
+    $filter = "WHERE invitations.event_id!=0 AND guest_list.guest_type='Group Organiser' OR guest_list.guest_type='Sole'";
+    $rsvp = "";
+    $event = "";
+    $guest = "";
+    switch ($rsvp_filter) {
+        case "":
+            $rsvp = "WHERE invitations.invite_rsvp_status IN ('Not Replied','Not Attending', 'Attending') ";
+            break;
+        case "Not Replied":
+            $rsvp = "WHERE invitations.invite_rsvp_status ='Not Replied'";
+            break;
+            case "Not Attending":
+                $rsvp = "WHERE invitations.invite_rsvp_status ='Not Attending'";
+                break;
+            case "Attending":
+                $rsvp = "WHERE invitations.invite_rsvp_status ='Attending'";
+                break;
+
     }
+    switch ($event_filter) {
+        case "":
+            $event = "AND invitations.event_id >0 ";
+            break;
+default:
+$event = "AND invitations.event_id=".$event_filter;
 
-
-        
-}
-if (isset($_POST['action'])) {
-    //load guest list based on the search bar
-
-    if($_POST['action']=="guest_search"){
-        include("../connect.php");
-        $search = mysqli_real_escape_string($db, $_POST['search']);
-               //load guest list from the db and send back to the front page
-               
-               //find wedding guest list
-               $guest_list_query = ('SELECT * FROM guest_list WHERE guest_fname LIKE "%'.$search.'%" OR guest_sname LIKE "%'.$search.'%"  ORDER BY guest_list.guest_group_id DESC');
-               $guest_list = $db->query($guest_list_query);
-               $guest_list_result = $guest_list->fetch_assoc();
-               $num_guests = $guest_list->num_rows;
-               if($num_guests ==null){
-                echo '<p>Sorry, no guests match those details</p>';
-               }
-               if($num_guests >0){
-                echo '<p>'.$num_guests.' Guests found</p>';
-               }
-
-               echo
-               '<table class="std-table">
-                   <tr>
-                       <th>Name</th>
-                       <th>Extra Invites</th>
-                       <th>RSVP Status</th>
-                       <th>RSVP Code</th>
-                       <th>Manage</th>
-                   </tr>'; 
-           foreach($guest_list as $guest){
-            if($guest['guest_extra_invites']>=1){
-                $plus= "+".$guest['guest_extra_invites'];
-            }else{
-                $plus="";
-            }
-               echo' <tr>
-               <td><a href="guest.php?guest_id='.$guest['guest_id'].'&action=view">'.$guest['guest_fname'].' '.$guest['guest_sname'].' '.$plus.'</a></td>
-               <td>'.$guest['guest_extra_invites'].'</td>
-               <td>'.$guest['guest_rsvp_status'].'</td>
-               <td>'.$guest['guest_rsvp_code'].'</td>
-               <td><div class="guest-list-actions">
-                       <a href="guest.php?guest_id='.$guest['guest_id'].'&action=edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                       <a href="guest.php?guest_id='.$guest['guest_id'].'&action=delete&confirm=no"><i class="fa-solid fa-user-minus"></i></a>
-                   </div>
-               </td>
-           </tr>                     
-           ';}
-       
-           echo '</table>';
     }
+    //find wedding guest list
+    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id ' . $rsvp.' '.$event);
+    $guest_list = $db->query($guest_list_query);
+    $guest_list_result = $guest_list->fetch_assoc();
+    $result_num = $guest_list->num_rows;
 
-    
-}
+?>
+    <?php if ($guest_list->num_rows > 0) : ?>
+        <h2 class="notification-header">Guests Found <span class="notification"><?= $result_num; ?></span></h2>
+
+        <?php foreach ($guest_list as $guest) : ?>
+            <div class="guest-card my-2">
+                <div class="guest-card-body">
+                    <div class="guest-card-title">
+                        <h3>
+                            <a href="guest?action=view&guest_id=<?= $guest['guest_id']; ?>" class="guest_name">
+                                <?php echo $guest['guest_fname'] . ' ' . $guest['guest_sname'];
+                                if ($guest['guest_extra_invites'] > 0) {
+                                    echo " +" . $guest['guest_extra_invites'];
+                                } ?>
+                            </a>
+                        </h3>
+                        <?php if ($guest['guest_type'] == "Group Organiser") : ?>
+                            <a href="" class="group-btn">View Group
+                                <svg class="icon">
+                                    <use xlink:href="assets/img/icons/solid.svg#chevron-down"></use>
+                                </svg>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                    <div class="guest-card-tags">
+                        <span class="guest-card-tag">
+                            <svg class="icon feather-icon">
+                                <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                            </svg>
+                            <a href=""><?= $guest['event_name']; ?></a>
+                        </span>
+                        <span class="guest-card-tag" data-invite-status="<?= $guest['invite_rsvp_status']; ?>">
+                            <svg class="icon feather-icon">
+                                <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                            </svg>
+                            <?= $guest['invite_rsvp_status']; ?>
+                        </span>
+                        <span class="guest-card-tag">
+                            <svg class="icon feather-icon">
+                                <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                            </svg>
+                            <?= $guest['guest_type']; ?>
+                        </span>
+                    </div>
+                </div>
+                <?php if ($guest['guest_type'] == "Group Organiser") : ?>
+                    <div class="guest-group-card d-none">
+                        <div class="guest-group">
+                            <h3><?= $guest['guest_fname']; ?>'s extra invites</h3>
+                            <?php $guest_group = $db->query("SELECT guest_id, guest_fname, guest_sname FROM guest_list WHERE guest_group_id=" . $guest['guest_group_id'] . " AND guest_type='Member'"); ?>
+                            <?php foreach ($guest_group as $member) : ?>
+                                <a href="guest?action=view&guest_id=<?= $member['guest_id']; ?>"><?= $member['guest_fname'] . " " . $member['guest_sname']; ?></a>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <h2>Sorry, no guests found matching those details</h2>
+    <?php endif; ?>
+<?php endif; ?>

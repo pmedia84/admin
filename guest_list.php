@@ -7,12 +7,10 @@ include("inc/head.inc.php");
 include("inc/settings.php");
 
 //find wedding guest list
-$guest_list_query = ('SELECT * FROM guest_list ORDER BY guest_sname');
+$guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_type="Group Organiser" OR guest_list.guest_type="Sole" ORDER BY guest_list.guest_sname');
 $guest_list = $db->query($guest_list_query);
-$guest_list_result = $guest_list->fetch_assoc();
-//////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-
+//load events for the filters
+$events = $db->query("SELECT event_id, event_name FROM wedding_events");
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -26,8 +24,6 @@ $guest_list_result = $guest_list->fetch_assoc();
 </head>
 
 <body>
-
-
     <!-- Main Body Of Page -->
     <main class="main col-2">
 
@@ -39,41 +35,124 @@ $guest_list_result = $guest_list->fetch_assoc();
         <section class="body">
             <div class="breadcrumbs mb-2"><a href="index.php" class="breadcrumb">Home</a> / Guest List</div>
             <div class="main-cards">
-                <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
-                    <?php if ($cms->type() == "Wedding") : ?>
-                        <h2><svg class="icon">
-                                <use xlink:href="assets/img/icons/solid.svg#people-group"></use>
-                            </svg> Your Guest List</h2>
-                        <p>Keep this information up to date as you plan for big day. Your invites will be sent out from this information.</p>
-                        <a href="guest.php?action=create" class="btn-primary">Add Guest <svg class="icon">
-                                <use xlink:href="assets/img/icons/solid.svg#user-plus"></use>
-                            </svg></a>
-                        <div class="search-controls">
-                            <form id="guest_search" action="./scripts/guest_list.script.php" method="POST">
-                                <div class="form-input-wrapper">
-                                    <label for="search">Search by guest name</label>
-                                    <div class="search-input">
-                                        <input type="text" id="search" name="search" placeholder="Search For A Guest ...">
-                                        <button class="btn-primary form-controls-btn loading-btn" type="submit">
-                                            <svg class="icon">
-                                                <use xlink:href="assets/img/icons/solid.svg#magnifying-glass"></use>
-                                            </svg></button>
+                <div class="std-card">
+                    <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
+                        <?php if ($cms->type() == "Wedding") : ?>
+                            <div class="guest-list-header">
+                                <h2 class="notification-header">
+                                    <svg class="icon">
+                                        <use xlink:href="assets/img/icons/solid.svg#people-group"></use>
+                                    </svg> Guest List <span class="notification"></span>
+                                </h2>
+                                <form action="" method="POST" id="guest_search">
+                                    <div class="form-input-wrapper">
+                                        <div class="search-input guest-search">
+                                            <svg class="icon feather-icon">
+                                                <use xlink:href="assets/img/icons/feather.svg#search"></use>
+                                            </svg>
+                                            <input type="text" id="guest_search" name="search" placeholder="Search for a guest...">
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
+                            <div class="my-2 sticky">
+                                <form action="" method="POST" id="guest_filter">
+                                    <div class="form-controls">
+                                        <a href="guest.php?action=create" class="btn-primary">Add Guest
+                                            <svg class="icon">
+                                                <use xlink:href="assets/img/icons/solid.svg#user-plus"></use>
+                                            </svg>
+                                        </a>
+                                        <div class="form-input-wrapper">
+                                            <label for="event_filter">Filter By Event</label>
+                                            <select name="event_filter" id="event_filter">
+                                                <option value="" selected>Show All</option>
+                                                <?php if ($events->num_rows > 0) : ?>
+                                                    <?php foreach ($events as $event) : ?>
 
-                        </div>
+                                                        <option value="<?= $event['event_id']; ?>"><?= $event['event_name']; ?></option>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-input-wrapper">
+                                            <label for="rsvp_filter">Filter By RSVP</label>
+                                            <select name="rsvp_filter" id="rsvp_filter">
+                                                <option value="" selected>Show All</option>
+                                                <option value="Attending">Attending</option>
+                                                <option value="Not Attending">Not Attending</option>
+                                                <option value="Not Replied">Not Replied</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                        <div class="std-card d-none" id="guest_list">
+                                </form>
+                            </div>
+                            <div id="guest_list">
+                                <?php if ($guest_list->num_rows > 0) : ?>
+                                    <?php foreach ($guest_list as $guest) : ?>
+                                        <div class="guest-card my-2">
+                                            <div class="guest-card-body">
+                                                <div class="guest-card-title">
+                                                    <h3>
+                                                        <a href="guest?action=view&guest_id=<?= $guest['guest_id']; ?>" class="guest_name">
+                                                            <?php echo $guest['guest_fname'] . ' ' . $guest['guest_sname'];
+                                                            if ($guest['guest_extra_invites'] > 0) {
+                                                                echo " +" . $guest['guest_extra_invites'];
+                                                            } ?>
+                                                        </a>
+                                                    </h3>
+                                                    <?php if ($guest['guest_type'] == "Group Organiser") : ?>
+                                                        <a href="" class="group-btn">View Group
+                                                            <svg class="icon">
+                                                                <use xlink:href="assets/img/icons/solid.svg#chevron-down"></use>
+                                                            </svg>
+                                                        </a>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div class="guest-card-tags">
+                                                    <span class="guest-card-tag">
+                                                        <svg class="icon feather-icon">
+                                                            <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                                                        </svg>
+                                                        <a href=""><?= $guest['event_name']; ?></a>
+                                                    </span>
+                                                    <span class="guest-card-tag" data-invite-status="<?= $guest['invite_rsvp_status']; ?>">
+                                                        <svg class="icon feather-icon">
+                                                            <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                                                        </svg>
+                                                        <?= $guest['invite_rsvp_status']; ?>
+                                                    </span>
+                                                    <span class="guest-card-tag">
+                                                        <svg class="icon feather-icon">
+                                                            <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                                                        </svg>
+                                                        <?= $guest['guest_type']; ?>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <?php if ($guest['guest_type'] == "Group Organiser") : ?>
+                                                <div class="guest-group-card d-none">
+                                                    <div class="guest-group">
+                                                        <h3><?= $guest['guest_fname']; ?>'s extra invites</h3>
+                                                        <?php $guest_group = $db->query("SELECT guest_id, guest_fname, guest_sname FROM guest_list WHERE guest_group_id=" . $guest['guest_group_id'] . " AND guest_type='Member'"); ?>
+                                                        <?php foreach ($guest_group as $member) : ?>
+                                                            <a href="guest?action=view&guest_id=<?= $member['guest_id']; ?>"><?= $member['guest_fname'] . " " . $member['guest_sname']; ?></a>
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
+                </div>
 
-                        </div>
 
-
-
-                    <?php endif; ?>
-                <?php else : ?>
-                    <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>
-                <?php endif; ?>
+            <?php endif; ?>
+        <?php else : ?>
+            <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>
+        <?php endif; ?>
             </div>
 
         </section>
@@ -85,58 +164,8 @@ $guest_list_result = $guest_list->fetch_assoc();
     <!-- /Footer -->
 
 </body>
-<script>
-    $(document).ready(function() {
-        url = "scripts/guest_list.script.php?action=load_guest_list";
-        $.ajax({ //load guest list
-            type: "GET",
-            url: url,
-            encode: true,
-            success: function(data, responseText) {
-                $("#guest_list").html(data);
-                $("#guest_list").fadeIn(500);
-            }
-        });
-    })
-</script>
-<script>
-    //script for searching for guests
-    $("#guest_search").submit(function(event) {
-        event.preventDefault();
-        var formData = new FormData($("#guest_search").get(0));
-        formData.append("action", "guest_search");
-        $.ajax({ //start ajax post
-            type: "POST",
-            url: "scripts/guest_list.script.php",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(data, responseText) {
-                $("#guest_list").html(data);
-                $("#guest_list").fadeIn(500);
-            }
-        });
 
-    });
-    //script for searching for guests
-    $("#guest_search").on('keyup', function(event) {
-        event.preventDefault();
-        var formData = new FormData($("#guest_search").get(0));
-        formData.append("action", "guest_search");
 
-        $.ajax({ //start ajax post
-            type: "POST",
-            url: "scripts/guest_list.script.php",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(data, responseText) {
-                $("#guest_list").html(data);
-                $("#guest_list").fadeIn(500);
-            }
-        });
-
-    });
-</script>
+<script src="assets/js/guest_list.js"></script>
 
 </html>

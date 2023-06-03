@@ -61,7 +61,7 @@
             /////Add to invites table for each guest 
             $set_invites = $db->prepare('INSERT INTO invitations (guest_id, event_id, invite_rsvp_status, guest_group_id) VALUES (?,?,?,?)');
             foreach ($guest_array as $guest) {
-                $set_invites->bind_param('iiis', $guest, $event_id, $invite_rsvp_status, $new_group_id);
+                $set_invites->bind_param('iisi', $guest, $event_id, $invite_rsvp_status, $new_group_id);
                 $set_invites->execute();
             }
     

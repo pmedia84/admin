@@ -332,6 +332,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                             <input class="text-input input" type="text" id="guest_postcode" name="guest_postcode" placeholder="Postcode" value="<?= $guest_postcode; ?>">
                                         </div>
                                     </div>
+                                    
 
                                 </div>
                                 <?php if (isset($guest_group) && $guest_group->num_rows > 0) : ?>
@@ -365,7 +366,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                         </table>
                                     </div>
                                 <?php endif; ?>
-                                <?php if ($guest_type == "Group Organiser") : ?>
+                                <?php if ($guest_type == "Group Organiser" || $guest_type =="Sole") : ?>
                                     <div class="std-card my-2">
                                         <h2>Additional Guests</h2>
                                         <p>You can assign this guest extra invites here, if you know who they will be bringing with them.</p>
