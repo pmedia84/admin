@@ -165,7 +165,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                 ?>
                     <?php if ($_GET['action'] == "assign") : ?>
                         <?php if (($event->num_rows) > 0) :
-                            $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_capacity);
+                            $event->bind_result($event_id, $event_name, $event_location, $event_address,$event_postcode, $event_date, $event_time, $event_end, $event_notes, $event_capacity);
                             $event->fetch();
                             $event_time = strtotime($event_time);
                             $time = date('H:ia', $event_time);

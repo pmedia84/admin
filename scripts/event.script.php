@@ -23,7 +23,7 @@ if ((array_key_exists('action', $_GET))) {
         $event = $db->prepare('SELECT * FROM wedding_events WHERE event_id =' . $event_id);
         $event->execute();
         $event->store_result();
-        $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_capacity);
+        $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_postcode, $event_date, $event_time, $event_end, $event_notes, $event_capacity);
         $event->fetch();
         $event_time = strtotime($event_time);
         $time = date('H:ia', $event_time);
