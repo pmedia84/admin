@@ -7,7 +7,7 @@ include("inc/head.inc.php");
 include("inc/settings.php");
 
 //find wedding guest list
-$guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_type="Group Organiser" OR guest_list.guest_type="Sole" ORDER BY guest_list.guest_sname');
+$guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, guest_list.guest_rsvp_code, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_type="Group Organiser" OR guest_list.guest_type="Sole" ORDER BY guest_list.guest_sname');
 $guest_list = $db->query($guest_list_query);
 //load events for the filters
 $events = $db->query("SELECT event_id, event_name FROM wedding_events");
@@ -114,17 +114,27 @@ $total_guests_r = mysqli_fetch_assoc($total_guests);
                                                     <?php endif; ?>
                                                 </div>
                                                 <div class="guest-card-tags">
+                                                    <?php if($guest['event_id']>0):?>
                                                     <span class="guest-card-tag">
                                                         <svg class="icon feather-icon">
                                                             <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
                                                         </svg>
-                                                        <a href=""><?= $guest['event_name']; ?></a>
+                                                        <a href="event?event_id=<?=$guest['event_id'];?>&action=view"><?= $guest['event_name']; ?></a>
                                                     </span>
+                                                    <?php endif;?>
+                                                    <?php if($guest['invite_rsvp_status']>0):?>
                                                     <span class="guest-card-tag" data-invite-status="<?= $guest['invite_rsvp_status']; ?>">
                                                         <svg class="icon feather-icon">
                                                             <use xlink:href="assets/img/icons/feather.svg#message-square"></use>
                                                         </svg>
                                                         <?= $guest['invite_rsvp_status']; ?>
+                                                    </span>
+                                                    <?php endif;?>
+                                                    <span class="guest-card-tag" >
+                                                        <svg class="icon">
+                                                            <use xlink:href="assets/img/icons/solid.svg#reply"></use>
+                                                        </svg>
+                                                        RSVP CODE: <?=$guest['guest_rsvp_code'];?>
                                                     </span>
                                                     <span class="guest-card-tag" data-guest-type="<?=$guest['guest_type'];?>">
                                                         <svg class="icon feather-icon">

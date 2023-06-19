@@ -16,7 +16,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
     $guest->execute();
     $guest->store_result();
     $guest_group_id = ""; //empty variable for pages that don't use the GET request
-    
+
     if ($meal_choices_wedmin->status() == "On") {
         $meal_choices_q = $db->query('SELECT menu_items.menu_item_id, menu_items.menu_item_name, menu_items.course_id, meal_choices.menu_item_id, meal_choices.choice_order_id, meal_choice_order.choice_order_id, meal_choice_order.guest_id, menu_courses.course_name, menu_courses.course_id  FROM menu_items LEFT JOIN meal_choices ON meal_choices.menu_item_id=menu_items.menu_item_id LEFT JOIN meal_choice_order ON meal_choices.choice_order_id=meal_choice_order.choice_order_id LEFT JOIN menu_courses ON menu_courses.course_id=menu_items.course_id WHERE meal_choice_order.guest_id=' . $guest_id);
     }
@@ -332,7 +332,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                             <input class="text-input input" type="text" id="guest_postcode" name="guest_postcode" placeholder="Postcode" value="<?= $guest_postcode; ?>">
                                         </div>
                                     </div>
-                                    
+
 
                                 </div>
                                 <?php if (isset($guest_group) && $guest_group->num_rows > 0) : ?>
@@ -366,7 +366,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                         </table>
                                     </div>
                                 <?php endif; ?>
-                                <?php if ($guest_type == "Group Organiser" || $guest_type =="Sole") : ?>
+                                <?php if ($guest_type == "Group Organiser" || $guest_type == "Sole") : ?>
                                     <div class="std-card my-2">
                                         <h2>Additional Guests</h2>
                                         <p>You can assign this guest extra invites here, if you know who they will be bringing with them.</p>
@@ -427,6 +427,37 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                 <a class="my-2" href="guest_list?"><i class="fa-solid fa-left-long"></i> Return To Guest List </a>
                             </div>
                             <div class="std-card">
+                                <div class="guest-card-tags">
+                                    <span class="guest-card-tag" data-guest-type="<?= $guest_type; ?>">
+                                        <svg class="icon feather-icon">
+                                            <use xlink:href="assets/img/icons/feather.svg#user"></use>
+                                        </svg>
+                                        <?= $guest_type; ?>
+                                    </span>
+                                    <span class="guest-card-tag" data-invite-status="<?= $guest_rsvp_status; ?>">
+                                        <svg class="icon feather-icon">
+                                            <use xlink:href="assets/img/icons/feather.svg#message-square"></use>
+                                        </svg>
+                                        <?= $guest_rsvp_status; ?>
+                                    </span>
+                                    <span class="guest-card-tag">
+                                        <svg class="icon">
+                                            <use xlink:href="assets/img/icons/solid.svg#reply"></use>
+                                        </svg>
+                                        RSVP CODE: <?= $guest_rsvp_code; ?>
+                                    </span>
+                                    <?php if ($guest_invites->num_rows >= 1) : ?>
+                                        <?php foreach ($guest_invites as $invite) : ?>
+                                            <span class="guest-card-tag">
+                                        <svg class="icon feather-icon">
+                                            <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                                        </svg>
+                                        <a href="event.php?action=view&event_id=<?= $invite['event_id']; ?>"><?= $invite['event_name']; ?></a>
+                                    </span>
+                                    <?php endforeach; ?>
+                                    <?php endif; ?>
+
+                                </div>
                                 <h3>Contact Details</h3>
                                 <p><strong>eMail: </strong><a href="mailto:<?= $guest_email; ?>"><?= $guest_email; ?></a></p>
                                 <h4><strong>Address</strong></h4>
@@ -434,30 +465,26 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                     <?= $guest_address; ?>,
                                     <?= $guest_postcode; ?>
                                 </address>
-                                <h3>RSVP Code</h3>
-                                <p><?= $guest_rsvp_code; ?></p>
+
                                 <h3>Extra Invites</h3>
                                 <p><?= $guest_extra_invites; ?></p>
-                                <h3>RSVP Status</h3>
                                 <?php if ($guest_rsvp_status == "") : ?>
                                     <p>Not Responded</p>
                                     <a href="" class="btn-primary my-2">Update RSVP</a>
                                 <?php endif; ?>
-                                <?= $guest_rsvp_status; ?>
-                                <?php if ($guest_invites->num_rows >= 1) : ?>
-                                    <h3>Events</h3>
-                                    <?php foreach ($guest_invites as $invite) : ?>
-                                        <p><a href="event.php?action=view&event_id=<?= $invite['event_id']; ?>"><?= $invite['event_name']; ?></a></p>
-                                    <?php endforeach; ?>
-                                <?php else : ?>
-                                    <p><?= $guest_fname; ?> Has not been assigned to any events yet. You can do that in your event manager <a href="events.php">Click Here</a></p>
-                                <?php endif; ?>
+
                                 <h3>Dietary Requirements </h3>
                                 <p><?= $guest_dietery; ?></p>
                                 <div class="card-actions">
-                                    <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#pen-to-square"></use></svg> Edit Guest </a><br>
-                                    <a class="my-2" href="guest.php?action=delete&confirm=no&guest_id=<?= $guest_id; ?>"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-minus"></use></svg> Remove Guest </a>
-                                    <a class="my-2" href="events.php"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#user-plus"></use></svg> Assign Guest To Events </a>
+                                    <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><svg class="icon">
+                                            <use xlink:href="assets/img/icons/solid.svg#pen-to-square"></use>
+                                        </svg> Edit Guest </a><br>
+                                    <a class="my-2" href="guest.php?action=delete&confirm=no&guest_id=<?= $guest_id; ?>"><svg class="icon">
+                                            <use xlink:href="assets/img/icons/solid.svg#user-minus"></use>
+                                        </svg> Remove Guest </a>
+                                    <a class="my-2" href="events.php"><svg class="icon">
+                                            <use xlink:href="assets/img/icons/solid.svg#user-plus"></use>
+                                        </svg> Assign Guest To Events </a>
                                 </div>
                             </div>
 
@@ -546,40 +573,40 @@ $wedding_events_result = $wedding_events->fetch_assoc();
     </main>
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->
-<?php if(isset($_GET['action']) && $_GET['action']=="edit"):?>
-    <script>
-        //script for editing a guest
-        $("#edit_guest").submit(function(event) {
-            event.preventDefault();
-            //declare form variables and collect GET request information
-            guest_id = '<?php echo $guest_id; ?>';
-            guest_group_id = '<?php echo $guest_group_id; ?>';
-            guest_type = '<?php echo $guest_type; ?>';
-            event_id = '<?php echo $invite['event_id']; ?>';
-            var formData = new FormData($("#edit_guest").get(0));
-            formData.append("action", "edit");
-            formData.append("guest_id", guest_id);
-            formData.append("guest_group_id", guest_group_id);
-            formData.append("guest_type", guest_type);
-            formData.append("event_id", event_id);
-            $.ajax({ //start ajax post
-                type: "POST",
-                url: "scripts/guest.script.php",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(data, responseText) {
-                    if (data === "success") {
-                        window.location.replace('guest.php?action=view&guest_id=' + guest_id);
+    <?php if (isset($_GET['action']) && $_GET['action'] == "edit") : ?>
+        <script>
+            //script for editing a guest
+            $("#edit_guest").submit(function(event) {
+                event.preventDefault();
+                //declare form variables and collect GET request information
+                guest_id = '<?php echo $guest_id; ?>';
+                guest_group_id = '<?php echo $guest_group_id; ?>';
+                guest_type = '<?php echo $guest_type; ?>';
+                event_id = '<?php echo $invite['event_id']; ?>';
+                var formData = new FormData($("#edit_guest").get(0));
+                formData.append("action", "edit");
+                formData.append("guest_id", guest_id);
+                formData.append("guest_group_id", guest_group_id);
+                formData.append("guest_type", guest_type);
+                formData.append("event_id", event_id);
+                $.ajax({ //start ajax post
+                    type: "POST",
+                    url: "scripts/guest.script.php",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data, responseText) {
+                        if (data === "success") {
+                            window.location.replace('guest.php?action=view&guest_id=' + guest_id);
+                        }
                     }
-                }
+                });
             });
-        });
-    </script>
-    <?php endif;?>
+        </script>
+    <?php endif; ?>
     <script>
         //script for adding a guest
-        $("#save-guest").on("click",function(event) {
+        $("#save-guest").on("click", function(event) {
             event.preventDefault();
             var formData = new FormData($("#add_guest").get(0));
             formData.append("action", "create");
@@ -601,7 +628,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
     </script>
     <script>
         //script for adding a guest
-        $("#save-and-new").on("click",function(event) {
+        $("#save-and-new").on("click", function(event) {
             event.preventDefault();
             var formData = new FormData($("#add_guest").get(0));
             formData.append("action", "create");

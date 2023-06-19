@@ -97,6 +97,10 @@
         background-color: $info-300;
         color: #fff;
     }
+    span[data-guest-rsvp-code=""]{
+        background-color: $info-300;
+        color: #fff;
+    }
 }
 @media(min-width:$md){
 .guest-card-body{
