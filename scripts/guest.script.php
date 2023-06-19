@@ -147,7 +147,7 @@
         $code_name = strtoupper($code_name);
         $guest_rsvp_code = $code_name . $code; // Generate random RSVP Code
         if(isset($_POST['guest_group']) && count($_POST['guest_group'])>=1){
-            //if the guest has 1 or more extra invites then ad them as a group organiser
+            //if the guest has 1 or more extra invites then add them as a group organiser
             $guest_type= "Group Organiser";
         }else{
             $guest_type="Sole";
@@ -157,8 +157,8 @@
         }
         $guest_rsvp_status = "Not Replied";
         //insert lead guest
-        $guest = $db->prepare('INSERT INTO guest_list (guest_fname, guest_sname, guest_email, guest_address, guest_postcode, guest_rsvp_code, guest_extra_invites, guest_type) VALUES (?,?,?,?,?,?,?,?)');
-        $guest->bind_param('ssssssis',$guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_extra_invites, $guest_type);
+        $guest = $db->prepare('INSERT INTO guest_list (guest_fname, guest_sname, guest_email, guest_address, guest_postcode, guest_rsvp_code, guest_rsvp_status,guest_extra_invites, guest_type) VALUES (?,?,?,?,?,?,?,?,?)');
+        $guest->bind_param('sssssssis',$guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code,$guest_rsvp_status, $guest_extra_invites, $guest_type);
         $guest->execute();
         $guest->close();
         $lead_guest_id = $db->insert_id;//last id entered
@@ -196,14 +196,14 @@
         $guest_group = $_POST['guest_group'];
         $guest_array = array();
         $guest_type = "Member"; //only set as a member, these guests are a group member
-        $new_guest = $db->prepare('INSERT INTO guest_list (guest_fname, guest_sname, guest_type, guest_group_id) VALUES (?,?,?,?)');
+        $new_guest = $db->prepare('INSERT INTO guest_list (guest_fname, guest_sname, guest_rsvp_status, guest_type, guest_group_id) VALUES (?,?,?,?,?)');
         foreach ($guest_group as $group_member) {
             // if the plus one box has been ticked then add them as a plus one
             $fname = $group_member['guest_fname'];
             if(isset($group_member['plus_one']) && $group_member['plus_one'] == "plus_one"){
                 $fname = $guest_fname." ".$guest_sname."'s +1";
             }
-            $new_guest->bind_param('sssi', $fname, $group_member['guest_sname'], $guest_type, $new_group_id);
+            $new_guest->bind_param('ssssi', $fname, $group_member['guest_sname'], $guest_rsvp_status, $guest_type, $new_group_id);
             $new_guest->execute();
             //insert into an array for adding to the invites table
             $new_guest_id = $db->insert_id;
