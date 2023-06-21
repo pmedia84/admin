@@ -21,7 +21,7 @@ include("inc/settings.php");
 //business name
 $cms_name = "";
 $user_id = $_SESSION['user_id'];
-if ($cms_type == "Business") {
+if ($cms->type() == "Business") {
     //look for the business set up and load information
     //find business details.
     $business = $db->prepare('SELECT * FROM business');
@@ -43,7 +43,7 @@ if ($cms_type == "Business") {
 }
 
 //run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
+if ($cms->type() == "Wedding") {
 
     //look for a wedding setup in the db, if not then direct to the setup page
     $wedding_query = ('SELECT wedding_id, wedding_name FROM wedding');
