@@ -56,7 +56,7 @@ if ((array_key_exists('action', $_GET))) {
         <p>You can only remove guests that are group organisers or sole invites.</p>
         <table class="event-card-guestlist-table ">
             <?php
-            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_type, guest_list.guest_group_id, invitations.event_id, invitations.guest_id, invitations.invite_status FROM guest_list  LEFT JOIN invitations ON invitations.guest_id = guest_list.guest_id WHERE event_id=' . $event_id . ' ORDER BY guest_list.guest_group_id, guest_list.guest_fname ASC');
+            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_type, guest_list.guest_group_id, invitations.event_id, invitations.guest_id, invitations.invite_status FROM guest_list  LEFT JOIN invitations ON invitations.guest_id = guest_list.guest_id WHERE event_id=' . $event_id . ' AND NOT guest_list.guest_type="Member" ORDER BY guest_list.guest_group_id, guest_list.guest_fname ASC');
             $guest_list = $db->query($guest_list_query);
 
             ?>

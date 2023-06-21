@@ -165,7 +165,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                 ?>
                     <?php if ($_GET['action'] == "assign") : ?>
                         <?php if (($event->num_rows) > 0) :
-                            $event->bind_result($event_id, $event_name, $event_location, $event_address,$event_postcode, $event_date, $event_time, $event_end, $event_notes, $event_capacity);
+                            $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_postcode, $event_date, $event_time, $event_end, $event_notes, $event_capacity);
                             $event->fetch();
                             $event_time = strtotime($event_time);
                             $time = date('H:ia', $event_time);
@@ -256,7 +256,6 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                         <h2 class="text-alert">Delete Your <?= $event_name; ?></h2>
 
 
-                                        <p>Are you sure you want to delete this image?</p>
                                         <p><strong>This Cannot Be Reversed</strong></p>
                                         <div class="button-section">
                                             <a class="btn-primary btn-delete my-2" href="event.php?action=delete&confirm=yes&event_id=<?= $event_id; ?>"><svg class="icon">
@@ -313,10 +312,10 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                         <textarea name="event_address" id="event_address" rows="5"></textarea>
                                     </div>
                                     <div class="form-input-wrapper my-2">
-                                            <label for="event_postcode"><strong>Event Postcode</strong></label>
-                                            <input class="text-input input" type="text" name="event_postcode" id="event_postcode" placeholder="Event Postcode..."">
+                                        <label for="event_postcode"><strong>Event Postcode</strong></label>
+                                        <input class="text-input input" type="text" name="event_postcode" id="event_postcode" placeholder="Event Postcode..."">
                                         </div>
-                                    <div class="form-input-wrapper my-2">
+                                    <div class=" form-input-wrapper my-2">
 
                                         <label for="event_notes"><strong>Event Notes</strong></label>
                                         <p class="form-hint-small">Add as much information here as you wish, this will be displayed on your website. Information such as the location and type of venue can be useful for your guests.</p>
@@ -436,7 +435,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                     <address class="my-2"><?= $event_address; ?></address>
                                     <?php
                                     echo '<iframe frameborder="0" width="100%" height="250px" src="https://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=' . str_replace(",", "", str_replace(" ", "+", $event_address)) . '&z=14&output=embed"></iframe>'; ?>
-                                    <h4>Event Notes</h4>
+                                    <h3>Event Notes</h3>
                                     <p><?php echo html_entity_decode($event_notes); ?></p>
                                     <div class="event-card-guestlist">
                                         <?php
@@ -455,7 +454,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                         $invites = $db->query($invites_sent);
                                         $invites_sent = $invites->num_rows;
                                         ?>
-                                        <h4>Invite Details</h4>
+                                        <h3>Invite Details</h3>
                                         <p>Note that the figures below also include guests that can bring others with them.</p>
                                         <div class="event-card-invites">
                                             <div class="event-card-invites-textbox">
@@ -472,17 +471,16 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                             </div>
                                         </div>
 
-                                        <h4>Guest List</h4>
+                                        <h3>Guest List</h3>
                                         <table class="event-card-guestlist-table ">
                                             <?php
-                                            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_rsvp_status, invitations.event_id, invitations.guest_id, invitations.invite_status, invitations.invite_rsvp_status FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id WHERE invitations.event_id=' . $event_id);
+                                            $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_extra_invites, guest_list.guest_rsvp_status, invitations.event_id, invitations.guest_id, invitations.invite_status, invitations.invite_rsvp_status FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id WHERE invitations.event_id=' . $event_id . ' AND NOT guest_list.guest_type="Member"');
                                             $guest_list = $db->query($guest_list_query);
 
                                             ?>
 
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Invited</th>
                                                 <th>RSVP Status</th>
                                             </tr>
                                             <?php foreach ($guest_list as $guest) :
@@ -494,8 +492,12 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                             ?>
                                                 <tr>
                                                     <td><a href="guest.php?action=view&guest_id=<?= $guest['guest_id']; ?>"><?= $guest['guest_fname'] . " " . $guest['guest_sname'] . ' ' . $plus; ?></a></td>
-                                                    <td><?= $guest['invite_status']; ?></td>
-                                                    <td><?= $guest['invite_rsvp_status']; ?></td>
+                                                    <td class="guest-card-tags">                                                      <span class="guest-card-tag" data-invite-status="<?= $guest['invite_rsvp_status']; ?>">
+                                                        <svg class="icon feather-icon">
+                                                            <use xlink:href="assets/img/icons/feather.svg#message-square"></use>
+                                                        </svg>
+                                                        <?= $guest['invite_rsvp_status']; ?>
+                                                    </span></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </table>

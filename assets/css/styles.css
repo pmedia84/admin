@@ -1758,10 +1758,6 @@ input:checked+.slider:before {
         text-align: left;
     } 
 
-.event-card-guestlist-table td{
-        border-bottom: 1px solid #3b685c;
-    } 
-
 .event-card-guestlist-table tr:nth-child(even){
         background-color: hsl(163, 28%, 90%);
     } 
