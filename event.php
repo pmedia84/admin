@@ -165,7 +165,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                 ?>
                     <?php if ($_GET['action'] == "assign") : ?>
                         <?php if (($event->num_rows) > 0) :
-                            $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_capacity);
+                            $event->bind_result($event_id, $event_name, $event_location, $event_address,$event_postcode, $event_date, $event_time, $event_end, $event_notes, $event_capacity);
                             $event->fetch();
                             $event_time = strtotime($event_time);
                             $time = date('H:ia', $event_time);
@@ -300,14 +300,22 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                         <input class="text-input input" type="time" id="event_time" name="event_time">
                                     </div>
                                     <div class="form-input-wrapper my-2">
+                                        <label for="event_end_time"><strong>Event End Time</strong></label>
+                                        <input class="text-input input" type="time" id="event_end_time" name="event_end_time">
+                                    </div>
+                                    <div class="form-input-wrapper my-2">
                                         <label for="event_location"><strong>Event Location</strong></label>
                                         <p class="form-hint-small">I.e building name.</p>
-                                        <input class="text-input input" type="text" id="event_location" name="event_location" placeholder="Event Location...">
+                                        <input class="text-input input" type="text" id="event_location" name="event_location" placeholder="Grand Hotel">
                                     </div>
                                     <div class="form-input-wrapper my-2">
                                         <label for="event_address"><strong>Event Address</strong></label>
-                                        <textarea name="event_address" id="event_address"></textarea>
+                                        <textarea name="event_address" id="event_address" rows="5"></textarea>
                                     </div>
+                                    <div class="form-input-wrapper my-2">
+                                            <label for="event_postcode"><strong>Event Postcode</strong></label>
+                                            <input class="text-input input" type="text" name="event_postcode" id="event_postcode" placeholder="Event Postcode..."">
+                                        </div>
                                     <div class="form-input-wrapper my-2">
 
                                         <label for="event_notes"><strong>Event Notes</strong></label>
@@ -328,10 +336,8 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
 
                         <?php if ($_GET['action'] == "edit") : ?>
                             <?php if (($event->num_rows) > 0) :
-                                $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_capacity);
+                                $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_postcode, $event_date, $event_time, $event_end, $event_notes, $event_capacity);
                                 $event->fetch();
-
-
                             ?>
                                 <div class="std-card">
                                     <div class="card-actions">
@@ -362,16 +368,23 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                             <input class="text-input input" type="time" id="event_time" name="event_time" value="<?= $event_time; ?>">
                                         </div>
                                         <div class="form-input-wrapper my-2">
+                                            <label for="event_end_time"><strong>Event End Time</strong></label>
+                                            <input class="text-input input" type="time" id="event_end_time" name="event_end_time" value="<?= $event_end; ?>">
+                                        </div>
+                                        <div class="form-input-wrapper my-2">
                                             <label for="event_location"><strong>Event Location</strong></label>
                                             <p class="form-hint-small">I.e building name.</p>
                                             <input class="text-input input" type="text" id="event_location" name="event_location" placeholder="Event Location..." value="<?= $event_location; ?>">
                                         </div>
                                         <div class="form-input-wrapper my-2">
                                             <label for="event_address"><strong>Event Address</strong></label>
-                                            <textarea name="event_address" id="event_address"><?= $event_address; ?></textarea>
+                                            <textarea name="event_address" id="event_address" rows="5"><?= $event_address; ?></textarea>
                                         </div>
                                         <div class="form-input-wrapper my-2">
-
+                                            <label for="event_postcode"><strong>Event Postcode</strong></label>
+                                            <input class="text-input input" type="text" name="event_postcode" id="event_postcode" placeholder="Event Postcode..." value="<?= $event_postcode; ?>">
+                                        </div>
+                                        <div class="form-input-wrapper my-2">
                                             <label for="event_notes"><strong>Event Notes</strong></label>
                                             <p class="form-hint-small">Add as much information here as you wish, this will be displayed on your website. Information such as the location and type of venue can be useful for your guests.</p>
                                             <textarea name="event_notes" id="event_notes" placeholder="Add as much information here as you wish about your event."><?= $event_notes; ?></textarea>
@@ -392,7 +405,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
 
                         <?php if ($_GET['action'] == "view") : ?>
                             <?php if (($event->num_rows) > 0) :
-                                $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_date, $event_time, $event_notes, $event_capacity);
+                                $event->bind_result($event_id, $event_name, $event_location, $event_address, $event_postcode, $event_date, $event_time, $event_end, $event_notes, $event_capacity);
                                 $event->fetch();
                                 $event_time = strtotime($event_time);
                                 $time = date('H:ia', $event_time);

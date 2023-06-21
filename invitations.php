@@ -48,7 +48,10 @@ include("inc/head.inc.php");
                                     <label for="search">Search by guest name</label>
                                     <div class="search-input">
                                         <input type="text" id="search" name="search" placeholder="Search For A Guest ...">
-                                        <button class="btn-primary form-controls-btn loading-btn" type="submit"><i class="fa-solid fa-magnifying-glass" id="search-icon"></i></button>
+                                        <button class="btn-primary form-controls-btn loading-btn" type="submit"> 
+                                            <svg class="icon">
+                                                <use xlink:href="assets/img/icons/solid.svg#magnifying-glass"></use>
+                                            </svg></button>
                                     </div>
                                 </div>
                                 <div class="form-input-wrapper">

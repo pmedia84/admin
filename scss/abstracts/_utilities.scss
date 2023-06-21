@@ -113,3 +113,9 @@
     word-wrap: anywhere;
 }
 
+.sticky{
+    position: sticky;
+    top: env(safe-area-inset-top, 5px);
+    left: 5px;
+    right: 5px;
+}
