@@ -125,7 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
     $guest_list = $db->query($guest_list_query);
     $guest_list_result = $guest_list->fetch_assoc();
     $result_num = $guest_list->num_rows;
-    echo $guest_list_query;
 ?>
     <?php if ($guest_list->num_rows > 0) : ?>
         <h2 class="notification-header">Guests Found <span class="notification"><?= $result_num; ?></span></h2>
