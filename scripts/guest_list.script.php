@@ -121,11 +121,11 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $event = "AND invitations.event_id=" . $event_filter;
     }
     //find wedding guest list
-    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id ' . $rsvp . ' ' . $event.' AND guest_list.guest_type="Sole" OR guest_list.guest_type="Group Organiser"');
+    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id ' . $rsvp . ' ' . $event.' AND NOT guest_list.guest_type="Member"');
     $guest_list = $db->query($guest_list_query);
     $guest_list_result = $guest_list->fetch_assoc();
     $result_num = $guest_list->num_rows;
-
+    echo $guest_list_query;
 ?>
     <?php if ($guest_list->num_rows > 0) : ?>
         <h2 class="notification-header">Guests Found <span class="notification"><?= $result_num; ?></span></h2>
