@@ -467,7 +467,7 @@ if ($_GET['action'] == "edit" || $_GET['action'] == "view" || $_GET['action'] ==
                                             </div>
 
                                             <div class="event-card-invites-textbox">
-                                                <p>Total Guests Allocated </p><span><?= $total_inv + $guests_allocated; ?></span>
+                                                <p>Total Guests Allocated </p><span><?= $guests_allocated; ?></span>
                                             </div>
                                         </div>
 
