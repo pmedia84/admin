@@ -10,9 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
     include("../connect.php");
     $search = mysqli_real_escape_string($db, $_POST['search']);
     //find wedding guest list
-    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_fname LIKE "%' . $search . '%" OR guest_list.guest_sname LIKE "%' . $search . '%" ORDER BY guest_list.guest_sname');
+    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type,guest_list.guest_rsvp_code, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_fname LIKE "%' . $search . '%" OR guest_list.guest_sname LIKE "%' . $search . '%" AND guest_list.guest_type="Group Organiser" OR guest_list.guest_type="Sole" ORDER BY guest_list.guest_sname');
     if ($search == "") {
-        $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_type="Group Organiser" OR guest_list.guest_type="Sole" ORDER BY guest_list.guest_sname');
+        $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_rsvp_code, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_type="Group Organiser" OR guest_list.guest_type="Sole" ORDER BY guest_list.guest_sname');
     }
     $guest_list = $db->query($guest_list_query);
     $guest_list_result = $guest_list->fetch_assoc();
@@ -58,6 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
                             </svg>
                             <?= $guest['invite_rsvp_status']; ?>
                         </span>
+                        <span class="guest-card-tag" >
+                                                        <svg class="icon">
+                                                            <use xlink:href="assets/img/icons/solid.svg#reply"></use>
+                                                        </svg>
+                                                        RSVP CODE: <?=$guest['guest_rsvp_code'];?>
+                                                    </span>
                         <span class="guest-card-tag" data-guest-type="<?= $guest['guest_type']; ?>">
                             <svg class="icon feather-icon">
                                 <use xlink:href="assets/img/icons/feather.svg#user"></use>
@@ -115,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
             $event = "AND invitations.event_id=" . $event_filter;
     }
     //find wedding guest list
-    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id ' . $rsvp . ' ' . $event);
+    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id ' . $rsvp . ' ' . $event.' AND guest_list.guest_type="Sole" OR guest_list.guest_type="Group Organiser"');
     $guest_list = $db->query($guest_list_query);
     $guest_list_result = $guest_list->fetch_assoc();
     $result_num = $guest_list->num_rows;
