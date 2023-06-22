@@ -33,6 +33,25 @@
     padding: $spacer-2;
     border-radius: 5px;
     border: 1px solid $primary-800;
+    a{
+        
+        background-color: $primary-950;
+        padding: $spacer-2;
+        border-radius: 12px;
+        width: fit-content;
+    }
+}
+.guest-group a[data-rsvp="Not Attending"]{
+    background-color: $alert-primary;
+
+    color: #fff;
+}
+.guest-group a[data-rsvp="Attending"]{
+    background-color: $success;
+    color: #525252;
+    .icon{
+        display: none;
+    }
 }
 
 //?outer guest card

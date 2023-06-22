@@ -10,13 +10,11 @@ $form_q = $db->query("SELECT forms.form_id, forms.form_type, forms.client_id, fo
 
 ///
 include("inc/head.inc.php");
-
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
 <meta name="title" content="Manage your website content">
 <!-- /Meta Tags -->
-
 <!-- / -->
 <!-- Page Title -->
 <title>Mi-Admin | Forms</title>
@@ -26,8 +24,6 @@ include("inc/head.inc.php");
 <body>
     <!-- Main Body Of Page -->
     <main class="main col-2">
-
-
         <!-- Header Section -->
         <?php include("./inc/header.inc.php"); ?>
         <!-- Nav Bar -->
@@ -65,7 +61,7 @@ include("inc/head.inc.php");
                                     </select>
                                 </div>
                                 <div class="search-input">
-                                    <input type="search" id="search" name="search"  placeholder="Search for a client">
+                                    <input type="search" id="search" name="search" placeholder="Search for a client">
                                     <button class="btn-primary form-controls-btn loading-btn" type="button" id="search-btn"><svg class="icon">
                                             <use href="assets/img/icons/solid.svg#magnifying-glass" />
                                         </svg></button>
