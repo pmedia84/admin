@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
     include("../connect.php");
     $search = mysqli_real_escape_string($db, $_POST['search']);
     //find wedding guest list
-    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type,guest_list.guest_rsvp_code, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_fname LIKE "%' . $search . '%" OR guest_list.guest_sname LIKE "%' . $search . '%" AND guest_list.guest_type="Group Organiser" OR guest_list.guest_type="Sole" ORDER BY guest_list.guest_sname');
+    $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type,guest_list.guest_rsvp_code, guest_list.guest_extra_invites, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_fname LIKE "%' . $search . '%" OR guest_list.guest_sname LIKE "%' . $search . '%"  ORDER BY guest_list.guest_sname');
     if ($search == "") {
         $guest_list_query = ('SELECT guest_list.guest_id, guest_list.guest_fname, guest_list.guest_sname, guest_list.guest_type, guest_list.guest_extra_invites, guest_list.guest_rsvp_code, guest_list.guest_group_id, invitations.guest_id, invitations.event_id, invitations.invite_rsvp_status, wedding_events.event_id, wedding_events.event_name  FROM guest_list LEFT JOIN invitations ON invitations.guest_id=guest_list.guest_id LEFT JOIN wedding_events ON wedding_events.event_id=invitations.event_id WHERE guest_list.guest_type="Group Organiser" OR guest_list.guest_type="Sole" ORDER BY guest_list.guest_sname');
     }
@@ -75,7 +75,9 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
                 <?php if ($guest['guest_type'] == "Group Organiser") : ?>
                     <div class="guest-group-card d-none">
                         <div class="guest-group">
-                            <h3><?= $guest['guest_fname']; ?>'s extra invites </h3>
+                            <h3><svg class="icon feather-icon">
+                                        <use xlink:href="assets/img/icons/feather.svg#users"></use>
+                                    </svg><?= $guest['guest_fname']; ?>'s extra invites </h3>
                             <?php $guest_group = $db->query("SELECT guest_id, guest_fname, guest_sname, guest_rsvp_status FROM guest_list WHERE guest_group_id=" . $guest['guest_group_id'] . " AND guest_type='Member'"); ?>
                             <?php foreach ($guest_group as $member) : ?>
                                 <a href="guest?action=view&guest_id=<?= $member['guest_id']; ?>" data-rsvp="<?= $member['guest_rsvp_status']; ?>"><?= $member['guest_fname'] . " " . $member['guest_sname']; ?> <svg class="icon feather-icon">
@@ -181,7 +183,9 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
                 <?php if ($guest['guest_type'] == "Group Organiser") : ?>
                     <div class="guest-group-card d-none">
                         <div class="guest-group">
-                            <h3><?= $guest['guest_fname']; ?>'s extra invites </h3>
+                            <h3><svg class="icon feather-icon">
+                                        <use xlink:href="assets/img/icons/feather.svg#users"></use>
+                                    </svg><?= $guest['guest_fname']; ?>'s extra invites </h3>
                             <?php $guest_group = $db->query("SELECT guest_id, guest_fname, guest_sname, guest_rsvp_status FROM guest_list WHERE guest_group_id=" . $guest['guest_group_id'] . " AND guest_type='Member'"); ?>
                             <?php foreach ($guest_group as $member) : ?>
                                 <a href="guest?action=view&guest_id=<?= $member['guest_id']; ?>" data-rsvp="<?= $member['guest_rsvp_status']; ?>"><?= $member['guest_fname'] . " " . $member['guest_sname']; ?> <svg class="icon feather-icon">

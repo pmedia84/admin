@@ -43,15 +43,15 @@
 }
 .guest-group a[data-rsvp="Not Attending"]{
     background-color: $alert-primary;
-
     color: #fff;
+    .icon{
+        display: unset;
+    }
 }
 .guest-group a[data-rsvp="Attending"]{
     background-color: $success;
     color: #525252;
-    .icon{
-        display: none;
-    }
+
 }
 
 //?outer guest card

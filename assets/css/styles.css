@@ -633,16 +633,16 @@ a:hover{
     } 
 .guest-group a[data-rsvp="Not Attending"]{
     background-color: hsla(0, 99%, 66%, 0.753);
-
     color: #fff;
 } 
+.guest-group a[data-rsvp="Not Attending"] .icon{
+        display: unset;
+    } 
 .guest-group a[data-rsvp="Attending"]{
     background-color: hsl(164, 84%, 75%);
     color: #525252;
+
 } 
-.guest-group a[data-rsvp="Attending"] .icon{
-        display: none;
-    } 
 /*?outer guest card*/ 
 .guest-card{
     background-color: #fff;
@@ -2013,6 +2013,14 @@ input:checked+.slider:before {
 
 .client-form-response-actions{
     flex-direction: row;
+} 
+
+/*highlight card with a border and bg*/ 
+
+.highlight-card{
+    padding: 1.5rem;
+    border: 1px solid #3b685c;
+    border-radius: 5px;
 } 
 
 /*Form response for displaying server messages*/ 

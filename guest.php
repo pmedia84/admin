@@ -67,22 +67,22 @@ $wedding_events_result = $wedding_events->fetch_assoc();
             <div class="main-cards">
                 <?php if ($_GET['action'] == "edit") : ?>
                     <h1><svg class="icon">
-                            <use xlink:href="assets/img/icons/solid.svg#user"></use>
+                            <use xlink:href="assets/img/icons/feather.svg#user"></use>
                         </svg> Edit Guest</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "view") : ?>
                     <h1><svg class="icon">
-                            <use xlink:href="assets/img/icons/solid.svg#user"></use>
+                            <use xlink:href="assets/img/icons/feather.svg#user"></use>
                         </svg> View Guest</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "delete") : ?>
                     <h1><svg class="icon">
-                            <use xlink:href="assets/img/icons/solid.svg#user"></use>
+                            <use xlink:href="assets/img/icons/feather.svg#user"></use>
                         </svg> Remove Guest</h1>
                 <?php endif; ?>
                 <?php if ($_GET['action'] == "create") : ?>
                     <h1><svg class="icon">
-                            <use xlink:href="assets/img/icons/solid.svg#user"></use>
+                            <use xlink:href="assets/img/icons/feather.svg#user"></use>
                         </svg> Add Guest</h1>
                 <?php endif; ?>
 
@@ -95,7 +95,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                         ?>
                             <?php if (($guest->num_rows) > 0) :
                                 //load guest information
-                                $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
+                                $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites,$guest_rsvp_message, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
                                 $guest->fetch();
                                 $guest->close();
 
@@ -146,7 +146,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                         ?>
                             <?php if (($guest->num_rows) > 0) :
                                 //load guest information
-                                $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
+                                $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_rsvp_message, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
                                 $guest->fetch();
                             ?>
                                 <div class="std-card">
@@ -256,7 +256,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                     <?php if ($_GET['action'] == "edit") : ?>
                         <?php if (($guest->num_rows) > 0) :
                             //load guest information
-                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
+                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_rsvp_message, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
                             $guest->fetch();
                             //search for any events the guest is associated with
                             $guest_invites = $db->query('SELECT wedding_events.event_id, wedding_events.event_name, invitations.guest_id, invitations.event_id, guest_list.guest_id, guest_list.guest_fname FROM wedding_events
@@ -411,7 +411,7 @@ $wedding_events_result = $wedding_events->fetch_assoc();
 
                     <?php if ($_GET['action'] == "view") : ?>
                         <?php if (($guest->num_rows) > 0) :
-                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
+                            $guest->bind_result($guest_id, $guest_fname, $guest_sname, $guest_email, $guest_address, $guest_postcode, $guest_rsvp_code, $guest_rsvp_status, $guest_extra_invites,$guest_rsvp_message, $guest_type, $guest_group_id, $guest_events, $guest_dietery);
                             $guest->fetch();
                             //search for any events the guest is associated with
                             $guest_invites = $db->query('SELECT wedding_events.event_id, wedding_events.event_name, invitations.guest_id, invitations.event_id, guest_list.guest_id, guest_list.guest_fname FROM wedding_events
@@ -422,9 +422,11 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                 $guest_invites->fetch_array();
                             }
                         ?>
-                            <h2><?= $guest_fname . ' ' . $guest_sname; ?></h2>
+                            <h2><?= $guest_fname . ' ' . $guest_sname; ?><?php if($guest_extra_invites>0){echo " +".$guest_extra_invites;}; ?></h2>
                             <div class="card-actions my-2">
-                                <a class="my-2" href="guest_list?"><i class="fa-solid fa-left-long"></i> Return To Guest List </a>
+                                <a class="my-2" href="guest_list?"> <svg class="icon feather-icon">
+                                            <use xlink:href="assets/img/icons/feather.svg#arrow-left"></use>
+                                        </svg> Return To Guest List </a>
                             </div>
                             <div class="std-card">
                                 <div class="guest-card-tags">
@@ -458,24 +460,32 @@ $wedding_events_result = $wedding_events->fetch_assoc();
                                     <?php endif; ?>
 
                                 </div>
+                                <?php if($guest_email!=NULL):?>
                                 <h3>Contact Details</h3>
                                 <p><strong>eMail: </strong><a href="mailto:<?= $guest_email; ?>"><?= $guest_email; ?></a></p>
+                                <?php endif;?>
+                                <?php if($guest_address>NULL):?>
                                 <h4><strong>Address</strong></h4>
                                 <address>
                                     <?= $guest_address; ?>,
                                     <?= $guest_postcode; ?>
                                 </address>
-
-                                <h3>Extra Invites</h3>
-                                <p><?= $guest_extra_invites; ?></p>
-                                <?php if ($guest_rsvp_status == "") : ?>
-                                    <p>Not Responded</p>
-                                    <a href="" class="btn-primary my-2">Update RSVP</a>
-                                <?php endif; ?>
-
+                                <?php endif;?>
+                                <?php if($guest_rsvp_message!=""):?>
+                                 <h3>RSVP Message</h3>
+                                 <div class="highlight-card my-2">
+                                    <p><svg class="icon">
+                                            <use xlink:href="assets/img/icons/solid.svg#quote-left"></use>
+                                        </svg> <?= html_entity_decode($guest_rsvp_message);?> <svg class="icon">
+                                            <use xlink:href="assets/img/icons/solid.svg#quote-right"></use>
+                                        </svg></p>
+                                 </div>           
+                                 <?php endif;?>
+                                 <?php if($guest_dietery!=NULL):?>
                                 <h3>Dietary Requirements </h3>
                                 <p><?= $guest_dietery; ?></p>
-                                <div class="card-actions">
+                                <?php endif;?>
+                                <div class="card-actions my-2">
                                     <a class="my-2" href="guest.php?action=edit&guest_id=<?= $guest_id ?>"><svg class="icon">
                                             <use xlink:href="assets/img/icons/solid.svg#pen-to-square"></use>
                                         </svg> Edit Guest </a><br>

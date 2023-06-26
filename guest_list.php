@@ -43,9 +43,9 @@ $total_guests_r = mysqli_fetch_assoc($total_guests);
                         <?php if ($cms->type() == "Wedding") : ?>
                             <div class="guest-list-header">
                                 <h2 class="notification-header">
-                                    <svg class="icon">
-                                        <use xlink:href="assets/img/icons/solid.svg#people-group"></use>
-                                    </svg> Guest List <span class="notification"><?=$total_guests_r['guest_total'];?></span>
+                                <svg class="icon feather-icon">
+                                        <use xlink:href="assets/img/icons/feather.svg#users"></use>
+                                    </svg> Guest List <span class="notification"><?= $total_guests_r['guest_total']; ?></span>
                                 </h2>
                                 <form action="" method="POST" id="guest_search">
                                     <div class="form-input-wrapper">
@@ -62,9 +62,9 @@ $total_guests_r = mysqli_fetch_assoc($total_guests);
                                 <form action="" method="POST" id="guest_filter">
                                     <div class="form-controls">
                                         <a href="guest.php?action=create" class="btn-primary">Add Guest
-                                            <svg class="icon">
-                                                <use xlink:href="assets/img/icons/solid.svg#user-plus"></use>
-                                            </svg>
+                                        <svg class="icon feather-icon">
+                                        <use xlink:href="assets/img/icons/feather.svg#user-plus"></use>
+                                    </svg>
                                         </a>
                                         <div class="form-input-wrapper">
                                             <label for="event_filter">Filter By Event</label>
@@ -114,29 +114,29 @@ $total_guests_r = mysqli_fetch_assoc($total_guests);
                                                     <?php endif; ?>
                                                 </div>
                                                 <div class="guest-card-tags">
-                                                    <?php if($guest['event_id']>0):?>
+                                                    <?php if ($guest['event_id'] > 0) : ?>
+                                                        <span class="guest-card-tag">
+                                                            <svg class="icon feather-icon">
+                                                                <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
+                                                            </svg>
+                                                            <a href="event?event_id=<?= $guest['event_id']; ?>&action=view"><?= $guest['event_name']; ?></a>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                    <?php if ($guest['invite_rsvp_status'] > 0) : ?>
+                                                        <span class="guest-card-tag" data-invite-status="<?= $guest['invite_rsvp_status']; ?>">
+                                                            <svg class="icon feather-icon">
+                                                                <use xlink:href="assets/img/icons/feather.svg#message-square"></use>
+                                                            </svg>
+                                                            <?= $guest['invite_rsvp_status']; ?>
+                                                        </span>
+                                                    <?php endif; ?>
                                                     <span class="guest-card-tag">
-                                                        <svg class="icon feather-icon">
-                                                            <use xlink:href="assets/img/icons/feather.svg#calendar"></use>
-                                                        </svg>
-                                                        <a href="event?event_id=<?=$guest['event_id'];?>&action=view"><?= $guest['event_name']; ?></a>
-                                                    </span>
-                                                    <?php endif;?>
-                                                    <?php if($guest['invite_rsvp_status']>0):?>
-                                                    <span class="guest-card-tag" data-invite-status="<?= $guest['invite_rsvp_status']; ?>">
-                                                        <svg class="icon feather-icon">
-                                                            <use xlink:href="assets/img/icons/feather.svg#message-square"></use>
-                                                        </svg>
-                                                        <?= $guest['invite_rsvp_status']; ?>
-                                                    </span>
-                                                    <?php endif;?>
-                                                    <span class="guest-card-tag" >
                                                         <svg class="icon">
                                                             <use xlink:href="assets/img/icons/solid.svg#reply"></use>
                                                         </svg>
-                                                        RSVP CODE: <?=$guest['guest_rsvp_code'];?>
+                                                        RSVP CODE: <?= $guest['guest_rsvp_code']; ?>
                                                     </span>
-                                                    <span class="guest-card-tag" data-guest-type="<?=$guest['guest_type'];?>">
+                                                    <span class="guest-card-tag" data-guest-type="<?= $guest['guest_type']; ?>">
                                                         <svg class="icon feather-icon">
                                                             <use xlink:href="assets/img/icons/feather.svg#user"></use>
                                                         </svg>
@@ -147,12 +147,16 @@ $total_guests_r = mysqli_fetch_assoc($total_guests);
                                             <?php if ($guest['guest_type'] == "Group Organiser") : ?>
                                                 <div class="guest-group-card d-none">
                                                     <div class="guest-group">
-                                                        <h3 ><?= $guest['guest_fname']; ?>'s extra invites </h3>
+                                                        <h3><svg class="icon feather-icon">
+                                                                <use xlink:href="assets/img/icons/feather.svg#users"></use>
+                                                            </svg> <?= $guest['guest_fname']; ?>'s extra invites </h3>
                                                         <?php $guest_group = $db->query("SELECT guest_id, guest_fname, guest_sname, guest_rsvp_status FROM guest_list WHERE guest_group_id=" . $guest['guest_group_id'] . " AND guest_type='Member'"); ?>
                                                         <?php foreach ($guest_group as $member) : ?>
-                                                            <a href="guest?action=view&guest_id=<?= $member['guest_id']; ?>" data-rsvp="<?=$member['guest_rsvp_status'];?>"><?= $member['guest_fname'] . " " . $member['guest_sname']; ?>  <svg class="icon feather-icon">
-                                                            <use xlink:href="assets/img/icons/feather.svg#alert-circle"></use>
-                                                        </svg></a>
+                                                            <a href="guest?action=view&guest_id=<?= $member['guest_id']; ?>" data-rsvp="<?= $member['guest_rsvp_status']; ?>"><svg class="icon feather-icon">
+                                                                    <use xlink:href="assets/img/icons/feather.svg#user"></use>
+                                                                </svg> <?= $member['guest_fname'] . " " . $member['guest_sname']; ?> <svg class="icon feather-icon d-none">
+                                                                    <use xlink:href="assets/img/icons/feather.svg#alert-circle"></use>
+                                                                </svg></a>
                                                         <?php endforeach; ?>
                                                     </div>
                                                 </div>

@@ -393,3 +393,10 @@
 .client-form-response-actions{
     flex-direction: row;
 }
+
+//highlight card with a border and bg
+.highlight-card{
+    padding: 1.5rem;
+    border: 1px solid $primary;
+    border-radius: $border-radius-2;
+}
