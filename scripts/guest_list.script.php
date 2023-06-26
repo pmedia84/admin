@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
                                     </svg><?= $guest['guest_fname']; ?>'s extra invites </h3>
                             <?php $guest_group = $db->query("SELECT guest_id, guest_fname, guest_sname, guest_rsvp_status FROM guest_list WHERE guest_group_id=" . $guest['guest_group_id'] . " AND guest_type='Member'"); ?>
                             <?php foreach ($guest_group as $member) : ?>
-                                <a href="guest?action=view&guest_id=<?= $member['guest_id']; ?>" data-rsvp="<?= $member['guest_rsvp_status']; ?>"><?= $member['guest_fname'] . " " . $member['guest_sname']; ?> <svg class="icon feather-icon">
+                                <a href="guest?action=view&guest_id=<?= $member['guest_id']; ?>" data-rsvp="<?= $member['guest_rsvp_status']; ?>"><?= $member['guest_fname'] . " " . $member['guest_sname']; ?> <svg class="icon feather-icon d-none">
                                         <use xlink:href="assets/img/icons/feather.svg#alert-circle"></use>
                                     </svg></a>
                             <?php endforeach; ?>
@@ -188,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] != "POST") {
                                     </svg><?= $guest['guest_fname']; ?>'s extra invites </h3>
                             <?php $guest_group = $db->query("SELECT guest_id, guest_fname, guest_sname, guest_rsvp_status FROM guest_list WHERE guest_group_id=" . $guest['guest_group_id'] . " AND guest_type='Member'"); ?>
                             <?php foreach ($guest_group as $member) : ?>
-                                <a href="guest?action=view&guest_id=<?= $member['guest_id']; ?>" data-rsvp="<?= $member['guest_rsvp_status']; ?>"><?= $member['guest_fname'] . " " . $member['guest_sname']; ?> <svg class="icon feather-icon">
+                                <a href="guest?action=view&guest_id=<?= $member['guest_id']; ?>" data-rsvp="<?= $member['guest_rsvp_status']; ?>"><?= $member['guest_fname'] . " " . $member['guest_sname']; ?> <svg class="icon feather-icon d-none">
                                         <use xlink:href="assets/img/icons/feather.svg#alert-circle"></use>
                                     </svg></a>
                             <?php endforeach; ?>
