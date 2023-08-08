@@ -13,7 +13,6 @@ $guest_list = $db->query($guest_list_query);
 $events = $db->query("SELECT event_id, event_name FROM wedding_events");
 $total_guests = $db->query("SELECT COUNT(guest_id) AS guest_total FROM guest_list");
 $total_guests_r = mysqli_fetch_assoc($total_guests);
-
 ?>
 <!-- Meta Tags For Each Page -->
 <meta name="description" content="Parrot Media - Client Admin Area">
@@ -43,10 +42,11 @@ $total_guests_r = mysqli_fetch_assoc($total_guests);
                         <?php if ($cms->type() == "Wedding") : ?>
                             <div class="guest-list-header">
                                 <h2 class="notification-header">
-                                <svg class="icon feather-icon">
+                                    <svg class="icon feather-icon">
                                         <use xlink:href="assets/img/icons/feather.svg#users"></use>
                                     </svg> Guest List <span class="notification"><?= $total_guests_r['guest_total']; ?></span>
                                 </h2>
+
                                 <form action="" method="POST" id="guest_search">
                                     <div class="form-input-wrapper">
                                         <div class="search-input guest-search">
@@ -58,13 +58,27 @@ $total_guests_r = mysqli_fetch_assoc($total_guests);
                                     </div>
                                 </form>
                             </div>
+                            <div class="grid-row-3-col">
+                                <div class="choice-stats-card">
+                                    <p>Attending</p> <span>75</span>
+                                </div>
+                                <div class="choice-stats-card">
+                                    <p>Attending</p> <span>75</span>
+                                </div>
+                                <div class="choice-stats-card">
+                                    <p>Attending</p> <span>75</span>
+                                </div>
+                            </div>
+                            <p>Attending: 70</p>
+                                <p>Not Replied: 70</p>
+                                <p>Not Attending: 70</p>
                             <div class="my-2 sticky">
                                 <form action="" method="POST" id="guest_filter">
                                     <div class="form-controls">
                                         <a href="guest.php?action=create" class="btn-primary">Add Guest
-                                        <svg class="icon feather-icon">
-                                        <use xlink:href="assets/img/icons/feather.svg#user-plus"></use>
-                                    </svg>
+                                            <svg class="icon feather-icon">
+                                                <use xlink:href="assets/img/icons/feather.svg#user-plus"></use>
+                                            </svg>
                                         </a>
                                         <div class="form-input-wrapper">
                                             <label for="event_filter">Filter By Event</label>

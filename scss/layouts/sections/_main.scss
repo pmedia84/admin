@@ -2,7 +2,7 @@
 .main {
     position: relative;
     display: grid;
-    gap: 1rem;
+    gap: .5rem;
     padding: .5rem;
 }
 
@@ -93,4 +93,8 @@
         grid-column: 2/3;
 
     }
+}
+
+.breadcrumbs{
+    margin-block: .5rem;
 }
