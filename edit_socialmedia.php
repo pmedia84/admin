@@ -14,7 +14,7 @@ include("inc/settings.php");
 //business name
 $cms_name ="";
 $user_id = $_SESSION['user_id'];
-if ($cms_type == "Business") {
+if ($cms->type() == "Business") {
     //look for the business set up and load information
     //find business details.
     $business = $db->prepare('SELECT * FROM business');
@@ -35,27 +35,7 @@ if ($cms_type == "Business") {
     $business_users->close();
 }
 
-//run checks to make sure a wedding has been set up correctly
-if ($cms_type == "Wedding") {
-    //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
 
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-    $wedding->close();
-    //set cms name
-    $cms_name = $wedding_name;
-    //find user details for this business
-    $business_users = $db->prepare('SELECT users.user_id, users.user_name, business_users.business_id, business_users.user_type FROM users NATURAL LEFT JOIN business_users WHERE users.user_id='.$user_id);
-
-    $business_users->execute();
-    $business_users->bind_result($user_id, $user_name,$business_id, $user_type);
-    $business_users->fetch();
-    $business_users->close();
-}
 
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -109,18 +89,25 @@ $social_types = mysqli_query($db, $social_types_query);
 
                     <button class="btn-primary" id="add_social">Add A Social Media Profile</button>
                 <?php else : ?>
-                    <p class="font-emphasis">You do not have the necessary Administrator rights to view this page.</p>
+                    <p class="font-emphasis">You do not have Administrator rights to view this page.</p>
                 <?php endif; ?>
             </div>
 
         </section>
 
         <div class="modal">
-            <div class="modal-body">
-                <div class="modal-close">
-                    <button type="button" class="btn-close" id="modal-btn-close" aria-label="Close"></button>
-                </div>
-                <h2>Add Social Media Profile</h2>
+            <div class="modal-content">
+            <div class="modal-header">
+                <button class="btn-close" type="button" id="modal-btn-close">
+                    <svg class="icon line">
+                        <use href="assets/img/icons/solid.svg#minus" />
+                    </svg>
+                    <svg class="icon x-mark">
+                        <use href="assets/img/icons/solid.svg#xmark" />
+                    </svg>
+                </button>
+                <h2 class="modal-title">Add Social Media Profile</h2>
+            </div>
                 <form class="form-card" id="add_social_media_profile" action="scripts/edit_socialmedia-script.php" method="POST">
                     <div class="form-input-wrapper my-2">
                         <label for="user_email">Social Media Platform</label>

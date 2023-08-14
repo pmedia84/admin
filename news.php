@@ -147,10 +147,6 @@ include("inc/head.inc.php");
 
     </main>
 
-    <!-- /Main Body Of Page -->
-    <!-- Quote request form script -->
-
-    <!-- /Quote request form script -->
     <!-- Footer -->
     <?php include("./inc/footer.inc.php"); ?>
     <!-- /Footer -->

@@ -129,7 +129,9 @@ include("./inc/head.inc.php");
 
     </main>
 
-
+    <!-- Footer -->
+    <?php include("./inc/footer.inc.php"); ?>
+    <!-- /Footer -->
 
 </body>
 
