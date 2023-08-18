@@ -123,7 +123,7 @@ $curaddress->close();
                                     <option value="<?= $address_id; ?>" selected>Current Address: <?= $address_house . ' ' . $address_road; ?></option>
                                     <?php foreach ($address_list as $addresses) : ?>
 
-                                        <option value="<?= $addresses['address_id']; ?>"><?= $addresses['address_house'] . ', ' . $addresses['address_road']; ?></option>
+                                        <option value="<?= $addresses['address_id']; ?>"><?= $addresses['address_line_1'] . ', ' . $addresses['address_line_2']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
