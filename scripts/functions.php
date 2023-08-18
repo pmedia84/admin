@@ -80,6 +80,11 @@ class Cms
     //*return all business info
     function b_name()
     {
+        include("../connect.php");
+        $business_q = $db->query('SELECT * FROM business');
+        $business_r = mysqli_fetch_assoc($business_q);
+        $name = $business_r['business_name'];
+        $this->business_name = $name;
         return $this->business_name;
     }
     function b_id(){
