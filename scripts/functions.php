@@ -18,7 +18,12 @@ function check_login()
 class Cms
 {
     public $cms_type;
-
+    //?variables for wedding CMS
+    public $wedding_name;
+    public $wedding_date;
+    public $wedding_id;
+    public $wedding_time;
+    //?
     //?Variables for business CMS
     public $business_id;
     public $business_name;
@@ -57,7 +62,7 @@ class Cms
                 header('Location: setup.php?action=check_users_business');
                 return;
             }
-       
+        
 
     }
 
