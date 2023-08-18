@@ -3,10 +3,12 @@ session_set_cookie_params(0, "/admin");
 //save a cookie if the user has asked to be remembered when they login,
 //set if they have checked box
 if (isset($_POST['remember_user'])) {
+    $_SESSION['user_name'] = $username;
     setcookie("user_name", $username, time() + (86400 * 15), "/admin");
     setcookie("user_email", $_POST['user_email'], time() + (86400 * 15), "/admin");
 } else { //remove cookie if it's set and has been unchecked
     if (isset($_COOKIE['user_name'])) {
+        $_SESSION['user_name'] = $username;
         setcookie("user_name", $username, time() - 3600, "/admin");
         setcookie("user_email", $_POST['user_email'], time() - 3600, "/admin");
     }
