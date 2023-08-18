@@ -85,7 +85,7 @@ if ($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE us
             //set if they have checked box
             if (isset($_POST['remember_user'])) {
                 $_COOKIE['user_name']=$username;
-                $_COOKIE['user_email']=$$_POST['user_email'];
+                $_COOKIE['user_email']=$_POST['user_email'];
             } else { //remove cookie if it's set and has been unchecked
                 if (isset($_COOKIE['user_name'])) {
                     setcookie("user_name", $username, time() -3600, "/admin");
