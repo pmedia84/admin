@@ -63,22 +63,7 @@ class Cms
                 return;
             }
         }
-        //wedding
-        if ($this->cms_type == "Wedding") {
-            //look for a wedding setup in the db, if not then direct to the setup page
-            $wedding_query = ('SELECT wedding_id FROM wedding');
-            $wedding = $db->query($wedding_query);
-            if ($wedding->num_rows == 0) {
-                header('Location: setup.php?action=setup_wedding');
-            }
-            //check that there are users set up 
-            $wedding_user_query = ('SELECT wedding_user_id FROM wedding_users ');
-            $wedding_user = $db->query($wedding_user_query);
-            if ($wedding_user->num_rows < 2) {
-                header('Location: setup.php?action=check_users_wedding');
-            }
-            $db->close();
-        }
+
     }
 
     //load business info
@@ -91,19 +76,6 @@ class Cms
         $this->business_name = $name;
     }
 
-    //* Return all info for wedding
-    function w_name()
-    {
-        return $this->wedding_name;
-    }
-    function w_date()
-    {
-        return $this->wedding_date;
-    }
-    function w_id()
-    {
-        return $this->wedding_id;
-    }
 
     //*return all business info
     function b_name()
