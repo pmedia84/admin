@@ -1,15 +1,8 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
-require $_SERVER['DOCUMENT_ROOT'] . '/admin/mailer/PHPMailer.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/admin/mailer/SMTP.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/admin/mailer/Exception.php';
 session_start();
 
 include("../connect.php");
-include("../inc/settings.php");
 if (mysqli_connect_errno()) {
     // If there is an error with the connection, stop the script and display the error.
     echo "hello";
