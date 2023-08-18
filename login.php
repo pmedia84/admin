@@ -3,7 +3,9 @@ session_start();
 include("connect.php");
 require("scripts/functions.php");
 include("inc/settings.php");
-
+$cms = new Cms();
+$cms->setup();
+$user = new User();
 //find the referring page to redirect to once logged in
 if (!empty($_GET)) {
     $location = urldecode($_GET['location']);

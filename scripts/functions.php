@@ -18,12 +18,7 @@ function check_login()
 class Cms
 {
     public $cms_type;
-    //?variables for wedding CMS
-    public $wedding_name;
-    public $wedding_date;
-    public $wedding_id;
-    public $wedding_time;
-    //?
+
     //?Variables for business CMS
     public $business_id;
     public $business_name;
@@ -46,7 +41,7 @@ class Cms
     {
         include("../connect.php");
         //business
-        if ($this->cms_type == "Business") {
+      
             //look for a business setup in the db, if not then direct to the setup page
             $business_query = ('SELECT business_id FROM business');
             $business = $db->query($business_query);
@@ -62,7 +57,7 @@ class Cms
                 header('Location: setup.php?action=check_users_business');
                 return;
             }
-        }
+       
 
     }
 
