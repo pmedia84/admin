@@ -88,10 +88,9 @@ if (isset($_POST['action'])) {
             // /////////////////////Send email to confirm Setup and password/////////////////////////
 
             //email subject
-            $subject = "You have been set up as a new user for " . $business_name . "";
+            $subject = "Your new user account for " . $business_name . "";
             //body of email to send to client as an auto reply
             $body = '
-            <img src="' . $emailheaderlogo . '">
             <div style="padding:16px;font-family:sans-serif;">
                 <h1 style="text-align:center;">' . $user_name . ' Your new user account</h1>
                 <div style="padding:16px; border: 10px solid #5ca38f; border-radius: 10px;">
