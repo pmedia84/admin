@@ -5,38 +5,36 @@ require("scripts/functions.php");
 include("inc/settings.php");
 
 //find the referring page to redirect to once logged in
-if(!empty($_GET)){
-    $location=urldecode($_GET['location']);
-}else{
-    $location="index";
+if (!empty($_GET)) {
+    $location = urldecode($_GET['location']);
+} else {
+    $location = "index";
 }
+//page meta variables
+$meta_description = "Parrot Media - Client Admin Area";
+$meta_page_title = "Mi-Admin | Login";
 ?>
-<?php include("./inc/head.inc.php"); ?>
-<!-- Meta Tags For Each Page -->
-<meta name="description" content="Parrot Media - Client Admin Area">
-<meta name="title" content="Manage your website content">
-<!-- /Meta Tags -->
-
-<!-- / -->
-<!-- Page Title -->
-<title>Mi-Admin | Dashboard</title>
-<!-- /Page Title -->
+<head>
+    <?php include("./inc/Page_meta.php"); ?>
 </head>
-<body>
-    <main class="main login-main">
-    <div class="header">
 
-<div class="header-actions login-header">
-    <img src="assets/img/logo.png" alt="">
-</div>
-</div>
+<body>
+    <main class="login">
+
         <div class="login-wrapper">
-            <h1>Login</h1>
+            <img src="assets/img/logo.png" alt="">
+            <?php if(isset($_COOKIE['user_name'])):?>
+                <h1>Welcome back</h1>
+                <h2><?=$_COOKIE['user_name'];?></h2>
+                <p>Please login to continue</p>
+                <?php else:?>
+                    <h1>Login</h1>
+                <?php endif;?>
             <form class="form-card" id="login" action="scripts/auth.php" method="post">
                 <div class="form-input-wrapper">
                     <label for="user_email">eMail Address:</label>
                     <!-- input -->
-                    <input  type="text" name="user_email" id="user_email" placeholder="Enter Email Address" autocomplete="email" required="" maxlength="45">
+                    <input type="text" name="user_email" id="user_email" placeholder="Enter Email Address" autocomplete="email" required="" maxlength="45" <?php if(isset($_COOKIE['user_email'])):?>value="<?=$_COOKIE['user_email'];endif;?>">
                 </div>
 
                 <div class="form-input-wrapper">
@@ -45,6 +43,8 @@ if(!empty($_GET)){
                     <input class="text-input input" type="password" name="password" id="password" placeholder="Your Password*" autocomplete="current-password" required="" maxlength="45">
                 </div>
 
+                <label class="checkbox-form-control my-2" for="remember_user"><input type="checkbox" name="remember_user" id="remember_user" <?php if(isset($_COOKIE['user_name'])):?>checked<?php endif;?>>Remember me</label>
+                    
                 <div class="button-section my-3">
                     <button class="btn-primary" type="submit">Login</button>
                     <a href="resetpw">Forgot Password</a>
@@ -61,15 +61,11 @@ if(!empty($_GET)){
 
 
     </main>
-    <!-- /Main Body Of Page -->
 
-    <!-- Footer -->
-    <?php include("./inc/footer.inc.php"); ?>
-    <!-- /Footer -->
     <script>
         $("#login").submit(function(event) {
             event.preventDefault();
-            var redirect = '<?php echo $location;?>';
+            var redirect = '<?php echo $location; ?>';
             var formData = new FormData($("#login").get(0));
             var user_email = $("#user_email").val();
             $.ajax({ //start ajax post
@@ -80,12 +76,14 @@ if(!empty($_GET)){
                 processData: false,
                 success: function(data, responseText) {
                     $("#response").html(data);
-                    $("#response").slideDown(400);
                     if (data === 'correct') {
                         window.location.replace(redirect);
+                    }else{
+                        $("#response").slideDown(400);
+                        
                     }
                     if (data === 'TEMP') {
-                        window.location.replace('resetpw.php?action=temp&user_email='+user_email);
+                        window.location.replace('resetpw.php?action=temp&user_email=' + user_email);
                     }
 
                 }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background-color: #ebeae9;
+
+        }
+      h2, h3,h4{
+            margin: 0.75rem 0 .25rem;
+        }
+        p{
+            margin: 0;
+            line-height: 1.75;
+        }
+        .email-body {
+            border: 1px solid rgb(154, 158, 162);
+            background-color: #fff;
+        }
+
+        .header {
+            background-color: #26445a;
+            color: #fff;
+            padding: 2rem;
+        }
+
+        .email-content {
+            padding: 2rem;
+        }
+
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div class="container email-body" style="width: 95%; max-width: 600px; margin: 0 auto;">
+        <img src="" alt="">
+        <div class="header">
+            <h1>Your new email address</h1>
+        </div>
+        <div class="email-content" style="background-color: #fff;" >
+            <h2>{{user_name}} please verify your new email address</h2>
+            <p>A request to change your email address has been recieved. To verify this, please click on the link below.</p>
+            <h3>New address</h3>
+            {{user_email}}
+
+            <h3>Verify Now</h3>
+            <a href="{{url}}">Verify new email address</a>
+        </div>
+       
+    </div>
+   
+</body>
+
+</html>

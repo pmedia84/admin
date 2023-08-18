@@ -1,4 +1,12 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require $_SERVER['DOCUMENT_ROOT'] . '/admin/mailer/PHPMailer.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/admin/mailer/SMTP.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/admin/mailer/Exception.php';
 function check_login()
 {
     if (!isset($_SESSION['loggedin'])) {
@@ -35,7 +43,7 @@ class Cms
     }
 
     function setup()
-    { 
+    {
         include("../connect.php");
         //business
         if ($this->cms_type == "Business") {
@@ -44,7 +52,8 @@ class Cms
             $business = $db->query($business_query);
             if ($business->num_rows == 0) {
                 header('Location: setup.php?action=setup_business');
-                return;
+                $this->business_id=$business['business_id'];
+                return ;
             }
             //check that there are users set up 
             $business_user_query = ('SELECT * FROM business_users');
@@ -71,19 +80,7 @@ class Cms
             $db->close();
         }
     }
-    //load wedding info
-    function wedding_load()
-    {
-        include("../connect.php");
-        $wedding_q = $db->query('SELECT * FROM wedding');
-        $wedding_r = mysqli_fetch_assoc($wedding_q);
-        $name = $wedding_r['wedding_name'];
-        $date = $wedding_r['wedding_date'];
-        $id = $wedding_r['wedding_id'];
-        $this->wedding_name = $name;
-        $this->wedding_date = $date;
-        $this->wedding_id = $id;
-    }
+
     //load business info
     function business_load()
     {
@@ -95,19 +92,31 @@ class Cms
     }
 
     //* Return all info for wedding
-    function w_name(){
+    function w_name()
+    {
         return $this->wedding_name;
     }
-    function w_date(){
+    function w_date()
+    {
         return $this->wedding_date;
     }
-    function w_id(){
+    function w_id()
+    {
         return $this->wedding_id;
     }
 
     //*return all business info
-    function b_name(){
+    function b_name()
+    {
         return $this->business_name;
+    }
+    function b_id(){
+        include("./connect.php");
+        $business_query = ('SELECT business_id FROM business');
+        $business = $db->query($business_query);
+        $r=mysqli_fetch_assoc($business);
+        $this->business_id=$r['business_id'];
+        return $this->business_id;
     }
 }
 
@@ -158,8 +167,7 @@ class Module
 }
 
 //*modules
-$guest_list_m = new Module();
-$guest_list_m->module_name("Guest List");
+
 
 $news_m = new Module();
 $news_m->module_name("News");
@@ -236,7 +244,19 @@ class User
     public $user_type;
     public $user_name;
     public $logged_in;
+    public $user_email;
+    public $user_em_status;
 
+    function em_status()
+    {
+        //find email status of the user
+        include("../connect.php");
+        $q = $db->query("SELECT user_em_status FROM users WHERE user_id=" . $this->user_id() . "");
+        $r = mysqli_fetch_assoc($q);
+        $status = $r['user_em_status'];
+        $this->user_em_status = $status;
+        return $this->user_em_status;
+    }
     function user_id()
     {
         $this->user_id = $_SESSION['user_id'];
@@ -255,6 +275,87 @@ class User
         $type = $user_type_r['user_type'];
         $this->user_type = $type;
         return $this->user_type;
+    }
+    function name()
+    {
+        include("../connect.php");
+        $q = $db->query("SELECT user_name FROM users WHERE user_id=" . $this->user_id() . "");
+        $r = mysqli_fetch_assoc($q);
+        $name = $r['user_name'];
+        $this->user_name = $name;
+        return $this->user_name;
+    }
+    function update()
+    {
+        $email = $_POST['user_email'];
+        $user_name = $_POST['user_name'];
+        //url for confirming new emails
+        $url = $_SERVER['SERVER_NAME'] . "/admin/profile.php?confirm=email";
+
+        //update user details from form
+        include("../connect.php");
+        //check if new email is different to saved email
+        $q = $db->query("SELECT user_email FROM users WHERE user_id=" . $this->user_id() . "");
+        $r = mysqli_fetch_assoc($q);
+        $old_email = $r['user_email'];
+        if ($old_email != $email) {
+            //load email config file
+            //config file name
+            $config_file = "config.json";
+            //load config file
+            $config = file_get_contents($config_file);
+            //decode json file
+            $file = json_decode($config, TRUE);
+            //set up variables
+            $host = $file['email_config']['host'];
+            $username = $file['email_config']['username'];
+            $pw = $file['email_config']['pw'];
+            $fromname = $file['email_config']['fromname'];
+            //send email to get user to confirm email
+            //set the user email status to unconfirmed
+            $em_status = "TEMP";
+            //load template
+            $body = file_get_contents("inc/User_update_email.html");
+            //set up email
+            $body = str_replace(["{{user_name}}"], [$user_name], $body);
+            $body = str_replace(["{{user_email}}"], [$email], $body);
+            $body = str_replace(["{{url}}"], [$url], $body);
+            //* Subject
+            $subject = "New email address";
+            $fromserver = $username;
+            $email_to = $email;
+            $mail = new PHPMailer(true);
+            $mail->IsSMTP();
+            $mail->Host = $host; // Enter your host here
+            $mail->SMTPAuth = true;
+            $mail->Username = $username; // Enter your email here
+            $mail->Password = $pw; //Enter your password here
+            $mail->Port = 25;
+            $mail->From = $username;
+            $mail->FromName = $fromname;
+            $mail->Sender = $fromserver; // indicates ReturnPath header
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+            $mail->IsHTML(true);
+            $mail->AddAddress($email_to);
+            if (!$mail->Send()) {
+                echo "Mailer Error: " . $mail->ErrorInfo;
+            }
+        }
+        $update = $db->prepare("UPDATE users SET user_email=?, user_name=?, user_em_status=? WHERE user_id=?");
+        $update->bind_param("sssi", $email, $user_name, $em_status,  $this->user_id);
+        $update->execute();
+        $update->close();
+    }
+    function verify_email()
+    {
+        //update users table email as set
+        include("connect.php");
+        $update = $db->prepare("UPDATE users SET user_em_status=? WHERE user_id=?");
+        $this->user_em_status = "SET";
+        $update->bind_param("si", $this->user_em_status,  $this->user_id);
+        $update->execute();
+        $update->close();
     }
 }
 
@@ -549,4 +650,35 @@ class Img
     {
         return $this->success_img;
     }
+}
+
+//? function to update Reviews API
+function reviews_api()
+{
+    include("../connect.php");
+    $place_id = $_POST['place_id'];
+    $api_key = $_POST['api_key'];
+    //code 200 for success, change if an error occurs
+    $code = 200;
+    //check if there is already an API key
+    $q = $db->query("SELECT api_id FROM reviews_api");
+    $create =  $db->prepare("INSERT INTO reviews_api (place_id, api_key) VALUES(?,?)");
+    $update = $db->prepare("UPDATE reviews_api SET place_id=?, api_key=? WHERE api_id=?");
+    if ($q->num_rows > 0) {
+        $r = mysqli_fetch_assoc($q);
+        $api_id = $r['api_id'];
+
+        $update->bind_param("ssi", $place_id, $api_key, $api_id);
+        $update->execute();
+        $update->close();
+    } else {
+        $create->bind_param('ss', $place_id, $api_key);
+        $create->execute();
+        $create->close();
+    }
+    $response = array("response_code" => $code);
+    echo json_encode($response);
+}
+if (isset($_POST['action']) && $_POST['action'] == "reviews_api") {
+    reviews_api();
 }

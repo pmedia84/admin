@@ -1,7 +1,7 @@
 .btn-primary {//primary button
     outline: none;
     appearance: none;
-    background-color: $primary-500;
+    background-color: $primary;
     color: #fff;
     border: 1.5px solid $primary-500;
     border-radius: 5px;
@@ -23,6 +23,29 @@
     }
     
 }
+//button for expanding menu items with a chevron down arrow
+.btn-expand{
+    background-color: transparent;
+    padding: $spacer-1;
+    border-color: transparent;
+    font-size: $fs-125;
+    .icon{
+        margin:0;
+        rotate: 0;
+        transition: rotate 400ms ease-out;
+    }
+    &:focus{
+        box-shadow: none;
+        
+    }
+}
+.btn-expand.open{
+    .icon{
+        rotate: 180deg;
+        transition: rotate 400ms ease-out;
+    }
+}
+
 ::file-selector-button{
     outline: none;
     appearance: none;

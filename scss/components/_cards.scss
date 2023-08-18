@@ -14,17 +14,10 @@
 .dashboard-card-header{
     display: flex;
     justify-content: space-between;
-    span{
-        font-size: 1.5rem;
-        font-weight: 300;
-    }
-    svg{
-        height: 35px;
-        path{
-            fill: $primary;
-        }
-        
-    }
+    font-size: 1.5rem;
+    color: $primary;
+    font-weight: 800;
+
 }
 //standard card for all pages
 .std-card, .event-card{
@@ -337,66 +330,9 @@
         font-size: $fs-150;
     }
 }
-
-//?Form response cards, for viewing and managing form responses from front end. Consultation forms
-
-//Outer wrapper
-.client-form{
-    background-color: $primary-950;
-    display: grid;
-    gap: $spacer-2;
-    grid-template-columns: 8px auto 25%;
-
-    border-radius: $border-radius-2;
-}
-//change status bar to unread color
-.client-form[data-status=unread] .client-form-status{
-    background-color: $primary;
-}
-//inner body
-.client-form-body{
-    padding: $spacer-1 $spacer-1 $spacer-1 0;
-
-}
-//hide the actions but only on devices that have a pointer
-.client-form-actions{
-    place-self: center;
-    justify-self: right;
-    font-size: 1.25rem;
-    padding: $spacer-1;
-    .icon{
-        margin-inline: $spacer-1;
-    }
-}
-@media(hover:hover){
-.client-form-actions{
-    opacity: 0;
-    transition: opacity 200ms ease-out;
-}
-.client-form:hover .client-form-actions{
-    opacity: 1;
-    transition: opacity 200ms ease-out;
-}
-}
-//Status Bar to left
-.client-form-status{
-    border-top-left-radius: inherit;
-    border-bottom-left-radius: inherit;
-}
-
-//? Card for viewing and deleting responses
-.client-form-response{
-    border: 2px solid $primary-500;
-    
-}
-
-.client-form-response-actions{
-    flex-direction: row;
-}
-
-//highlight card with a border and bg
-.highlight-card{
-    padding: 1.5rem;
-    border: 1px solid $primary;
-    border-radius: $border-radius-2;
+.success-card{
+    background-color: $success;
+    width: 80%;
+    margin-inline: auto;
+    padding: $spacer-2;
 }

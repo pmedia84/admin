@@ -2,5 +2,8 @@
     padding: 1rem;
     padding-left: 1rem;
     padding-right: 1rem;
-    background-color: $primary-500;
+    background-color: $primary;
+    color: $primary-950;
+    grid-column: 1/4;
+    //grid-row: 3/3;
 }

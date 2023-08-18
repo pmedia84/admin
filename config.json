@@ -1,0 +1,19 @@
+{
+    "db": {
+        "db_host": "localhost",
+        "db_name": "checkout",
+        "user_name": "root",
+        "pw": ""
+    },
+    "email_config": {
+        "email_to": "karl@parrotmedia.co.uk",
+        "host": "mail.karlandamywed23.co.uk",
+        "username": "webmaster@karlandamywed23.co.uk",
+        "pw": "WeddingKarlAmy2023",
+        "fromname": "Parrot Media"
+    },
+    "recaptcha":{
+        "site_key":"6LdcSTwnAAAAAIZphxrP9V1YYF0tnyNYwKA6WGSt",
+        "secret_key":"6LdcSTwnAAAAAMlIKxgfx5oeKcBtxctOzVNkziAn"
+    }
+}

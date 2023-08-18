@@ -56,10 +56,11 @@
 ///Form wrapper to wrap login and password reset  forms in etc
 .login-wrapper {
     border-radius: $border-radius;
+    border: 1px solid $primary;
     background-color: white;
     padding: $spacer-4;
     width: 95%;
-    max-width: 600px;
+    max-width: 450px;
     margin: 0 auto;
     margin-block: $spacer-3;
     place-self: center;
@@ -91,7 +92,7 @@ textarea,
 input[type=file],
 input[type=number],
 input[type=date],
-input[type=time], 
+input[type=time],
 input[type=search] {
 
     border: 1px solid $primary;
@@ -104,12 +105,7 @@ input[type=search] {
         box-shadow: 0 0 2px 3px $primary-500;
         transition: box-shadow 300ms ease-out;
     }
-
-    max-width: 80vw;
-
-    @media(min-width:$md) {
-        max-width: 80%;
-    }
+    max-width: 25em;
 }
 
 input[type=date],
@@ -184,39 +180,41 @@ select {
         text-decoration: none;
     }
 }
-.button-section{
+
+.button-section {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
     align-items: center;
     gap: .5rem;
-    
+
     @media(min-width:$md) {
         flex-direction: row;
-        
-        
+
+
         button,
         a {
             width: fit-content;
         }
     }
-    
+
     a {
         text-decoration: none;
     }
 }
 
-.login-wrapper .button-section{
+.login-wrapper .button-section {
     flex-direction: row;
 }
+
 //checkboxes
 .checkbox-form-control,
 .radio-form-control {
     //label acts as the wrapper
     font-size: 1rem;
     font-weight: 400;
-    display: grid;
-    grid-template-columns: max-content auto;
+    display: flex;
+    align-items: center;
     gap: 0.5em;
 }
 
@@ -488,16 +486,19 @@ input:checked+.slider:before {
     }
 
 }
+
 //?custom search box for guest list
-.guest-search{
+.guest-search {
     display: flex;
     align-items: center;
-    gap:$spacer-1;
+    gap: $spacer-1;
+
     input {
         border-bottom-right-radius: 5px;
         border-top-right-radius: 5px;
     }
-    .icon{
+
+    .icon {
         height: 25px;
         width: 25px;
     }
@@ -514,4 +515,25 @@ input:checked+.slider:before {
         align-items: center;
         justify-content: space-between;
     }
+}
+
+//response inputs for showing errors or success ticks after the input
+.input-response{
+    //wrapper
+    input{
+        width: 100%;
+    }
+    display: flex;
+    align-items: center;
+    &__check{
+        font-size: 1.5rem;
+        margin-inline: $spacer-1;
+        color: $success;
+        display: none;
+    }
+}
+.input-response input.success{
+    background-color: $primary-800;
+    border-color: $success;
+    transition: border-color 400ms ease-out, background-color 400ms ease-out;
 }
