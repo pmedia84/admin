@@ -50,7 +50,7 @@ $business->fetch();
 $business->close();
 
 //Find Addresses
-$address_query = "SELECT address_id, address_house, address_road FROM addresses";
+$address_query = "SELECT address_id, address_line_1, address_line_2 FROM addresses";
 $address_list = mysqli_query($db, $address_query);
 
 //List current address
