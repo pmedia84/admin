@@ -10,9 +10,7 @@ include("inc/head.inc.php");
 include($_SERVER['DOCUMENT_ROOT'] . "/email_settings.php");
 require("../admin/scripts/functions.php");
 $cms = new Cms();
-if ($cms->type() == "Wedding") {
-    $cms->wedding_load();
-}
+
 if ($cms->type() == "Business") {
     $cms->business_load();
 }
@@ -76,15 +74,10 @@ if ($cms->type() == "Wedding") {
 
 
 
-    <main class="login-main">
+    <main class="login">
 
-        <div class="header">
-
-            <div class="header-actions login-header">
-                <img src="assets/img/logo.png" alt="">
-            </div>
-        </div>
-        <div class="login-wrapper">
+            <div class="login-wrapper">
+            <img src="assets/img/logo.png" alt="">
             <?php if (isset($_GET['action'])) :
                 //scripts for changing temporary passwords for new users
                 //find username and email address to display on screen.
@@ -102,9 +95,9 @@ if ($cms->type() == "Wedding") {
                 <?php if ($_GET['action'] == "temp") : ?>
 
                     <h1>First Login</h1>
-                    <p class="font-emphasis mb-3">As this is your first login, you need to set a password that you will remember.</p>
-                    <p class="font-emphasis"><strong>Name: </strong><?= $name; ?></p>
-                    <p class="font-emphasis mb-3"><strong>Email address: </strong><?= $email; ?></p>
+                    <p class="my-2">As this is your first login, you need to set a password that you will remember.</p>
+                    <p class=""><strong>Name: </strong><?= $name; ?></p>
+                    <p class="mb-3"><strong>Email address: </strong><?= $email; ?></p>
                     <form class="form-card" id="tempreset" action="scripts/resetpw-script.php" method="post">
                         <div class="form-input-wrapper">
                             <label for="new_pw">New Password</label>
@@ -118,7 +111,7 @@ if ($cms->type() == "Wedding") {
                             <input type="password" name="new_pw2" id="new_pw2" placeholder="Enter New Password" autocomplete="password" required="" maxlength="45">
                         </div>
                         <div class="button-section my-3">
-                            <button class="btn-primary form-controls-btn loading-btn" type="submit">Reset Password <img id="loading-icon" class="loading-icon d-none" src="./assets/img/icons/loading.svg" alt=""></button>
+                            <button class="btn-primary form-controls-btn loading-btn" type="submit">Set Password <img id="loading-icon" class="loading-icon d-none" src="./assets/img/icons/loading.svg" alt=""></button>
                         </div>
                         <div id="response" class="d-none">
                         </div>
@@ -182,10 +175,7 @@ if ($cms->type() == "Wedding") {
             <?php endif; ?>
         </div>
     </main>
-    <!-- /Main Body Of Page -->
-    <!-- Footer -->
-    <?php include("./inc/footer.inc.php"); ?>
-    <!-- /Footer -->
+
     <script>
         //script for requesting password reset
         $("#requestpwreset").submit(function(event) {

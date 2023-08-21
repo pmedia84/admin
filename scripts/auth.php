@@ -1,18 +1,7 @@
 <?php
 session_set_cookie_params(0, "/admin");
-if (isset($_POST['remember_user'])) {
-    setcookie("user_name", "", time() + (86400 * 15), "/admin");
-    setcookie("user_email", "", time() + (86400 * 15), "/admin");
-}  else { //remove cookie if it's set and has been unchecked
-    if (isset($_COOKIE['user_name'])) {
-        setcookie("user_name", "", time() -3600, "/admin");
-        setcookie("user_email", "", time() -3600, "/admin");
-    }
-}
-
 session_start();
 include("../connect.php");
-
 if (mysqli_connect_errno()) {
     // If there is an error with the connection, stop the script and display the error.
 
@@ -25,6 +14,12 @@ if (!isset($_POST['user_email'], $_POST['password'])) {
     exit('Error');
     echo "no post";
 }
+//! Variables
+$username = "";
+$pw_status = "";
+$user_email=$_POST['user_email'];
+//response code, change if an error occurs
+$code = 200;
 
 
 if ($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE user_email = ? AND NOT user_type="wedding_guest"')) {
@@ -39,18 +34,19 @@ if ($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE us
         $user->bind_result($user_id, $password, $username);
         $user->fetch();
         //verify password
-
         if (password_verify($_POST['password'], $password)) {
             //check if the password is a temp one from new user setup
-            $pw_check = $db->prepare('SELECT user_id, user_pw_status, user_type FROM users WHERE user_id = ? AND NOT user_type = "wedding_guest"');
+            $pw_check = $db->prepare('SELECT user_id, user_name, user_pw_status, user_type FROM users WHERE user_id = ? AND NOT user_type = "wedding_guest"');
             $pw_check->bind_param('i', $user_id);
             $pw_check->execute();
-            $pw_check->bind_result($user_id, $user_pw_status, $user_type);
+            $pw_check->bind_result($user_id, $username, $user_pw_status, $user_type);
             $pw_check->fetch();
             $pw_check->close();
             if ($user_pw_status == "TEMP") {
-                echo "TEMP";
-                exit();
+                $code = 400;
+                $pw_status = $user_pw_status;
+                $response = array("response_code" => $code, "user_name" => $username, "pw_status" => $pw_status);
+                exit(json_encode($response));
             }
             //*create session in db user sessions:////
             //declare time and date variables
@@ -69,7 +65,6 @@ if ($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE us
 
             //set up php session variables and pass information to browser
             session_regenerate_id();
-            $status = "Failed";
             $session_id_query = "SELECT session_id FROM user_sessions WHERE user_id=" . $user_id . " ORDER BY session_id DESC LIMIT 1";
             $session_id_result = $db->query($session_id_query);
             $session_id = $session_id_result->fetch_assoc();
@@ -80,18 +75,8 @@ if ($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE us
             $_SESSION['db_session_id'] = $session_id['session_id'];
             $_SESSION['user_type'] = $user_type;
             $db->close();
-            echo "correct";
-            //save a cookie if the user has asked to be remembered when they login,
-            //set if they have checked box
-            if (isset($_POST['remember_user'])) {
-                $_COOKIE['user_name']=$username;
-                $_COOKIE['user_email']=$_POST['user_email'];
-            } else { //remove cookie if it's set and has been unchecked
-                if (isset($_COOKIE['user_name'])) {
-                    setcookie("user_name", $username, time() -3600, "/admin");
-                    setcookie("user_email", $_POST['user_email'], time() -3600, "/admin");
-                }
-            }
+            $pw_status = "correct";
+
         } else {
             //look up how many failed login attempts have been made and return an error message to reset password if there are more than 2 failed attempts.
             $status = "Failed";
@@ -126,3 +111,5 @@ if ($user = $db->prepare('SELECT user_id, user_pw, user_name FROM users WHERE us
 
     $user->close();
 }
+$response = array("response_code" => $code, "user_name" => $username,"user_email"=>$user_email, "pw_status" => $pw_status);
+echo json_encode($response);

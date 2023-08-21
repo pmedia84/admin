@@ -33,21 +33,6 @@ if ($cms->type() =="Business") {
     $business_users->close();
 }
 
-//run checks to make sure a wedding has been set up correctly
-if ($cms->type() == "Wedding") {
-    //look for the Wedding set up and load information
-    //find Wedding details.
-    $wedding = $db->prepare('SELECT * FROM wedding');
-
-    $wedding->execute();
-    $wedding->store_result();
-    $wedding->bind_result($wedding_id, $wedding_name, $wedding_date, $wedding_time, $wedding_email, $wedding_phone, $wedding_contact_name);
-    $wedding->fetch();
-    $wedding->close();
-    //set cms name
-    $cms_name = $wedding_name;
-
-}
 
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 $article_id = $_GET['news_articles_id'];

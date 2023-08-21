@@ -107,19 +107,7 @@ function cms_type()
     $cms_type = $cms_r['cms_type'];
     return $cms_type;
 }
-//loads basic information for the wedding
-function wedding_load(&$wedding_name, &$wedding_date, &$wedding_id)
-{
-    include("../connect.php");
-    $wedding_q = $db->query('SELECT * FROM wedding');
-    $wedding_r = mysqli_fetch_assoc($wedding_q);
-    $wedding_name = $wedding_r['wedding_name'];
-    $wedding_date = $wedding_r['wedding_date'];
-    $wedding_id = $wedding_r['wedding_id'];
-    if ($wedding_q->num_rows == 0) {
-        header("Location: setup.php?action=setup_wedding");
-    }
-}
+
 class Module
 {
 
