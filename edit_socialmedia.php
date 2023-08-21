@@ -43,16 +43,14 @@ if ($cms->type() == "Business") {
 $social_types_query = "SELECT * FROM business_socials_types";
 $social_types = mysqli_query($db, $social_types_query);
 
+//page meta variables
+$meta_description = "Parrot Media - Client Admin Area";
+$meta_page_title = "Mi-Admin | Edit Social Media";
 ?>
-<!-- Meta Tags For Each Page -->
-<meta name="description" content="Parrot Media - Client Admin Area">
-<meta name="title" content="Manage your website content">
-<!-- /Meta Tags -->
-
-<!-- / -->
-<!-- Page Title -->
-<title>Mi-Admin | Social Media Settings</title>
-<!-- /Page Title -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<?php include("./inc/Page_meta.php");?>
 </head>
 
 <body>

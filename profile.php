@@ -18,10 +18,12 @@ $meta_page_title = "Mi-Admin | Profile - " . $user->name();
 $q = $db->query("SELECT *FROM users WHERE user_id=" . $user->user_id() . "");
 $r = mysqli_fetch_assoc($q);
 
-?>
 
+?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <?php include("./inc/Page_meta.php"); ?>
+<?php include("./inc/Page_meta.php");?>
 </head>
 
 <body>

@@ -10,12 +10,12 @@ $cms = new Cms();
 
 //page meta variables
 $meta_description = "Parrot Media - Client Admin Area";
-$meta_page_title = "Mi-Admin | Setup";
-
+$meta_page_title = "Mi-Admin | Setup CMS";
 ?>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <?php include("./inc/Page_meta.php"); ?>
+<?php include("./inc/Page_meta.php");?>
 </head>
 
 <body>

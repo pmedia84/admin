@@ -42,28 +42,7 @@ if ($cms->type() == "Business") {
     $business_users->close();
 }
 
-//run checks to make sure a wedding has been set up correctly
-if ($cms->type() == "Wedding") {
 
-    //look for a wedding setup in the db, if not then direct to the setup page
-    $wedding_query = ('SELECT wedding_id, wedding_name FROM wedding');
-    $wedding = $db->query($wedding_query);
-    $wedding_details = mysqli_fetch_assoc($wedding);
-    if ($wedding->num_rows == 0) {
-        header('Location: setup.php?action=setup_wedding');
-    }
-    //check that there are users set up 
-    $wedding_user_query = ('SELECT wedding_user_id FROM wedding_users');
-    $wedding_user = $db->query($wedding_user_query);
-    if ($wedding_user->num_rows == 0) {
-        header('Location: setup.php?action=check_users_wedding');
-    }
-
-    if (!$_SESSION['loggedin'] == true) {
-        // Redirect to the login page:
-        header('Location: login.php');
-    }
-}
 
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //service variable
@@ -88,19 +67,15 @@ if ($_GET['action'] == "delete") {
 
 
 
+//page meta variables
+$meta_description = "Parrot Media - Client Admin Area";
+$meta_page_title = "Mi-Admin | Edit Price List Item";
 ?>
-<!-- Meta Tags For Each Page -->
-<meta name="description" content="Parrot Media - Client Admin Area">
-<meta name="title" content="Manage your website content">
-<!-- /Meta Tags -->
-
-<!-- / -->
-<!-- Page Title -->
-<title>Mi-Admin | Manage Price List</title>
-<!-- /Page Title -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<?php include("./inc/Page_meta.php");?>
 </head>
-
-
 <body>
     <!-- Main Body Of Page -->
     <main class="main col-2">

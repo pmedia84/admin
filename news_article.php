@@ -45,20 +45,16 @@ $article->store_result();
 //find news articles
 $news_query = ('SELECT * FROM news_articles WHERE news_articles_status="Published" ORDER BY news_articles_date LIMIT 3 ');
 $news = $db->query($news_query);
-include("inc/head.inc.php");
+//page meta variables
+$meta_description = "Parrot Media - Client Admin Area";
+$meta_page_title = "Mi-Admin | News";
 ?>
-<!-- Meta Tags For Each Page -->
-<meta name="description" content="Parrot Media - Client Admin Area">
-<meta name="title" content="Manage your website content">
-<!-- /Meta Tags -->
-
-<!-- / -->
-<!-- Page Title -->
-<title>Mi-Admin | News Posts</title>
-<!-- /Page Title -->
-<!-- Tiny MCE -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<?php include("./inc/Page_meta.php");?>
+<?php if(isset($_GET['action']) && $_GET['action']=="edit"):?>
 <script src="https://cdn.tiny.cloud/1/7h48z80zyia9jc41kx9pqhh00e1e2f4pw9kdcmhisk0cm35w/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-</head>
 <script>
     tinymce.init({
         selector: 'textarea#news_article_body',
@@ -80,7 +76,9 @@ include("inc/head.inc.php");
         ]
     });
 </script>
+<?php endif;?>
 </head>
+
 
 
 <body>
