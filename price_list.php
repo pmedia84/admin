@@ -39,11 +39,9 @@ if ($cms->type() == "Business") {
 //////////////////////////////////////////////////////////////////Everything above this applies to each page\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 //load all service names for the search bar
 $service_names_q=$db->query('SELECT service_name FROM services');
-
-
 //page meta variables
 $meta_description = "Parrot Media - Client Admin Area";
-$meta_page_title = "Mi-Admin | Settings";
+$meta_page_title = "Mi-Admin | Price List";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -113,7 +111,7 @@ $meta_page_title = "Mi-Admin | Settings";
                 </div>
 
                 <?php if ($user_type == "Admin" ||$user_type=="Developer") : ?>
-                    <a class="btn-primary" id="upload_image" href="price_listitem.php?action=add"><i class="fa-solid fa-square-plus"></i>Create Service </a>
+                    <a class="btn-primary" id="upload_image" href="price_listitem.php?action=add"><svg class="icon feather-icon"><use xlink:href="assets/img/icons/feather.svg#plus-square"></use></svg>Create Service </a>
                     <div class="std-card price-list" id="price_list">
 
                     </div>

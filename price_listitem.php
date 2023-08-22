@@ -167,7 +167,7 @@ $meta_page_title = "Mi-Admin | Edit Price List Item";
                                     </select>
                                 </div>
                                 <div class="button-section my-3">
-                                    <button class="btn-primary form-controls-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Service </button>
+                                    <button class="btn-primary form-controls-btn" type="submit"><svg class="icon feather-icon"><use xlink:href="assets/img/icons/feather.svg#save"></use></svg>Save Service </button>
                                 </div>
 
                             </form>
