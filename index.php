@@ -12,6 +12,10 @@ $num_articles = $news->num_rows;
 $article_num = ('SELECT news_articles_id FROM news_articles  ');
 $article_num = $db->query($article_num);
 $article_amt = $article_num->num_rows;
+//find the amount of articles listed
+$services = ('SELECT service_id FROM services  ');
+$services = $db->query($services);
+$services_amt = $services->num_rows;
 //page meta variables
 $meta_description = "Parrot Media - Client Admin Area";
 $meta_page_title = "Mi-Admin | Dashboard";
@@ -42,7 +46,7 @@ $meta_page_title = "Mi-Admin | Dashboard";
                 <?php endif; ?>
                 <div class="dashboard-card">
                     <div class="dashboard-card-header">
-                        <span>10</span>
+                        <span><?= $services_amt; ?></span>
                         <svg class="icon"><use xlink:href="assets/img/icons/solid.svg#tags"></use></svg>
                     </div>
                     <h2>Services</h2>
