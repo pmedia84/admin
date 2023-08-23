@@ -9,13 +9,13 @@
     <div class="nav-container">
         <ul class="nav-links">
             <?php if ($cms->type() == "Business") : ?>
-                <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "index")){echo"link-active";}?>" href="index.php"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#house"></use></svg>Home</a></li>
+                <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "index")){echo"link-active";}?>" href="/admin"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#house"></use></svg>Home</a></li>
                 <?php if ($price_list->status()=="On") : ?>
-                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "price_list")){echo"link-active";}?>" href="price_list.php"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#tags"></use></svg>Price List</a></li>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "price_list")){echo"link-active";}?>" href="price_list"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#tags"></use></svg>Price List</a></li>
                     <?php endif; ?>
 
                 <?php if ($news_m->status() == "On") : ?>
-                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "news")){echo"link-active";}?>" href="news.php"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#newspaper"></use></svg>News </a></li>
+                    <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "news")){echo"link-active";}?>" href="news"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#newspaper"></use></svg>News </a></li>
                     <?php endif;?>
                     <?php if ($forms->status() == "On") : ?>
                         <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "forms") || str_contains($_SERVER['REQUEST_URI'], "form")){echo"link-active";}?>" href="forms"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#clipboard-user"></use></svg>Forms </a></li>
@@ -23,11 +23,11 @@
                         
                        
                             <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
-                                <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "reviews")){echo"link-active";}?>" href="reviews.php"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#comment-dots"></use></svg> Reviews  </a></li>
+                                <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "reviews")){echo"link-active";}?>" href="reviews"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#comment-dots"></use></svg> Reviews  </a></li>
                                 <?php endif; ?>
                                 <?php endif; ?>
                                 <?php if ($user->user_type() == "Admin" || $user->user_type() == "Developer") : ?>
-                            <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "settings")){echo"link-active";}?>" href="settings.php"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#gear"></use></svg> Settings </a></li>
+                            <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "settings")){echo"link-active";}?>" href="settings"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#gear"></use></svg> Settings </a></li>
                             <?php endif; ?>
                                 <?php if ($user->user_type() == "Developer") : ?>
                                     <li><a class="nav-link <?php if(str_contains($_SERVER['REQUEST_URI'], "cms")){echo"link-active";}?>" href="cms_settings"><svg class="icon"><use xlink:href="assets/img/icons/solid.svg#gear"></use></svg> CMS Settings </a></li>

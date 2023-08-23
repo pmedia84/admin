@@ -59,7 +59,7 @@ $meta_page_title = "Mi-Admin | Reviews";
                     <h1>Reviews</h1>
                     <p>Your 5 most recent reviews are displayed here and on your website.</p>
                     <p>This is updated once a week, you can also update it here by clicking the below button.</p>
-                    <button class="btn-primary" id="get_reviews_btn" type="button"><i class="fa-solid fa-download"></i>Fetch Recent Reviews</button>
+                    <button class="btn-primary" id="get_reviews_btn" type="button"><svg class="icon feather-icon"><use xlink:href="assets/img/icons/feather.svg#download-cloud"></use></svg>Fetch Recent Reviews</button>
                     <?php if ($user_type == "Admin" || $user_type == "Developer") : ?>
                         <div id="reviews">
 

@@ -1,5 +1,4 @@
 <?php
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -146,23 +145,6 @@ $events->module_name("Events");
 $price_list = new Module();
 $price_list->module_name("Price List");
 
-$invite_manager = new Module();
-$invite_manager->module_name("Invite Manager");
-
-$guest_messaging = new Module();
-$guest_messaging->module_name("Guest Messaging");
-
-$gift_list_m = new Module();
-$gift_list_m->module_name("Gift List");
-
-$menu_builder = new Module();
-$menu_builder->module_name("Menu Builder");
-
-$meal_choices_m = new Module();
-$meal_choices_m->module_name("Meal Choices");
-
-$guest_image_gallery = new Module();
-$guest_image_gallery->module_name("Guest Image Gallery");
 
 $reviews = new Module();
 $reviews->module_name("Reviews");
@@ -170,37 +152,7 @@ $reviews->module_name("Reviews");
 $forms = new Module();
 $forms->module_name("Forms");
 
-//*modules for guest area 
-class Wedding_module
-{
-    public $name;
-    public $status;
 
-    function module_name($name)
-    {
-
-        $this->name = $name;
-    }
-    function status()
-    {
-        include("../connect.php");
-        $modules_query = $db->query('SELECT wedding_module_status FROM wedding_modules WHERE wedding_module_name= "' . $this->name . '"');
-        $modules_r = mysqli_fetch_assoc($modules_query);
-        $module_status = $modules_r['wedding_module_status'];
-        $this->status = $module_status;
-        return $this->status;
-        $db->close();
-    }
-}
-//* build the wedding modules
-$guest_area = new Wedding_module();
-$guest_area->module_name("Guest Area");
-$guest_add_remove = new Wedding_module();
-$guest_add_remove->module_name("Add & Remove Guests");
-$meal_choices_wedmin = new Wedding_module();
-$meal_choices_wedmin->module_name("Meal Choices");
-$guest_area_gallery = new Wedding_module();
-$guest_area_gallery->module_name("Guest Image Gallery");
 
 //* User class for the login system etc
 class User
@@ -211,7 +163,6 @@ class User
     public $logged_in;
     public $user_email;
     public $user_em_status;
-
     function em_status()
     {
         //find email status of the user
@@ -321,6 +272,60 @@ class User
         $update->bind_param("si", $this->user_em_status,  $this->user_id);
         $update->execute();
         $update->close();
+    }
+    function new_pw($user_id,$pw){
+        //new password function
+        $code = 200;
+        include("../connect.php");
+        $update = $db->prepare("UPDATE users SET user_pw=? WHERE user_id=?");
+        $pw = password_hash($pw, PASSWORD_DEFAULT);
+        $update->bind_param("si", $pw, $user_id);
+        $update->execute();
+       
+
+        // find user email
+        $q = $db->query("SELECT user_email, user_name FROM users WHERE user_id=" . $user_id);
+        $r = mysqli_fetch_assoc($q);
+        $email = $r['user_email'];
+        $user_name = $r['user_name'];
+        //load email config file
+            //config file name
+            $config_file = "../config.json";
+            //load config file
+            $config = file_get_contents($config_file);
+            //decode json file
+            $file = json_decode($config, TRUE);
+            //set up variables
+            $host = $file['email_config']['host'];
+            $username = $file['email_config']['username'];
+            $db_pw = $file['email_config']['pw'];
+            $fromname = $file['email_config']['fromname'];
+            //load template
+            $body = file_get_contents("../inc/User_update_pw.html");
+            //set up email
+            $body = str_replace(["{{user_name}}"], [$user_name], $body);
+            $subject = "New password";
+            $fromserver = $username;
+            $email_to = $email;
+            $mail = new PHPMailer(true);
+            $mail->IsSMTP();
+            $mail->Host = $host; // Enter your host here
+            $mail->SMTPAuth = true;
+            $mail->Username = $username; // Enter your email here
+            $mail->Password = $db_pw; //Enter your password here
+            $mail->Port = 25;
+            $mail->From = $username;
+            $mail->FromName = $fromname;
+            $mail->Sender = $fromserver; // indicates ReturnPath header
+            $mail->Subject = $subject;
+            $mail->Body = $body;
+            $mail->IsHTML(true);
+            $mail->AddAddress($email_to);
+            if (!$mail->Send()) {
+                echo "Mailer Error: " . $mail->ErrorInfo;
+            }
+        $response = array("response_code" => $code);
+        echo json_encode($response);
     }
 }
 
@@ -646,4 +651,14 @@ function reviews_api()
 }
 if (isset($_POST['action']) && $_POST['action'] == "reviews_api") {
     reviews_api();
+}
+///
+
+//Update user profile
+if (isset($_POST['action']) && $_POST['action'] == "user_pw_change") {
+    $pw=$_POST['password'];
+    $user_id = $_POST['user_id'];
+    $user = new User();
+    $user->new_pw($user_id, $pw);
+    
 }

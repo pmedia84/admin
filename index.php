@@ -20,9 +20,12 @@ $services_amt = $services->num_rows;
 $meta_description = "Parrot Media - Client Admin Area";
 $meta_page_title = "Mi-Admin | Dashboard";
 ?>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <?php include("./inc/Page_meta.php");?>
 </head>
+
 <body>
     <!-- Main Body Of Page -->
     <main class="main">

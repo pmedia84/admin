@@ -67,7 +67,7 @@ $meta_page_title = "Mi-Admin | Price List";
             </div>
             <div class="main-cards loading">
 
-                <h2>Price List</h2>
+                <h1>Price List</h1>
                 <?php
                 $categories = "SELECT * FROM services_categories";
                 $categories_result = mysqli_query($db, $categories);

@@ -13,7 +13,6 @@
     <?php if ($cat_r->num_rows > 0) : foreach ($cat_r as $cat) :
             $service_q = $db->query('SELECT * FROM services WHERE service_cat_id=' . $cat['service_cat_id']);
     ?>
-
             <h3 class="my-2"><?= $cat['service_cat_name']; ?></h3>
             <div class="grid-row-3col">
 
@@ -30,8 +29,8 @@
                                 <span><?php if ($service['service_featured'] == "Yes") : ?>Featured Service<?php endif; ?></span>
                             </div>
                             <div class="service-card-actions my-2">
-                                <a href="price_listitem?action=edit&service_id=<?= $service['service_id']; ?>"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                                <a href="price_listitem?action=delete&confirm=no&service_id=<?=$service['service_id'];?>"><i class="fa-solid fa-trash"></i> Delete</a>
+                                <a href="price_listitem?action=edit&service_id=<?= $service['service_id']; ?>"><svg class="icon feather-icon"><use xlink:href="assets/img/icons/feather.svg#edit"></use></svg>Edit</a>
+                                <a href="price_listitem?action=delete&confirm=no&service_id=<?=$service['service_id'];?>"><svg class="icon feather-icon"><use xlink:href="assets/img/icons/feather.svg#trash-2"></use></svg>Delete</a>
                             </div>
                         </div>
                     </div>

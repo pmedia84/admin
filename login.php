@@ -36,18 +36,21 @@ $meta_page_title = "Mi-Admin | Login";
                 <div class="form-input-wrapper">
                     <label for="user_email">eMail Address:</label>
                     <!-- input -->
-                    <input type="text" name="user_email" id="user_email" placeholder="Enter Email Address" autocomplete="email" required="" maxlength="45" <?php if (isset($_COOKIE['user_email'])) : ?>value="<?= $_COOKIE['user_email'];
+                    <input type="text" name="user_email" id="user_email" placeholder="Enter Email Address" autocomplete="email" required="" <?php if (isset($_COOKIE['user_email'])) : ?>value="<?= $_COOKIE['user_email'];
                                                                                                                                                                                                             endif; ?>">
                 </div>
 
                 <div class="form-input-wrapper">
                     <label for="password">Password:</label>
                     <!-- input -->
-                    <input class="text-input input" type="password" name="password" id="password" placeholder="Your Password*" autocomplete="current-password" required="" maxlength="45">
+                    <div class="pw-container"><input class="text-input input pw" type="password" name="password" id="password" placeholder="Your Password*" autocomplete="current-password" required="">
+                    <button id="show_pw" class="show_pw" type="button" title="show password"><svg class="icon feather-icon show_pw_on hidden"><use xlink:href="assets/img/icons/feather.svg#eye"></use></svg><svg class="icon feather-icon show_pw_off" ><use xlink:href="assets/img/icons/feather.svg#eye-off"></use></svg></button>
+                </div>
+                    
                 </div>
 
+                
                 <label class="checkbox-form-control my-2" for="remember_user"><input type="checkbox" name="remember_user" id="remember_user" <?php if (isset($_COOKIE['user_name'])) : ?>checked<?php endif; ?>>Remember me</label>
-
                 <div class="button-section my-3">
                     <button class="btn-primary" type="submit">Login</button>
                     <a href="resetpw">Forgot Password</a>
@@ -98,6 +101,7 @@ $meta_page_title = "Mi-Admin | Login";
             });
         })
     </script>
+    <script src="assets/js/app.js"></script>
 </body>
 
 </html>
