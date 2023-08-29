@@ -3,3 +3,4 @@ connect.php
 email_settings.php
 scripts/*csv
 scripts/*xlsx
+config.json

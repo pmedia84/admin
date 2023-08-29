@@ -15,6 +15,7 @@ $("document").ready(function() {
 
 //edit a service
 $("#edit_service").submit(function (event) {
+    tinyMCE.triggerSave();
     const form = document.getElementById("edit_service");
     const pos = form.offsetTop;
     event.preventDefault();
@@ -46,6 +47,7 @@ $("#edit_service").submit(function (event) {
 });
 //create a service
 $("#create_service").submit(function (event) {
+    tinyMCE.triggerSave();
     const form = document.getElementById("create_service");
     const pos = form.offsetTop;
     event.preventDefault();
@@ -61,7 +63,7 @@ $("#create_service").submit(function (event) {
         success: function (data, responseText) {
 
             if (data === "200") {
-                window.location.replace('price_list');
+               window.location.replace('price_list');
             } else {
                 $("#response-msg").html(data);
                 $(".response-card").addClass("error-card");

@@ -8,7 +8,7 @@ if (isset($_POST['action']) && $_POST['action'] == "edit") {
     $edit_service = $db->prepare('UPDATE services SET service_name=?, service_description=?, service_cat_id=?, service_price=?, service_promo=?, service_featured=? WHERE service_id=?');
     //set up variables
     $service_name = htmlentities(mysqli_real_escape_string($db, $_POST['service_name']));
-    $service_description = htmlentities(mysqli_real_escape_string($db, $_POST['service_description']));
+    $service_description = htmlentities($_POST['service_description']);
     $service_cat_id = $_POST['service_cat_id'];
     $service_price = mysqli_real_escape_string($db, $_POST['service_price']);
     $service_promo="";
@@ -42,7 +42,7 @@ if (isset($_POST['action']) && $_POST['action'] == "create") {
     $create_service = $db->prepare('INSERT INTO services (service_name, service_description, service_cat_id, service_price, service_promo, service_featured) VALUES(?,?,?,?,?,?)');
     //set up variables
     $service_name = htmlentities(mysqli_real_escape_string($db, $_POST['service_name']));
-    $service_description = htmlentities(mysqli_real_escape_string($db, $_POST['service_description']));
+    $service_description = htmlentities($_POST['service_description']);
     $service_cat_id = $_POST['service_cat_id'];
     $service_price = mysqli_real_escape_string($db, $_POST['service_price']);
     $service_promo="";

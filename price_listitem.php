@@ -75,6 +75,29 @@ $meta_page_title = "Mi-Admin | Edit Price List Item";
 <html lang="en">
 <head>
 <?php include("./inc/Page_meta.php");?>
+<?php if(isset($_GET['action'])&& $_GET['action']=="add" || $_GET['action']=="edit"):?>
+    <script src="https://cdn.tiny.cloud/1/7h48z80zyia9jc41kx9pqhh00e1e2f4pw9kdcmhisk0cm35w/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+    tinymce.init({
+        selector: 'textarea#service_description',
+        height: 500,
+        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat | ',
+        tinycomments_mode: 'embedded',
+
+        tinycomments_author: 'Author name',
+        mergetags_list: [{
+                value: 'First.Name',
+                title: 'First Name'
+            },
+            {
+                value: 'Email',
+                title: 'Email'
+            },
+        ]
+    });
+</script>
+    <?php endif;?>
 </head>
 <body>
     <!-- Main Body Of Page -->
