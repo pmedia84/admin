@@ -163,6 +163,7 @@ class User
     public $logged_in;
     public $user_email;
     public $user_em_status;
+    
     function em_status()
     {
         //find email status of the user
